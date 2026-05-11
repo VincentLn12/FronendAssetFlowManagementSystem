@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '../../../core/services/account.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -14,7 +15,7 @@ export class LoginComponent {
   private accountService = inject(AccountService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  returnUrl = '/shop';
+  returnUrl = '/';
 
   constructor() {
     const url = this.activatedRoute.snapshot.queryParams['returnUrl'];
@@ -27,11 +28,15 @@ export class LoginComponent {
   });
 
   onSubmit() {
-    this.accountService.login(this.loginForm.value).subscribe({
-      next: () => {
-        this.accountService.getUserInfo().subscribe();
-        this.router.navigateByUrl(this.returnUrl);
-      },
-    });
+    if (this.loginForm.invalid) return;
+
+    this.accountService
+      .login(this.loginForm.getRawValue())
+      .pipe(switchMap(() => this.accountService.getUserInfo()))
+      .subscribe({
+        next: () => {
+          this.router.navigateByUrl(this.returnUrl);
+        },
+      });
   }
 }
