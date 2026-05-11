@@ -1,0 +1,27 @@
+<div class="space-y-2 group">
+    <label class="flex items-center gap-1 text-sm font-bold text-slate-700 
+         group-focus-within:text-emerald-600 transition-colors">
+        {{ label }}
+
+        @if (required) {
+        <span class="text-red-500 text-xs">*</span>
+        }
+    </label>
+
+    <select [formControl]="control" class="w-full px-4 py-3 border border-slate-300 rounded-xl 
+           text-slate-700 font-medium bg-white
+           focus:outline-none focus:ring-4 focus:ring-emerald-500/10 
+           focus:border-emerald-500 transition-all duration-200">
+
+        <option value="">{{ placeholder }}</option>
+
+        @for (item of options; track item[optionValue]) {
+        <option [value]="item[optionValue]">
+            {{ item[optionLabel] }}
+        </option>
+        }
+    </select>
+
+    <app-input-error [control]="control" [label]="label" type="select">
+    </app-input-error>
+</div>

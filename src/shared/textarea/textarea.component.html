@@ -1,0 +1,18 @@
+<div class="space-y-2 group">
+    <label class="flex items-center gap-1 text-sm font-bold text-slate-700 
+           group-focus-within:text-indigo-600 transition-colors">
+        {{ label }}
+
+        @if (required) {
+        <span class="text-red-500 text-xs">*</span>
+        }
+    </label>
+
+    <textarea [rows]="rows" [formControl]="control" [placeholder]="placeholder" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl 
+           text-slate-700 placeholder:text-slate-400 
+           focus:outline-none focus:ring-4 focus:ring-indigo-500/10 
+           focus:border-indigo-500 transition-all duration-200 resize-none">
+  </textarea>
+    <app-input-error [control]="control" [label]="label" type="textarea">
+    </app-input-error>
+</div>

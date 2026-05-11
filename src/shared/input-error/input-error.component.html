@@ -1,0 +1,25 @@
+@if (control?.touched && control?.errors) {
+
+@if (control?.errors?.['required']) {
+<div class="text-red-500 text-sm">
+  @if (type === 'select') {
+  กรุณาเลือก{{ label }}
+  } @else {
+  กรุณากรอก{{ label }}
+  }
+</div>
+}
+
+@if (control?.errors?.['min']) {
+<div class="text-red-500 text-sm">
+  ค่าต้องมากกว่าที่กำหนด
+</div>
+}
+
+@if (control?.errors?.['minlength']) {
+<div class="text-red-500 text-sm">
+  ตัวอักษรน้อยเกินไป
+</div>
+}
+
+}
