@@ -1,22 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
-import { MatCard } from '@angular/material/card';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AccountService } from '../../../core/services/account.service';
 import { SnackbarService } from '../../../core/services/snackbar.service';
-import { TextInputComponent } from "../../../shared/components/text-input/text-input.component";
 
 @Component({
   selector: 'app-register',
-  imports: [
-    MatCard,
-    ReactiveFormsModule,
-    MatButton,
-    TextInputComponent
-],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   private fb = inject(FormBuilder);
@@ -29,8 +21,8 @@ export class RegisterComponent {
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]]
-  })
+    password: ['', [Validators.required]],
+  });
 
   onSubmit() {
     this.accountService.register(this.registerForm.value).subscribe({
@@ -38,7 +30,7 @@ export class RegisterComponent {
         this.snack.success('Registration successful - you can now login!');
         this.router.navigateByUrl('/account/login');
       },
-      error: err => this.validationErrors = err
+      error: (err) => (this.validationErrors = err),
     });
   }
 }

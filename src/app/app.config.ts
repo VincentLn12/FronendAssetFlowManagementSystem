@@ -1,4 +1,5 @@
 import {
+  APP_INITIALIZER,
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
@@ -11,6 +12,21 @@ import { errorInterceptor } from './core/interceptors/error-interceptor';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { loadingInterceptor } from './core/interceptors/loading-interceptor';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
+import { AccountService } from './core/services/account.service';
+import { catchError, of, switchMap } from 'rxjs';
+
+export function initializeApp(accountService: AccountService) {
+  return () =>
+    accountService.getAuthState().pipe(
+      switchMap((auth) => {
+        if (auth.isAuthenticated) {
+          return accountService.getUserInfo();
+        }
+        return of(null);
+      }),
+      catchError(() => of(null)),
+    );
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +37,12 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_DIALOG_DEFAULT_OPTIONS,
       useValue: { autoFocus: 'dialog', restoreFocus: true },
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      multi: true,
+      deps: [AccountService],
     },
   ],
 };

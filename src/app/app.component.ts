@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HeaderComponent } from './layout/header/header.component';
 import { RouterOutlet } from '@angular/router';
+import { AccountService } from './core/services/account.service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,5 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'AssetFlowManagementSystem';
+  accountService = inject(AccountService);
 }

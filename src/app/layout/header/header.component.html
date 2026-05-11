@@ -1,105 +1,175 @@
-<div class="h-screen w-64 bg-slate-800 text-white flex flex-col shadow-xl fixed left-0 top-0 z-50">
-  <!-- Logo Box -->
-  <div
-    class="flex items-center justify-center h-20 border-b border-slate-700 p-4 shrink-0 transition-colors"
-  >
-    <div class="flex items-center gap-2 cursor-pointer" routerLink="/">
-      <mat-icon class="text-blue-400 text-3xl h-8 w-8">precision_manufacturing</mat-icon>
-      <span class="text-xl font-bold uppercase tracking-wider text-blue-400">Admin</span>
-    </div>
-  </div>
+<div class="flex h-screen bg-slate-100 overflow-hidden">
+  @if (accountService.currentUser()) {
+    <!-- Overlay mobile -->
+    @if (sidebarOpen) {
+      <div class="fixed inset-0 bg-black/40 z-20 lg:hidden" (click)="sidebarOpen = false"></div>
+    }
 
-  @if (busyService.loading) {
-    <mat-progress-bar mode="query" class="w-full"></mat-progress-bar>
+    <!-- Sidebar -->
+    <aside
+      class="fixed lg:static h-screen bg-white border-r border-slate-200 shadow-sm transition-all duration-300 ease-in-out z-30"
+      [ngClass]="{
+        'w-72 translate-x-0': sidebarOpen,
+        'lg:w-20 lg:translate-x-0 -translate-x-full': !sidebarOpen,
+      }"
+    >
+      <!-- Logo -->
+      <div class="flex items-center gap-3 px-5 py-5 border-b border-slate-200">
+        <div
+          class="w-11 h-11 rounded-xl flex items-center justify-center text-white bg-blue-700 shadow-md"
+        >
+          <mat-icon>account_balance</mat-icon>
+        </div>
+
+        @if (sidebarOpen) {
+          <div>
+            <h1 class="text-base font-bold text-slate-900">ระบบบริหารพัสดุ</h1>
+            <p class="text-xs text-slate-500">สำหรับอาจารย์และเจ้าหน้าที่</p>
+          </div>
+        }
+      </div>
+
+      @if (busyService.loading) {
+        <mat-progress-bar mode="query"></mat-progress-bar>
+      }
+
+      <!-- Menu -->
+      <nav class="p-4 space-y-2">
+        @if (sidebarOpen) {
+          <p class="px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            เมนูหลัก
+          </p>
+        }
+
+        <a
+          routerLink="/"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100 transition-all"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>dashboard</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">หน้าหลัก</span>
+          }
+        </a>
+
+        <a
+          routerLink="/shop"
+          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100 transition-all"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>inventory_2</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">จัดการครุภัณฑ์ / พัสดุ</span>
+          }
+        </a>
+
+        <a
+          routerLink="/test-error"
+          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100 transition-all"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>report_problem</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">แจ้งปัญหาระบบ</span>
+          }
+        </a>
+
+        @if (sidebarOpen) {
+          <p class="px-4 pt-6 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            จัดการระบบ
+          </p>
+        }
+
+        <a
+          routerLink="/admin"
+          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100 transition-all"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>admin_panel_settings</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">ตั้งค่าผู้ดูแล</span>
+          }
+        </a>
+      </nav>
+    </aside>
   }
 
-  <!-- Navigation -->
-  <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-    <a
-      routerLink="/"
-      routerLinkActive="bg-blue-600 text-white shadow-md font-medium"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition-all duration-200"
+  <!-- Main -->
+  <div class="flex-1 flex flex-col overflow-hidden min-w-0">
+    <!-- Header -->
+    <header
+      class="bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between sticky top-0 z-10"
     >
-      <mat-icon>dashboard</mat-icon>
-      <span>Dashboard</span>
-    </a>
+      <div class="flex items-center gap-4 flex-1">
+        @if (accountService.currentUser()) {
+          <button
+            (click)="toggleSidebar()"
+            class="w-10 h-10 flex items-center justify-center hover:bg-slate-100 rounded-xl text-slate-700"
+          >
+            <mat-icon>menu</mat-icon>
+          </button>
+        }
 
-    <a
-      routerLink="/shop"
-      routerLinkActive="bg-blue-600 text-white shadow-md font-medium"
-      class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition-all duration-200"
-    >
-      <mat-icon>inventory_2</mat-icon>
-      <span>Assets Manager</span>
-    </a>
+        <div class="hidden md:flex flex-col">
+          <h2 class="text-sm font-semibold text-slate-800">ระบบบริหารจัดการงานพัสดุ</h2>
+          <p class="text-xs text-slate-500">มหาวิทยาลัย</p>
+        </div>
+      </div>
 
-    <a
-      routerLink="/test-error"
-      routerLinkActive="bg-blue-600 text-white shadow-md font-medium"
-      class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition-all duration-200"
-    >
-      <mat-icon>bug_report</mat-icon>
-      <span>System Errors</span>
-    </a>
+      <div class="flex items-center gap-4">
+        @if (accountService.currentUser()) {
+          <div class="hidden sm:block text-right">
+            <p class="text-sm font-medium text-slate-700">
+              {{ accountService.currentUser()?.email }}
+            </p>
+            <p class="text-xs text-slate-500">อาจารย์ / เจ้าหน้าที่</p>
+          </div>
 
-    <!-- Admin route placeholder based on old header -->
-    <a
-      routerLink="/admin"
-      routerLinkActive="bg-blue-600 text-white shadow-md font-medium"
-      class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition-all duration-200"
-    >
-      <mat-icon>admin_panel_settings</mat-icon>
-      <span>Admin Setup</span>
-    </a>
-  </nav>
-
-  <!-- User Section (Bottom) -->
-  <div class="p-4 border-t border-slate-700 shrink-0">
-    @if (accountService.currentUser()) {
-      <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-3">
-          <div
-            class="bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center text-white font-bold shadow-lg"
+          <button
+            (click)="toggleDropdown()"
+            class="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold bg-blue-700 shadow-sm"
           >
             {{ accountService.currentUser()?.email?.charAt(0) | uppercase }}
-          </div>
-          <div class="flex flex-col overflow-hidden">
-            <span
-              class="text-sm font-medium truncate"
-              [title]="accountService.currentUser()?.email"
+          </button>
+
+          @if (dropdownOpen) {
+            <div
+              class="absolute right-6 top-16 w-52 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50"
             >
-              {{ accountService.currentUser()?.email }}
-            </span>
-            <span class="text-xs text-orange-400 font-medium">Administrator</span>
-          </div>
-        </div>
-        <button
-          mat-stroked-button
-          class="w-full !rounded-md !border-slate-500 !text-slate-300 hover:!bg-slate-700 transition-colors"
-          (click)="logout()"
-        >
-          <mat-icon>logout</mat-icon>
-          Logout
-        </button>
+              <a
+                routerLink="/admin/profile"
+                class="flex items-center gap-3 px-4 py-3 text-slate-700 hover:bg-slate-50 text-sm"
+                (click)="dropdownOpen = false"
+              >
+                <mat-icon class="text-base">person</mat-icon>
+                โปรไฟล์
+              </a>
+
+              <button
+                (click)="logout()"
+                class="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 text-sm"
+              >
+                <mat-icon class="text-base">logout</mat-icon>
+                ออกจากระบบ
+              </button>
+            </div>
+          }
+        } @else {
+          <button mat-flat-button class="!bg-blue-700 !text-white" routerLink="/account/login">
+            เข้าสู่ระบบ
+          </button>
+        }
       </div>
-    } @else {
-      <div class="flex flex-col gap-2">
-        <button
-          mat-flat-button
-          class="!bg-blue-600 !text-white w-full h-10"
-          routerLink="/account/login"
-        >
-          Login
-        </button>
-        <button
-          mat-stroked-button
-          class="!text-slate-300 !border-slate-600 w-full h-10 hover:!bg-slate-700"
-          routerLink="/account/register"
-        >
-          Register
-        </button>
-      </div>
-    }
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 overflow-auto bg-slate-100 p-4 sm:p-6">
+      <router-outlet> </router-outlet>
+    </main>
   </div>
 </div>
