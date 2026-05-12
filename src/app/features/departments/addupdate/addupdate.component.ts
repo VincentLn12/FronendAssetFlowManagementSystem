@@ -23,7 +23,6 @@ export class AddupdateComponent implements OnInit {
   private snackbar = inject(SnackbarService);
 
   departmentId = signal<number | null>(null);
-
   isEditMode = computed(() => this.departmentId() !== null);
 
   title = computed(() => (this.isEditMode() ? 'แก้ไขหน่วยงาน/สาขาวิชา' : 'เพิ่มหน่วยงาน/สาขาวิชา'));
