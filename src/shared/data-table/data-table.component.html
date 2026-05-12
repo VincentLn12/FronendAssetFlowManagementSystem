@@ -16,23 +16,23 @@
   </div>
 
   <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-    <!-- 🗂️ LEFT -->
     <div class="flex items-center gap-3">
-      @if (enableCategory) {
+      @if (sortOptions.length > 0) {
         <select
-          [(ngModel)]="selectedCategory"
+          (change)="onSort($event)"
           class="w-full md:w-52 px-4 py-2 border border-slate-200 rounded-lg text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
         >
-          <option value="">ทั้งหมด</option>
+          <option value="">เรียงลำดับ</option>
 
-          @for (c of categories; track c.id) {
-            <option [value]="c.id">{{ c.name }}</option>
+          @for (s of sortOptions; track s.value) {
+            <option [value]="s.value">
+              {{ s.label }}
+            </option>
           }
         </select>
       }
     </div>
 
-    <!-- 🔍 RIGHT -->
     @if (enableSearch) {
       <div class="relative w-full md:w-72 md:ml-auto">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
@@ -54,7 +54,7 @@
 
         <input
           type="text"
-          (input)="onSearch($event.target.value)"
+          (input)="onSearch($event)"
           placeholder="ค้นหา..."
           class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition shadow-sm"
         />
@@ -82,24 +82,34 @@
         </thead>
 
         <tbody class="divide-y divide-slate-100">
-          @for (item of paginatedData; track item.id) {
+          @for (item of data; track item[idKey]) {
             <tr class="hover:bg-slate-50">
               @for (col of columns; track col.key) {
                 <td class="px-6 py-4 text-sm">
                   @if (col.type === 'price') {
                     <span class="font-bold text-slate-900">
                       {{
-                        (col.transform ? col.transform(item[col.key], item) : (item[col.key] ?? 0))
-                          | currency: 'THB' : 'symbol' : '1.0-0'
+                        (col.transform
+                          ? col.transform(getValue(item, col.key), item)
+                          : (getValue(item, col.key) ?? 0)
+                        ) | currency: 'THB' : 'symbol' : '1.0-0'
                       }}
                     </span>
                   } @else if (col.type === 'badge') {
                     <span class="px-2 py-1 text-xs bg-indigo-50 text-indigo-700 rounded-full">
-                      {{ col.transform ? col.transform(item[col.key], item) : item[col.key] }}
+                      {{
+                        col.transform
+                          ? col.transform(getValue(item, col.key), item)
+                          : getValue(item, col.key)
+                      }}
                     </span>
                   } @else {
                     <span class="text-slate-700">
-                      {{ col.transform ? col.transform(item[col.key], item) : item[col.key] }}
+                      {{
+                        col.transform
+                          ? col.transform(getValue(item, col.key), item)
+                          : getValue(item, col.key)
+                      }}
                     </span>
                   }
                 </td>
@@ -111,11 +121,20 @@
                     แก้ไข
                   </button>
 
-                  <button (click)="delete.emit(item.id)" class="text-red-500 font-semibold">
+                  <button (click)="delete.emit(item[idKey])" class="text-red-500 font-semibold">
                     ลบออก
                   </button>
                 </td>
               }
+            </tr>
+          } @empty {
+            <tr>
+              <td
+                [attr.colspan]="isAdmin ? columns.length + 1 : columns.length"
+                class="px-6 py-10 text-center text-sm text-slate-400"
+              >
+                ไม่พบข้อมูล
+              </td>
             </tr>
           }
         </tbody>
@@ -123,12 +142,9 @@
     </div>
 
     <div class="flex items-center justify-between px-6 py-4 border-t bg-slate-50">
-      <!-- ซ้าย: จำนวนรายการ -->
-      <div class="text-sm text-slate-500">แสดง {{ filteredData.length }} รายการ</div>
+      <div class="text-sm text-slate-500">ทั้งหมด {{ totalItems }} รายการ</div>
 
-      <!-- ขวา: ปุ่ม pagination -->
       <div class="flex items-center gap-1">
-        <!-- Prev -->
         <button
           (click)="goToPage(currentPage - 1)"
           [disabled]="currentPage === 1"
@@ -137,7 +153,6 @@
           Prev
         </button>
 
-        <!-- Page numbers -->
         @for (p of pages; track p) {
           <button
             (click)="goToPage(p)"
@@ -152,7 +167,6 @@
           </button>
         }
 
-        <!-- Next -->
         <button
           (click)="goToPage(currentPage + 1)"
           [disabled]="currentPage === totalPages"

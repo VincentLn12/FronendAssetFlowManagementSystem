@@ -1,0 +1,144 @@
+<div class="min-h-screen bg-slate-50 px-4 py-6 sm:px-6 lg:px-8 font-sans">
+  <div class="mx-auto max-w-6xl">
+    <!-- Header -->
+    <div class="mb-6">
+      <button
+        type="button"
+        (click)="cancel()"
+        class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-indigo-600 transition"
+      >
+        <span class="text-lg leading-none">←</span>
+        กลับไปหน้ารายการ
+      </button>
+
+      <div
+        class="rounded-2xl border border-slate-200 bg-white px-6 py-6 shadow-sm flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div class="flex items-start gap-4">
+          <div
+            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600"
+          >
+            @if (isEditMode()) {
+              <span class="text-xl">✎</span>
+            } @else {
+              <span class="text-xl">＋</span>
+            }
+          </div>
+
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">
+              {{ title() }}
+            </h1>
+
+            <p class="mt-1 text-sm text-slate-500">
+              @if (isEditMode()) {
+                ปรับปรุงชื่อหน่วยงาน/สาขาวิชาให้ถูกต้องและเป็นปัจจุบัน
+              } @else {
+                เพิ่มข้อมูลหน่วยงาน/สาขาวิชาใหม่เข้าสู่ระบบ
+              }
+            </p>
+          </div>
+        </div>
+
+        <span
+          class="inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold"
+          [ngClass]="
+            isEditMode()
+              ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-200'
+              : 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200'
+          "
+        >
+          {{ isEditMode() ? 'โหมดแก้ไข' : 'โหมดเพิ่มข้อมูล' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="grid gap-6 lg:grid-cols-[1fr_280px]">
+      <!-- Form Card -->
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div class="border-b border-slate-100 px-6 py-4">
+          <h2 class="text-base font-semibold text-slate-800">ข้อมูลหน่วยงาน/สาขาวิชา</h2>
+          <p class="mt-1 text-sm text-slate-500">กรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบันทึก</p>
+        </div>
+
+        @if (isLoading()) {
+          <div class="space-y-4 p-6">
+            <div class="h-4 w-40 animate-pulse rounded bg-slate-200"></div>
+            <div class="h-11 w-full animate-pulse rounded-lg bg-slate-200"></div>
+            <div class="h-10 w-48 animate-pulse rounded-lg bg-slate-200"></div>
+          </div>
+        } @else {
+          <form [formGroup]="form" (ngSubmit)="submit()">
+            <div class="space-y-6 p-6">
+              <app-input
+                label="ชื่อหน่วยงาน/สาขาวิชา"
+                [control]="form.controls.department_name"
+                placeholder="เช่น สาขาวิชาวิทยาการคอมพิวเตอร์"
+                [required]="true"
+              ></app-input>
+
+              <div class="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
+                <p class="text-sm text-slate-600">
+                  ควรใช้ชื่อเต็มของหน่วยงาน/สาขาวิชา เพื่อให้ค้นหาและอ้างอิงข้อมูลได้ง่าย
+                </p>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div
+              class="flex flex-col-reverse gap-3 border-t border-slate-100 bg-slate-50 px-6 py-4 sm:flex-row sm:items-center sm:justify-end"
+            >
+              <button
+                type="button"
+                (click)="cancel()"
+                class="inline-flex justify-center rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 transition"
+                [disabled]="isSubmitting()"
+              >
+                ยกเลิก
+              </button>
+
+              <button
+                type="submit"
+                class="inline-flex justify-center rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50 transition"
+                [disabled]="isSubmitting() || form.invalid"
+              >
+                @if (isSubmitting()) {
+                  กำลังบันทึก...
+                } @else if (isEditMode()) {
+                  บันทึกการแก้ไข
+                } @else {
+                  บันทึกข้อมูล
+                }
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+
+      <!-- Help Card -->
+      <aside class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm h-fit">
+        <h3 class="text-sm font-semibold text-slate-800">คำแนะนำ</h3>
+
+        <ul class="mt-4 space-y-3 text-sm text-slate-600">
+          <li class="flex gap-2">
+            <span class="text-indigo-500">•</span>
+            กรอกชื่อให้ตรงกับเอกสารหรือโครงสร้างหน่วยงานจริง
+          </li>
+          <li class="flex gap-2">
+            <span class="text-indigo-500">•</span>
+            หลีกเลี่ยงการใช้ชื่อย่อ หากไม่ได้เป็นชื่อทางการ
+          </li>
+          <li class="flex gap-2">
+            <span class="text-indigo-500">•</span>
+            หลังบันทึก ระบบจะพากลับไปยังหน้ารายการอัตโนมัติ
+          </li>
+        </ul>
+
+        <div class="mt-5 rounded-xl bg-indigo-50 px-4 py-3 text-xs text-indigo-700">
+          ช่องที่มีเครื่องหมาย * คือข้อมูลที่จำเป็นต้องกรอก
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
