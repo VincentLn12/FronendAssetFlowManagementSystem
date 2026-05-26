@@ -26,6 +26,7 @@ export const routes: Routes = [
         data: { role: 'admin' },
         children: [
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+          // แผนก
           {
             path: 'departments',
             loadComponent: () =>
@@ -47,6 +48,7 @@ export const routes: Routes = [
                 (m) => m.AddupdateComponent,
               ),
           },
+          // คำนำหน้า
           {
             path: 'prefixes',
             loadComponent: () =>
@@ -64,6 +66,26 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/prefixes/prefixesaddupdate/addupdate.component').then(
                 (m) => m.PrefixesAddUpdateComponent,
+              ),
+          },
+          // ตำเเหน่ง
+          {
+            path: 'positions',
+            loadComponent: () =>
+              import('./features/positions/positions.component').then((m) => m.PositionsComponent),
+          },
+          {
+            path: 'positions/create',
+            loadComponent: () =>
+              import('./features/positions/positionsaddupdate/addupdate.component').then(
+                (m) => m.PositionsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'positions/update/:id',
+            loadComponent: () =>
+              import('./features/positions/positionsaddupdate/addupdate.component').then(
+                (m) => m.PositionsAddUpdateComponent,
               ),
           },
           {

@@ -6,6 +6,7 @@ import { DepartmentType } from './interface/departmentType';
 import { Pagination } from '../../shared/models/pagination';
 import { Params } from '../../shared/models/allType';
 import { TableState } from '../../../shared/TableState';
+import { AlertService } from '../../../shared.service';
 
 @Component({
   selector: 'app-departments',
@@ -17,6 +18,7 @@ export class DepartmentsComponent implements OnInit {
   private router = inject(Router);
   private table = new TableState();
   private departmentService = inject(DepartmentService);
+  private alertService = inject(AlertService);
 
   department?: Pagination<DepartmentType>;
   departments = signal<DepartmentType[]>([]);
@@ -50,6 +52,14 @@ export class DepartmentsComponent implements OnInit {
   }
 
   deleteDepartment(id: number) {
+    this.alertService.confirm('ยืนยันการลบ', 'คุณต้องการลบคำนำหน้านี้หรือไม่?').then((result) => {
+      if (result.isConfirmed) {
+        this.confirmDelete(id);
+        this.alertService.successNo('ลบสาขานี้เรียบร้อยแล้ว');
+      }
+    });
+  }
+  confirmDelete(id: number) {
     this.departmentService.deleteDepartment(id).subscribe({
       next: () => this.getDepartments(),
       error: (error) => console.error(error),

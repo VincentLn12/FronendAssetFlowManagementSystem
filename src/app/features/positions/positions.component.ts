@@ -4,54 +4,54 @@ import { DataTableComponent } from '../../../shared/data-table/data-table.compon
 import { Pagination } from '../../shared/models/pagination';
 import { Params } from '../../shared/models/allType';
 import { TableState } from '../../../shared/TableState';
-import { PrefixesService } from './service/prefixes.service';
-import { prefixesType } from './interface/prefixesType';
 import { AlertService } from '../../../shared.service';
+import { PositionsService } from './service/positions.service';
+import { positionsType } from './interface/positionsType';
 
 @Component({
   selector: 'app-departments',
   standalone: true,
   imports: [DataTableComponent],
-  templateUrl: './prefixes.component.html',
+  templateUrl: './positions.component.html',
 })
-export class PrefixesComponent implements OnInit {
+export class PositionsComponent implements OnInit {
   private router = inject(Router);
   private table = new TableState();
-  private profixesService = inject(PrefixesService);
+  private prositionsServive = inject(PositionsService);
   private alertService = inject(AlertService);
 
-  prefix?: Pagination<prefixesType>;
-  prefixs = signal<prefixesType[]>([]);
+  position?: Pagination<positionsType>;
+  positions = signal<positionsType[]>([]);
 
   Params = new Params();
 
   ngOnInit(): void {
-    this.getPrefixes();
+    this.getPositons();
   }
 
-  getPrefixes() {
-    this.profixesService.getPrefixes(this.table.params).subscribe({
+  getPositons() {
+    this.prositionsServive.getPositions(this.table.params).subscribe({
       next: (response) => {
-        this.prefix = response;
-        this.prefixs.set(response.data);
+        this.position = response;
+        this.positions.set(response.data);
       },
       error: (error) => console.error(error),
     });
   }
 
   onSearch(value: string) {
-    this.table.onSearch(value, () => this.getPrefixes());
+    this.table.onSearch(value, () => this.getPositons());
   }
 
   onPageChange(page: number) {
-    this.table.onPageChange(page, () => this.getPrefixes());
+    this.table.onPageChange(page, () => this.getPositons());
   }
 
   onSort(value: string) {
-    this.table.onSort(value, () => this.getPrefixes());
+    this.table.onSort(value, () => this.getPositons());
   }
 
-  deletePrefixes(id: number) {
+  deletePosition(id: number) {
     this.alertService.confirm('ยืนยันการลบ', 'คุณต้องการลบคำนำหน้านี้หรือไม่?').then((result) => {
       if (result.isConfirmed) {
         this.confirmDelete(id);
@@ -60,19 +60,19 @@ export class PrefixesComponent implements OnInit {
     });
   }
   confirmDelete(id: number) {
-    this.profixesService.deletePrefixes(id).subscribe({
-      next: () => this.getPrefixes(),
+    this.prositionsServive.deletePositions(id).subscribe({
+      next: () => this.getPositons(),
       error: (error) => console.error(error),
     });
   }
 
   goToCreate() {
-    this.router.navigate(['/admin/prefixes/create']);
+    this.router.navigate(['/admin/positions/create']);
   }
 
-  goToEdit(prefixes: prefixesType) {
-    this.router.navigate(['/admin/prefixes/update', prefixes.prefix_id], {
-      state: { prefixes },
+  goToEdit(positions: positionsType) {
+    this.router.navigate(['/admin/positions/update', positions.position_id], {
+      state: { positions },
     });
   }
 
@@ -84,8 +84,7 @@ export class PrefixesComponent implements OnInit {
   ];
 
   columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' }[] = [
-    { label: 'ID', key: 'prefix_id' },
-    { label: 'คำนำหน้าเต็ม', key: 'prefix_name' },
-    { label: 'คำนำหน้าสั้น', key: 'prefix_short_name' },
+    { label: 'ID', key: 'position_id' },
+    { label: 'ชื่อตำเเหน่ง', key: 'position_name' },
   ];
 }
