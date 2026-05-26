@@ -55,14 +55,14 @@ export const routes: Routes = [
           {
             path: 'prefixes/create',
             loadComponent: () =>
-              import('./features/prefixes/addupdate/addupdate.component').then(
+              import('./features/prefixes/prefixesaddupdate/addupdate.component').then(
                 (m) => m.PrefixesAddUpdateComponent,
               ),
           },
           {
             path: 'prefixes/update/:id',
             loadComponent: () =>
-              import('./features/prefixes/addupdate/addupdate.component').then(
+              import('./features/prefixes/prefixesaddupdate/addupdate.component').then(
                 (m) => m.PrefixesAddUpdateComponent,
               ),
           },

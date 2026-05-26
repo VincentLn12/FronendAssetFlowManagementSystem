@@ -45,7 +45,7 @@ export class PrefixesAddUpdateComponent implements OnInit {
   }
 
   private loadPrefixes(id: number) {
-    const statePrefixes = history.state?.depart as prefixesType | undefined;
+    const statePrefixes = history.state?.prefixes as prefixesType | undefined;
 
     if (statePrefixes?.prefix_id === id) {
       this.patchForm(statePrefixes);
@@ -58,7 +58,7 @@ export class PrefixesAddUpdateComponent implements OnInit {
       .getPrefix(id)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
-        next: (department) => this.patchForm(department),
+        next: (prefixes) => this.patchForm(prefixes),
         error: () => {
           this.snackbar.error('ไม่สามารถโหลดข้อมูลได้');
           this.router.navigate(['/admin/departments']);

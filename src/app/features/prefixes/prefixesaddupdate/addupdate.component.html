@@ -81,7 +81,7 @@
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="space-y-6 p-6 ">
+            <div class="grid grid-cols-2 gap-6 p-6">
               <app-input
                 label="คำนำหน้าชื่อ"
                 [control]="form.controls.prefix_name"
