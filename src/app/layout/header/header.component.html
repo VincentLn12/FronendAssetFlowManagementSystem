@@ -32,9 +32,9 @@
         }
       </div>
 
-      @if (busyService.loading) {
+      <!-- @if (busyService.loading) {
         <mat-progress-bar mode="query"></mat-progress-bar>
-      }
+      } -->
 
       <!-- Menu -->
       <nav class="p-4 space-y-2 flex-1 min-h-0 overflow-y-auto">
@@ -390,7 +390,9 @@
         }
 
         <div class="hidden md:flex flex-col">
-          <h2 class="text-sm font-semibold text-slate-800">ระบบบริหารจัดการงานพัสดุ</h2>
+          <h2 class="text-sm font-semibold text-slate-800">
+            การพัฒนาระบบบริหารจัดการงานพัสดุและติดตามเอกสาร
+          </h2>
           <p class="text-xs text-slate-500">มหาวิทยาลัยราชภัฎกาญจนบุรี</p>
         </div>
       </div>
@@ -442,8 +444,6 @@
     </header>
 
     <!-- Content -->
-    <main class="flex-1 overflow-auto bg-slate-100 p-4 sm:p-6">
-      <router-outlet> </router-outlet>
-    </main>
+    <main class="flex-1 overflow-auto bg-slate-100 p-0"><router-outlet> </router-outlet></main>
   </div>
 </div>

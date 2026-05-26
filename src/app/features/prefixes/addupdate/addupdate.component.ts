@@ -5,8 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { SnackbarService } from '../../../core/services/snackbar.service';
-import { DepartmentService } from '../service/department.service';
-import { DepartmentType } from '../interface/departmentType';
+import { PrefixesService } from '../service/prefixes.service';
+import { prefixesType } from '../interface/prefixesType';
 
 @Component({
   selector: 'app-addupdate',
@@ -14,23 +14,24 @@ import { DepartmentType } from '../interface/departmentType';
   imports: [CommonModule, ReactiveFormsModule, InputComponent],
   templateUrl: './addupdate.component.html',
 })
-export class AddupdateComponent implements OnInit {
+export class PrefixesAddUpdateComponent implements OnInit {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private departmentService = inject(DepartmentService);
+  private prefixesService = inject(PrefixesService);
   private snackbar = inject(SnackbarService);
 
-  departmentId = signal<number | null>(null);
-  isEditMode = computed(() => this.departmentId() !== null);
+  prefix_id = signal<number | null>(null);
+  isEditMode = computed(() => this.prefix_id() !== null);
 
-  title = computed(() => (this.isEditMode() ? 'แก้ไขหน่วยงาน/สาขาวิชา' : 'เพิ่มหน่วยงาน/สาขาวิชา'));
+  title = computed(() => (this.isEditMode() ? 'แก้ไขคำนำหน้าชื่อ' : 'เพิ่มคำนำหน้าชื่อ'));
 
   isLoading = signal(false);
   isSubmitting = signal(false);
 
   form = this.fb.nonNullable.group({
-    department_name: ['', [Validators.required, Validators.minLength(2)]],
+    prefix_name: ['', [Validators.required, Validators.minLength(2)]],
+    prefix_short_name: [''],
   });
 
   ngOnInit(): void {
@@ -38,23 +39,23 @@ export class AddupdateComponent implements OnInit {
     const id = idParam ? Number(idParam) : null;
 
     if (id && Number.isFinite(id)) {
-      this.departmentId.set(id);
-      this.loadDepartment(id);
+      this.prefix_id.set(id);
+      this.loadPrefixes(id);
     }
   }
 
-  private loadDepartment(id: number) {
-    const stateDepartment = history.state?.depart as DepartmentType | undefined;
+  private loadPrefixes(id: number) {
+    const statePrefixes = history.state?.depart as prefixesType | undefined;
 
-    if (stateDepartment?.department_id === id) {
-      this.patchForm(stateDepartment);
+    if (statePrefixes?.prefix_id === id) {
+      this.patchForm(statePrefixes);
       return;
     }
 
     this.isLoading.set(true);
 
-    this.departmentService
-      .getDepartment(id)
+    this.prefixesService
+      .getPrefix(id)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (department) => this.patchForm(department),
@@ -65,9 +66,10 @@ export class AddupdateComponent implements OnInit {
       });
   }
 
-  private patchForm(department: DepartmentType) {
+  private patchForm(prefixes: prefixesType) {
     this.form.patchValue({
-      department_name: department.department_name ?? '',
+      prefix_name: prefixes.prefix_name ?? '',
+      prefix_short_name: prefixes.prefix_short_name ?? '',
     });
   }
 
@@ -77,22 +79,23 @@ export class AddupdateComponent implements OnInit {
       return;
     }
 
-    const payload: Partial<DepartmentType> = {
-      department_id: this.departmentId() ?? 0,
-      department_name: this.form.controls.department_name.value.trim(),
+    const payload: Partial<prefixesType> = {
+      prefix_id: this.prefix_id() ?? 0,
+      prefix_name: this.form.controls.prefix_name.value.trim(),
+      prefix_short_name: this.form.controls.prefix_short_name.value.trim(),
       is_active: true,
     };
 
     this.isSubmitting.set(true);
 
     const request$ = this.isEditMode()
-      ? this.departmentService.updateDepartment(this.departmentId()!, payload)
-      : this.departmentService.createDepartment(payload);
+      ? this.prefixesService.updatePrefixes(this.prefix_id()!, payload)
+      : this.prefixesService.createPrefixes(payload);
 
     request$.pipe(finalize(() => this.isSubmitting.set(false))).subscribe({
       next: () => {
         this.snackbar.success(this.isEditMode() ? 'แก้ไขข้อมูลสำเร็จ' : 'เพิ่มข้อมูลสำเร็จ');
-        this.router.navigate(['/admin/departments']);
+        this.router.navigate(['/admin/prefixes']);
       },
       error: () => {
         this.snackbar.error(this.isEditMode() ? 'แก้ไขข้อมูลไม่สำเร็จ' : 'เพิ่มข้อมูลไม่สำเร็จ');
@@ -101,6 +104,6 @@ export class AddupdateComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/admin/departments']);
+    this.router.navigate(['/admin/prefixes']);
   }
 }

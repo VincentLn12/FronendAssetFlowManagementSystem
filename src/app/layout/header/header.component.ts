@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
     MatButton,
     RouterLink,
     RouterLinkActive,
-    MatProgressBar,
+    // MatProgressBar,
     RouterOutlet,
   ],
   templateUrl: './header.component.html',

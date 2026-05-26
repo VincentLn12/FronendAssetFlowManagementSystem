@@ -69,7 +69,7 @@
       <!-- Form Card -->
       <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-3">
-          <h2 class="text-base font-semibold text-white">ข้อมูลหน่วยงาน/สาขาวิชา</h2>
+          <h2 class="text-base font-semibold text-white">ข้อมูลคำนำหน้า</h2>
           <p class="mt-0.5 text-sm text-blue-200">กรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบันทึก</p>
         </div>
 
@@ -81,19 +81,19 @@
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="space-y-6 p-6">
+            <div class="space-y-6 p-6 ">
               <app-input
-                label="ชื่อหน่วยงาน/สาขาวิชา"
-                [control]="form.controls.department_name"
-                placeholder="เช่น สาขาวิชาวิทยาการคอมพิวเตอร์"
+                label="คำนำหน้าชื่อ"
+                [control]="form.controls.prefix_name"
+                placeholder="เช่น นาย,นางสาว,นาง"
                 [required]="true"
               ></app-input>
-
-              <div class="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3">
-                <p class="text-sm text-amber-800">
-                  ควรใช้ชื่อเต็มของหน่วยงาน/สาขาวิชา เพื่อให้ค้นหาและอ้างอิงข้อมูลได้ง่าย
-                </p>
-              </div>
+              <app-input
+                label="ตัวย่อคำนำหน้า"
+                [control]="form.controls.prefix_short_name"
+                placeholder="เช่น นาย,น.ส.,น."
+                [required]="true"
+              ></app-input>
             </div>
 
             <!-- Footer -->

@@ -4,6 +4,8 @@ import { TestErrorComponent } from './features/test-error/test-error.component';
 import { ServerErrorComponent } from './shared/components/server-error/server-error.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { HeaderComponent } from './layout/header/header.component';
+import { authGuard } from './core/guards/auth-guard';
+import { adminGuard } from './core/guards/admin-guard';
 
 export const routes: Routes = [
   {
@@ -20,6 +22,7 @@ export const routes: Routes = [
       { path: '', component: ServerErrorComponent },
       {
         path: 'admin',
+        canActivate: [authGuard, adminGuard],
         data: { role: 'admin' },
         children: [
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -42,6 +45,25 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/departments/addupdate/addupdate.component').then(
                 (m) => m.AddupdateComponent,
+              ),
+          },
+          {
+            path: 'prefixes',
+            loadComponent: () =>
+              import('./features/prefixes/prefixes.component').then((m) => m.PrefixesComponent),
+          },
+          {
+            path: 'prefixes/create',
+            loadComponent: () =>
+              import('./features/prefixes/addupdate/addupdate.component').then(
+                (m) => m.PrefixesAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'prefixes/update/:id',
+            loadComponent: () =>
+              import('./features/prefixes/addupdate/addupdate.component').then(
+                (m) => m.PrefixesAddUpdateComponent,
               ),
           },
           {
