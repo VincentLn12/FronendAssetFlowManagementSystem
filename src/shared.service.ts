@@ -30,6 +30,8 @@ export class AlertService {
     return Swal.fire({
       title,
       text,
+      showConfirmButton: false,
+      timer: 1500,
       icon: 'error',
     });
   }

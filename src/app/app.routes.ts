@@ -109,9 +109,29 @@ export const routes: Routes = [
               ),
           },
           {
+            path: 'roles',
+            loadComponent: () =>
+              import('./features/roles/roles.component').then((m) => m.RolesComponent),
+          },
+          {
+            path: 'roles/create',
+            loadComponent: () =>
+              import('./features/roles/roleTypeaddupdate/addupdate.component').then(
+                (m) => m.RolesAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'roles/update/:id',
+            loadComponent: () =>
+              import('./features/roles/roleTypeaddupdate/addupdate.component').then(
+                (m) => m.RolesAddUpdateComponent,
+              ),
+          },
+          {
             path: '**',
             component: NotFoundComponent,
           },
+          // บทบาท
         ],
       },
       { path: 'not-found', component: NotFoundComponent },

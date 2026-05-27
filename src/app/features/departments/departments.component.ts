@@ -84,7 +84,6 @@ export class DepartmentsComponent implements OnInit {
   ];
 
   columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' }[] = [
-    { label: 'ID', key: 'department_id' },
     { label: 'ชื่อคณะ', key: 'department_name' },
   ];
 }

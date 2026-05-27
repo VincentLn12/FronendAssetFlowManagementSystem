@@ -84,7 +84,6 @@ export class PositionsComponent implements OnInit {
   ];
 
   columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' }[] = [
-    { label: 'ID', key: 'position_id' },
     { label: 'ชื่อตำเเหน่ง', key: 'position_name' },
   ];
 }

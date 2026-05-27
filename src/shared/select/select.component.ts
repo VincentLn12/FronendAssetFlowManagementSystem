@@ -19,16 +19,4 @@ export class SelectComponent {
   @Input() required = false;
   @Input() searchable = true;
   @Input() clearable = true;
-
-  searchText = '';
-
-  get filteredOptions() {
-    if (!this.searchText) return this.options;
-
-    return this.options.filter((item) =>
-      String(item[this.optionLabel] ?? '')
-        .toLowerCase()
-        .includes(this.searchText.toLowerCase()),
-    );
-  }
 }

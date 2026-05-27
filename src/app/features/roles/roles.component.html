@@ -1,12 +1,12 @@
 <app-data-table
-  title="ระบบจัดการบุคลากร"
-  subtitle="จัดการข้อมูลบุคลากรในระบบ"
-  [data]="staffs()"
+  title="ระบบจัดการบทบาทผู้ใช้งาน"
+  subtitle="จัดการบทบาทผู้ใช้งานในระบบ"
+  [data]="roles()"
   [columns]="columns"
-  [idKey]="'staff_id'"
+  [idKey]="'id'"
   [isAdmin]="true"
   [sortOptions]="sortOptions"
-  [totalItems]="staff?.count ?? 0"
+  [totalItems]="role?.count ?? 0"
   [pageSize]="Params.pageSize"
   [currentPage]="Params.pageNumber"
   (search)="onSearch($event)"
@@ -14,6 +14,6 @@
   (pageChange)="onPageChange($event)"
   (add)="goToCreate()"
   (edit)="goToEdit($event)"
-  (delete)="deletePrefixes($event)"
+  (delete)="deleteRoles($event)"
 >
 </app-data-table>

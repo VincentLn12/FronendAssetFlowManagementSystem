@@ -87,7 +87,6 @@ export class StaffsComponent implements OnInit {
     label: string;
     key: string;
     type?: 'text' | 'price' | 'badge';
-    transform?: (value: any, item?: any) => any;
   }[] = [
     {
       label: 'ชื่อ-นามสกุล',

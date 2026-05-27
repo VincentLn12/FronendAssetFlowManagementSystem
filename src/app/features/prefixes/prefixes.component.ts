@@ -84,7 +84,6 @@ export class PrefixesComponent implements OnInit {
   ];
 
   columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' }[] = [
-    { label: 'ID', key: 'prefix_id' },
     { label: 'คำนำหน้าเต็ม', key: 'prefix_name' },
     { label: 'คำนำหน้าสั้น', key: 'prefix_short_name' },
   ];
