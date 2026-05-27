@@ -77,8 +77,8 @@ export class PrefixesComponent implements OnInit {
   }
 
   sortOptions = [
-    { label: 'ชื่อ A-Z', value: 'nameAsc' },
-    { label: 'ชื่อ Z-A', value: 'nameDesc' },
+    { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },
+    { label: 'ชื่อ ฮ-ก', value: 'nameDesc' },
     { label: 'ใหม่ล่าสุด', value: 'latest' },
     { label: 'เก่าสุด', value: 'oldest' },
   ];

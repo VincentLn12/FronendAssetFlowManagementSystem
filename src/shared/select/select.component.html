@@ -1,27 +1,35 @@
 <div class="space-y-2 group">
-    <label class="flex items-center gap-1 text-sm font-bold text-slate-700 
-         group-focus-within:text-emerald-600 transition-colors">
-        {{ label }}
+  <label class="flex items-center gap-1 text-sm font-bold text-slate-700">
+    {{ label }}
 
-        @if (required) {
-        <span class="text-red-500 text-xs">*</span>
-        }
-    </label>
+    @if (required) {
+      <span class="text-red-500 text-xs">*</span>
+    }
+  </label>
 
-    <select [formControl]="control" class="w-full px-4 py-3 border border-slate-300 rounded-xl 
-           text-slate-700 font-medium bg-white
-           focus:outline-none focus:ring-4 focus:ring-emerald-500/10 
-           focus:border-emerald-500 transition-all duration-200">
+  <ng-select
+    class="custom-select"
+    dropdownPanelClass="custom-select-panel"
+    appendTo="body"
+    [items]="filteredOptions"
+    [bindLabel]="optionLabel"
+    [bindValue]="optionValue"
+    [placeholder]="placeholder"
+    [searchable]="false"
+    [clearable]="clearable"
+    [formControl]="control"
+  >
+    <ng-template ng-header-tmp>
+      <div class="p-2">
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="ค้นหา..."
+          class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+        />
+      </div>
+    </ng-template>
+  </ng-select>
 
-        <option value="">{{ placeholder }}</option>
-
-        @for (item of options; track item[optionValue]) {
-        <option [value]="item[optionValue]">
-            {{ item[optionLabel] }}
-        </option>
-        }
-    </select>
-
-    <app-input-error [control]="control" [label]="label" type="select">
-    </app-input-error>
+  <app-input-error [control]="control" [label]="label" type="select" />
 </div>

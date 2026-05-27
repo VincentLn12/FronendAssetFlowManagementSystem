@@ -88,6 +88,26 @@ export const routes: Routes = [
                 (m) => m.PositionsAddUpdateComponent,
               ),
           },
+          // พนักงาน
+          {
+            path: 'staffs',
+            loadComponent: () =>
+              import('./features/staffs/staffs.component').then((m) => m.StaffsComponent),
+          },
+          {
+            path: 'staffs/create',
+            loadComponent: () =>
+              import('./features/staffs/staffsTypeaddupdate/addupdate.component').then(
+                (m) => m.StaffAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'staffs/update/:id',
+            loadComponent: () =>
+              import('./features/staffs/staffsTypeaddupdate/addupdate.component').then(
+                (m) => m.StaffAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,

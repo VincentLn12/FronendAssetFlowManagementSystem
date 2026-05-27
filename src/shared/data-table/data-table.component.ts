@@ -54,6 +54,6 @@ export class DataTableComponent {
   }
 
   getValue(item: any, key: string) {
-    return item?.[key];
+    return key.split('.').reduce((obj, prop) => obj?.[prop], item) ?? '-';
   }
 }

@@ -5,53 +5,53 @@ import { Pagination } from '../../shared/models/pagination';
 import { Params } from '../../shared/models/allType';
 import { TableState } from '../../../shared/TableState';
 import { AlertService } from '../../../shared.service';
-import { PositionsService } from './service/positions.service';
-import { positionsType } from './interface/positionsType';
+import { StaffsService } from './service/staffsType.service';
+import { staffsType, staffsTypeCreate } from './interface/staffsType';
 
 @Component({
   selector: 'app-departments',
   standalone: true,
   imports: [DataTableComponent],
-  templateUrl: './positions.component.html',
+  templateUrl: './staffs.component.html',
 })
-export class PositionsComponent implements OnInit {
+export class StaffsComponent implements OnInit {
   private router = inject(Router);
   private table = new TableState();
-  private prositionsServive = inject(PositionsService);
+  private staffsService = inject(StaffsService);
   private alertService = inject(AlertService);
 
-  position?: Pagination<positionsType>;
-  positions = signal<positionsType[]>([]);
+  staff?: Pagination<staffsType>;
+  staffs = signal<staffsType[]>([]);
 
   Params = new Params();
 
   ngOnInit(): void {
-    this.getPositons();
+    this.getStaffs();
   }
 
-  getPositons() {
-    this.prositionsServive.getPositions(this.table.params).subscribe({
+  getStaffs() {
+    this.staffsService.getStaffs(this.table.params).subscribe({
       next: (response) => {
-        this.position = response;
-        this.positions.set(response.data);
+        this.staff = response;
+        this.staffs.set(response.data);
       },
       error: (error) => console.error(error),
     });
   }
 
   onSearch(value: string) {
-    this.table.onSearch(value, () => this.getPositons());
+    this.table.onSearch(value, () => this.getStaffs());
   }
 
   onPageChange(page: number) {
-    this.table.onPageChange(page, () => this.getPositons());
+    this.table.onPageChange(page, () => this.getStaffs());
   }
 
   onSort(value: string) {
-    this.table.onSort(value, () => this.getPositons());
+    this.table.onSort(value, () => this.getStaffs());
   }
 
-  deletePosition(id: number) {
+  deletePrefixes(id: number) {
     this.alertService.confirm('ยืนยันการลบ', 'คุณต้องการลบคำนำหน้านี้หรือไม่?').then((result) => {
       if (result.isConfirmed) {
         this.confirmDelete(id);
@@ -60,19 +60,19 @@ export class PositionsComponent implements OnInit {
     });
   }
   confirmDelete(id: number) {
-    this.prositionsServive.deletePositions(id).subscribe({
-      next: () => this.getPositons(),
+    this.staffsService.deleteStaff(id).subscribe({
+      next: () => this.getStaffs(),
       error: (error) => console.error(error),
     });
   }
 
   goToCreate() {
-    this.router.navigate(['/admin/positions/create']);
+    this.router.navigate(['/admin/staffs/create']);
   }
 
-  goToEdit(positions: positionsType) {
-    this.router.navigate(['/admin/positions/update', positions.position_id], {
-      state: { positions },
+  goToEdit(staff: staffsTypeCreate) {
+    this.router.navigate(['/admin/staffs/update', staff.staff_id], {
+      state: { staff },
     });
   }
 
@@ -83,8 +83,19 @@ export class PositionsComponent implements OnInit {
     { label: 'เก่าสุด', value: 'oldest' },
   ];
 
-  columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' }[] = [
-    { label: 'ID', key: 'position_id' },
-    { label: 'ชื่อตำเเหน่ง', key: 'position_name' },
+  columns: {
+    label: string;
+    key: string;
+    type?: 'text' | 'price' | 'badge';
+    transform?: (value: any, item?: any) => any;
+  }[] = [
+    {
+      label: 'ชื่อ-นามสกุล',
+      key: 'full_name',
+    },
+    { label: 'อีเมล', key: 'email' },
+    { label: 'เบอร์โทรศัพท์', key: 'phone' },
+    { label: 'สาขาวิชา', key: 'department_name' },
+    { label: 'ตำเเหน่ง', key: 'position_name' },
   ];
 }
