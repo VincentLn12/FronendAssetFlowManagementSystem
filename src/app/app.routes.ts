@@ -127,6 +127,12 @@ export const routes: Routes = [
                 (m) => m.RolesAddUpdateComponent,
               ),
           },
+          // ผู้ใช้งาน
+          {
+            path: 'users',
+            loadComponent: () =>
+              import('./features/users/users.component').then((m) => m.UsersComponent),
+          },
           {
             path: '**',
             component: NotFoundComponent,

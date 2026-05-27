@@ -1,0 +1,15 @@
+<app-data-table
+  title="ระบบจัดการบทบาทผู้ใช้งาน"
+  subtitle="จัดการบทบาทผู้ใช้งานในระบบ"
+  [data]="users()"
+  [columns]="columns"
+  [idKey]="'id'"
+  [sortOptions]="sortOptions"
+  [totalItems]="user?.count ?? 0"
+  [pageSize]="Params.pageSize"
+  [currentPage]="Params.pageNumber"
+  (search)="onSearch($event)"
+  (sortChange)="onSort($event)"
+  (pageChange)="onPageChange($event)"
+>
+</app-data-table>
