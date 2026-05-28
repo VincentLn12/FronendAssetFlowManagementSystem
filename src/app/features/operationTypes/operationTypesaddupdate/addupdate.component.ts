@@ -24,8 +24,10 @@ export class OperationTypesAddUpdateComponent implements OnInit {
   operation_type_id = signal<number | null>(null);
   isEditMode = computed(() => this.operation_type_id() !== null);
 
-  title = computed(() => (this.isEditMode() ? 'แก้ไขตำเเหน่งบุคลากร' : 'เพิ่มตำเเหน่งบุคลากร'));
-
+  title = computed(() =>
+    this.isEditMode() ? 'แก้ไขประเภทการดำเนิกงาน' : 'เพิ่มประเภทการดำเนิกงาน',
+  );
+  name = 'ประเภทการดำเนิกงาน';
   isLoading = signal(false);
   isSubmitting = signal(false);
 

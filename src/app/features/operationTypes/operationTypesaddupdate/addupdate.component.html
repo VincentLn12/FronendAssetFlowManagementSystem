@@ -43,9 +43,9 @@
             </h1>
             <p class="mt-1 text-sm text-slate-500">
               @if (isEditMode()) {
-                ปรับปรุงชื่อตำเเหน่งงานให้ถูกต้องและเป็นปัจจุบัน
+                ปรับปรุง{{ name }}ให้ถูกต้องและเป็นปัจจุบัน
               } @else {
-                เพิ่มข้อมูลชื่อตำเเหน่งงานเข้าสู่ระบบ
+                เพิ่มข้อมูล{{ name }}เข้าสู่ระบบ
               }
             </p>
           </div>
@@ -69,7 +69,7 @@
       <!-- Form Card -->
       <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-3">
-          <h2 class="text-base font-semibold text-white">ข้อมูลตำเเหน่งงาน</h2>
+          <h2 class="text-base font-semibold text-white">ข้อมูล{{ name }}</h2>
           <p class="mt-0.5 text-sm text-blue-200">กรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบันทึก</p>
         </div>
 
@@ -83,9 +83,9 @@
           <form [formGroup]="form" (ngSubmit)="submit()">
             <div class="gap-6 p-6">
               <app-input
-                label="คำนำหน้าชื่อ"
+                label="ชื่อประเภทการดำเนินงาน"
                 [control]="form.controls.operation_type_name"
-                placeholder="เช่น นาย,นางสาว,นาง"
+                placeholder="เช่น การจัดซื้อจัดจ้าง, การบริหารสัญญา"
                 [required]="true"
               ></app-input>
             </div>
