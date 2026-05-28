@@ -244,6 +244,26 @@ export const routes: Routes = [
                 (m) => m.BudgetsourcesAddUpdateComponent,
               ),
           },
+          // โครงการ
+          {
+            path: 'projects',
+            loadComponent: () =>
+              import('./features/projects/projects.component').then((m) => m.ProjectsComponent),
+          },
+          {
+            path: 'projects/create',
+            loadComponent: () =>
+              import('./features/projects/projectsaddupdate/addupdate.component').then(
+                (m) => m.ProjectsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'projects/update/:id',
+            loadComponent: () =>
+              import('./features/projects/projectsaddupdate/addupdate.component').then(
+                (m) => m.ProjectsAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,

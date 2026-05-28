@@ -22,11 +22,12 @@ export class StaffAddUpdateComponent implements OnInit {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private snackbar = inject(SnackbarService);
+  
   private staffsService = inject(StaffsService);
   private prefixesService = inject(PrefixesService);
   private positionsService = inject(PositionsService);
   private departmentService = inject(DepartmentService);
-  private snackbar = inject(SnackbarService);
 
   // Dropdown data
   prefixes = signal<any[]>([]);

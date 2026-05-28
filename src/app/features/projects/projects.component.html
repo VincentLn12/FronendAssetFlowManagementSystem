@@ -1,0 +1,19 @@
+<app-data-table
+  title="ระบบจัดการโครงการ"
+  subtitle="จัดการข้อมูลโครงการ"
+  [data]="projects()"
+  [columns]="columns"
+  [idKey]="'project_id'"
+  [isAdmin]="true"
+  [sortOptions]="sortOptions"
+  [totalItems]="project?.count ?? 0"
+  [pageSize]="Params.pageSize"
+  [currentPage]="Params.pageNumber"
+  (search)="onSearch($event)"
+  (sortChange)="onSort($event)"
+  (pageChange)="onPageChange($event)"
+  (add)="goToCreate()"
+  (edit)="goToEdit($event)"
+  (delete)="deleteProject($event)"
+>
+</app-data-table>
