@@ -151,13 +151,19 @@
                         }}
                       </span>
                     } @else {
-                      <span class="leading-relaxed text-slate-800">
-                        {{
-                          col.transform
-                            ? col.transform(getValue(item, col.key), item)
-                            : getValue(item, col.key)
-                        }}
-                      </span>
+                      @if (col.pipe === 'thaiDate') {
+                        <span class="leading-relaxed text-slate-800">
+                          {{ getValue(item, col.key) | thaiDate }}
+                        </span>
+                      } @else {
+                        <span class="leading-relaxed text-slate-800">
+                          {{
+                            col.transform
+                              ? col.transform(getValue(item, col.key), item)
+                              : getValue(item, col.key)
+                          }}
+                        </span>
+                      }
                     }
                   </td>
                 }
@@ -234,11 +240,15 @@
                         }}
                       </span>
                     } @else {
-                      {{
-                        col.transform
-                          ? col.transform(getValue(item, col.key), item)
-                          : getValue(item, col.key)
-                      }}
+                      @if (col.pipe === 'thaiDate') {
+                        {{ getValue(item, col.key) | thaiDate }}
+                      } @else {
+                        {{
+                          col.transform
+                            ? col.transform(getValue(item, col.key), item)
+                            : getValue(item, col.key)
+                        }}
+                      }
                     }
                   </span>
                 </div>

@@ -108,6 +108,7 @@ export const routes: Routes = [
                 (m) => m.StaffAddUpdateComponent,
               ),
           },
+          // บทบาท
           {
             path: 'roles',
             loadComponent: () =>
@@ -133,11 +134,32 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/users/users.component').then((m) => m.UsersComponent),
           },
+          // ปีงบประมาณ
+          {
+            path: 'fiscalyears',
+            loadComponent: () =>
+              import('./features/fiscalyears/fiscalyears.component').then(
+                (m) => m.FiscalyearsComponent,
+              ),
+          },
+          {
+            path: 'fiscalyears/create',
+            loadComponent: () =>
+              import('./features/fiscalyears/fiscalyearsaddupdate/addupdate.component').then(
+                (m) => m.FiscalyearsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'fiscalyears/update/:id',
+            loadComponent: () =>
+              import('./features/fiscalyears/fiscalyearsaddupdate/addupdate.component').then(
+                (m) => m.FiscalyearsAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,
           },
-          // บทบาท
         ],
       },
       { path: 'not-found', component: NotFoundComponent },

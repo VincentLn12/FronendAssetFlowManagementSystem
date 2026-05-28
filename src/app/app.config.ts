@@ -14,6 +14,7 @@ import { loadingInterceptor } from './core/interceptors/loading-interceptor';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
 import { AccountService } from './core/services/account.service';
 import { catchError, of, switchMap } from 'rxjs';
+import { provideFlatpickrDefaults } from 'angularx-flatpickr';
 
 export function initializeApp(accountService: AccountService) {
   return () =>
@@ -33,6 +34,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideFlatpickrDefaults(),
     provideHttpClient(withInterceptors([errorInterceptor, loadingInterceptor, authInterceptor])),
     {
       provide: MAT_DIALOG_DEFAULT_OPTIONS,

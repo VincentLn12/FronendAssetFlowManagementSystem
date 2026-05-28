@@ -3,8 +3,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap");
 
 @import "@ng-select/ng-select/themes/default.theme.css";
-
-
+@import "flatpickr/dist/flatpickr.min.css";
 
 
 /* ===== Global Font ===== */
@@ -248,4 +247,20 @@ ng-select.custom-select {
     color: #ffffff !important;
     font-weight: 600 !important;
   }
+}
+
+.flatpickr-calendar {
+  z-index: 99999 !important;
+}
+
+.flatpickr-months,
+.flatpickr-current-month {
+  pointer-events: auto !important;
+}
+
+.flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year,
+.flatpickr-prev-month,
+.flatpickr-next-month {
+  pointer-events: auto !important;
 }

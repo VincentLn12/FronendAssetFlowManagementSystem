@@ -23,6 +23,8 @@
     "@ng-select/ng-select": "^21.8.2",
     "@stripe/stripe-js": "^9.3.1",
     "@tailwindcss/postcss": "^4.2.2",
+    "angularx-flatpickr": "^8.1.0",
+    "flatpickr": "^4.6.13",
     "nanoid": "^5.1.9",
     "ngx-mat-select-search": "^8.0.6",
     "rxjs": "~7.8.0",

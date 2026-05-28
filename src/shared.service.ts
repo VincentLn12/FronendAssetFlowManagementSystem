@@ -45,24 +45,3 @@ export class AlertService {
     });
   }
 }
-
-@Pipe({
-  name: 'thaiDate',
-  standalone: true,
-})
-export class ThaiDatePipe implements PipeTransform {
-  transform(value: string | Date | number | null | undefined): string {
-    if (!value) return '-';
-
-    const d = new Date(value);
-    if (isNaN(d.getTime())) return value.toString();
-
-    return new Intl.DateTimeFormat('th-TH', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(d);
-  }
-}

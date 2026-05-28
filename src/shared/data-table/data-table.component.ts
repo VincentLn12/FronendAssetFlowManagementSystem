@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { ThaiDatePipe } from '../../app/shared/pipes/thai-date-pipe';
+ 
 @Component({
   selector: 'app-data-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, CurrencyPipe],
+  imports: [CommonModule, FormsModule, CurrencyPipe, ThaiDatePipe],
   templateUrl: './data-table.component.html',
 })
 export class DataTableComponent {
