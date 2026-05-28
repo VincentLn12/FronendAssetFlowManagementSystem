@@ -222,6 +222,28 @@ export const routes: Routes = [
                 (m) => m.FundcategorysAddUpdateComponent,
               ),
           },
+          // แหล่งงบประมาณ
+          {
+            path: 'budgetsources',
+            loadComponent: () =>
+              import('./features/budgetsource/budgetsources.component').then(
+                (m) => m.BudgetsourcesComponent,
+              ),
+          },
+          {
+            path: 'budgetsources/create',
+            loadComponent: () =>
+              import('./features/budgetsource/budgetsourceaddupdate/addupdate.component').then(
+                (m) => m.BudgetsourcesAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'budgetsources/update/:id',
+            loadComponent: () =>
+              import('./features/budgetsource/budgetsourceaddupdate/addupdate.component').then(
+                (m) => m.BudgetsourcesAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,
