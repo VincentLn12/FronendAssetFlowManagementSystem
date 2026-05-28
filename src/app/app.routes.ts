@@ -156,6 +156,28 @@ export const routes: Routes = [
                 (m) => m.FiscalyearsAddUpdateComponent,
               ),
           },
+          // ประเภทการดำเนินงาน
+          {
+            path: 'OperationTypes',
+            loadComponent: () =>
+              import('./features/operationTypes/operations.component').then(
+                (m) => m.OperationsComponent,
+              ),
+          },
+          {
+            path: 'OperationTypes/create',
+            loadComponent: () =>
+              import('./features/operationTypes/operationTypesaddupdate/addupdate.component').then(
+                (m) => m.OperationTypesAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'OperationTypes/update/:id',
+            loadComponent: () =>
+              import('./features/operationTypes/operationTypesaddupdate/addupdate.component').then(
+                (m) => m.OperationTypesAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,
