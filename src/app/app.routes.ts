@@ -178,6 +178,28 @@ export const routes: Routes = [
                 (m) => m.OperationTypesAddUpdateComponent,
               ),
           },
+          // ประเภทการเบิกจ่าย
+          {
+            path: 'expensetypes',
+            loadComponent: () =>
+              import('./features/expenseTypes/expensetypes.component').then(
+                (m) => m.ExpensetypesComponent,
+              ),
+          },
+          {
+            path: 'expensetypes/create',
+            loadComponent: () =>
+              import('./features/expenseTypes/expenseTypesaddupdate/addupdate.component').then(
+                (m) => m.ExpenseTypesAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'expensetypes/update/:id',
+            loadComponent: () =>
+              import('./features/expenseTypes/expenseTypesaddupdate/addupdate.component').then(
+                (m) => m.ExpenseTypesAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,

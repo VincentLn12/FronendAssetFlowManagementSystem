@@ -5,8 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { SnackbarService } from '../../../core/services/snackbar.service';
-import { OperationsTypeService } from '../service/operationTypes.service';
-import { OperationTypes } from '../interface/operationTypes';
+import { expenseTypes } from '../interface/expenseTypes';
+import { ExpensetypesService } from '../service/expenseTypes.service';
 
 @Component({
   selector: 'app-addupdate',
@@ -14,23 +14,23 @@ import { OperationTypes } from '../interface/operationTypes';
   imports: [CommonModule, ReactiveFormsModule, InputComponent],
   templateUrl: './addupdate.component.html',
 })
-export class OperationTypesAddUpdateComponent implements OnInit {
+export class ExpenseTypesAddUpdateComponent implements OnInit {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private operationTypesServive = inject(OperationsTypeService);
+  private expensetypesTypesServive = inject(ExpensetypesService);
   private snackbar = inject(SnackbarService);
 
-  operation_type_id = signal<number | null>(null);
-  isEditMode = computed(() => this.operation_type_id() !== null);
-  name = 'ประเภทการดำเนิกงาน';
+  expense_type_id = signal<number | null>(null);
+  isEditMode = computed(() => this.expense_type_id() !== null);
+  name = 'ชื่อประเภทการเบิกจ่าย';
 
   title = computed(() => (this.isEditMode() ? `แก้ไข${this.name}` : `เพิ่ม${this.name}`));
   isLoading = signal(false);
   isSubmitting = signal(false);
 
   form = this.fb.nonNullable.group({
-    operation_type_name: ['', [Validators.required]],
+    expense_type_name: ['', [Validators.required]],
   });
 
   ngOnInit(): void {
@@ -38,36 +38,36 @@ export class OperationTypesAddUpdateComponent implements OnInit {
     const id = idParam ? Number(idParam) : null;
 
     if (id && Number.isFinite(id)) {
-      this.operation_type_id.set(id);
-      this.loadOperationTypes(id);
+      this.expense_type_id.set(id);
+      this.loadExpenseTypes(id);
     }
   }
 
-  private loadOperationTypes(id: number) {
-    const stateloadOperationTypes = history.state?.prefixes as OperationTypes | undefined;
+  private loadExpenseTypes(id: number) {
+    const stateloadexpenseTypes = history.state?.expenseTypes as expenseTypes | undefined;
 
-    if (stateloadOperationTypes?.operation_type_id === id) {
-      this.patchForm(stateloadOperationTypes);
+    if (stateloadexpenseTypes?.expense_type_id === id) {
+      this.patchForm(stateloadexpenseTypes);
       return;
     }
 
     this.isLoading.set(true);
 
-    this.operationTypesServive
-      .getOperationtype(id)
+    this.expensetypesTypesServive
+      .getExpenseType(id)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (prefixes) => this.patchForm(prefixes),
         error: () => {
           this.snackbar.error('ไม่สามารถโหลดข้อมูลได้');
-          this.router.navigate(['/admin/OperationTypes']);
+          this.router.navigate(['/admin/expensetypes']);
         },
       });
   }
 
-  private patchForm(opt: OperationTypes) {
+  private patchForm(exp: expenseTypes) {
     this.form.patchValue({
-      operation_type_name: opt.operation_type_name ?? '',
+      expense_type_name: exp.expense_type_name ?? '',
     });
   }
 
@@ -77,21 +77,21 @@ export class OperationTypesAddUpdateComponent implements OnInit {
       return;
     }
 
-    const payload: Partial<OperationTypes> = {
-      operation_type_id: this.operation_type_id() ?? 0,
-      operation_type_name: this.form.controls.operation_type_name.value.trim(),
+    const payload: Partial<expenseTypes> = {
+      expense_type_id: this.expense_type_id() ?? 0,
+      expense_type_name: this.form.controls.expense_type_name.value.trim(),
     };
 
     this.isSubmitting.set(true);
 
     const request$ = this.isEditMode()
-      ? this.operationTypesServive.updateOperationtypes(this.operation_type_id()!, payload)
-      : this.operationTypesServive.createOperationtypes(payload);
+      ? this.expensetypesTypesServive.updateExpenseTypes(this.expense_type_id()!, payload)
+      : this.expensetypesTypesServive.createExpenseTypes(payload);
 
     request$.pipe(finalize(() => this.isSubmitting.set(false))).subscribe({
       next: () => {
         this.snackbar.success(this.isEditMode() ? 'แก้ไขข้อมูลสำเร็จ' : 'เพิ่มข้อมูลสำเร็จ');
-        this.router.navigate(['/admin/OperationTypes']);
+        this.router.navigate(['/admin/expensetypes']);
       },
       error: () => {
         this.snackbar.error(this.isEditMode() ? 'แก้ไขข้อมูลไม่สำเร็จ' : 'เพิ่มข้อมูลไม่สำเร็จ');
@@ -100,6 +100,6 @@ export class OperationTypesAddUpdateComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/admin/OperationTypes']);
+    this.router.navigate(['/admin/expensetypes']);
   }
 }
