@@ -70,9 +70,9 @@ export class OperationsComponent implements OnInit {
     this.router.navigate(['/admin/OperationTypes/create']);
   }
 
-  goToEdit(op: OperationTypes) {
-    this.router.navigate(['/admin/OperationTypes/update', op.operation_type_id], {
-      state: { op },
+  goToEdit(OperationType: OperationTypes) {
+    this.router.navigate(['/admin/OperationTypes/update', OperationType.operation_type_id], {
+      state: { OperationType },
     });
   }
 

@@ -23,7 +23,7 @@ export class StaffAddUpdateComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
-  
+
   private staffsService = inject(StaffsService);
   private prefixesService = inject(PrefixesService);
   private positionsService = inject(PositionsService);

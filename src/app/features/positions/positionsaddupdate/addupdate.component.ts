@@ -44,7 +44,7 @@ export class PositionsAddUpdateComponent implements OnInit {
   }
 
   private loadPositions(id: number) {
-    const statePrefixes = history.state?.prefixes as positionsType | undefined;
+    const statePrefixes = history.state?.positions as positionsType | undefined;
 
     if (statePrefixes?.position_id === id) {
       this.patchForm(statePrefixes);

@@ -44,7 +44,7 @@ export class BudgetsourcesAddUpdateComponent implements OnInit {
   }
 
   private loadBudgetsources(id: number) {
-    const stateloadbutg = history.state?.expenseTypes as budgetsourceTypes | undefined;
+    const stateloadbutg = history.state?.butg as budgetsourceTypes | undefined;
 
     if (stateloadbutg?.budget_source_id === id) {
       this.patchForm(stateloadbutg);

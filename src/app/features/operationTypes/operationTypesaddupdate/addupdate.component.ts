@@ -44,7 +44,7 @@ export class OperationTypesAddUpdateComponent implements OnInit {
   }
 
   private loadOperationTypes(id: number) {
-    const stateloadOperationTypes = history.state?.prefixes as OperationTypes | undefined;
+    const stateloadOperationTypes = history.state?.OperationType as OperationTypes | undefined;
 
     if (stateloadOperationTypes?.operation_type_id === id) {
       this.patchForm(stateloadOperationTypes);

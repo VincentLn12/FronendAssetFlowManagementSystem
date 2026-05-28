@@ -59,7 +59,7 @@ export class FiscalyearsAddUpdateComponent implements OnInit {
   }
 
   private loadFiscalyears(id: number) {
-    const statePrefixes = history.state?.prefixes as fiscalyearsType | undefined;
+    const statePrefixes = history.state?.year as fiscalyearsType | undefined;
 
     if (statePrefixes?.fiscal_year_id === id) {
       this.patchForm(statePrefixes);

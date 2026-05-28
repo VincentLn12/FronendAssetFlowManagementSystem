@@ -41,9 +41,9 @@ export class ProjectsAddUpdateComponent implements OnInit {
   form = this.fb.nonNullable.group({
     project_code: ['', [Validators.required]],
     project_name: ['', [Validators.required]],
-    fiscal_year_id: [0, [Validators.required]],
+    fiscal_year_id: [null as number | null, Validators.required],
     project_budget_amount: [0, [Validators.required, Validators.min(0)]],
-    staff_id: [0, [Validators.required]],
+    staff_id: [null as number | null, Validators.required],
   });
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class ProjectsAddUpdateComponent implements OnInit {
   }
 
   private loadProjects(id: number) {
-    const stateloadProjects = history.state?.expenseTypes as ProjectAddUpdateDto | undefined;
+    const stateloadProjects = history.state?.projects as ProjectAddUpdateDto | undefined;
 
     if (stateloadProjects?.project_id === id) {
       this.patchForm(stateloadProjects);

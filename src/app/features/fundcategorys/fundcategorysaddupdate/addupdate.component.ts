@@ -45,7 +45,7 @@ export class FundcategorysAddUpdateComponent implements OnInit {
   }
 
   private loadExpenseTypes(id: number) {
-    const stateloadexpenseTypes = history.state?.expenseTypes as fundcategorysTypes | undefined;
+    const stateloadexpenseTypes = history.state?.fund as fundcategorysTypes | undefined;
 
     if (stateloadexpenseTypes?.fund_category_id === id) {
       this.patchForm(stateloadexpenseTypes);

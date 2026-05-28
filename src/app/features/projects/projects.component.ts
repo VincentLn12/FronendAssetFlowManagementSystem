@@ -71,9 +71,9 @@ export class ProjectsComponent implements OnInit {
     this.router.navigate(['/admin/projects/create']);
   }
 
-  goToEdit(proj: projectsTypes) {
-    this.router.navigate(['/admin/projects/update', proj.project_id], {
-      state: { proj },
+  goToEdit(projects: projectsTypes) {
+    this.router.navigate(['/admin/projects/update', projects.project_id], {
+      state: { projects },
     });
   }
 

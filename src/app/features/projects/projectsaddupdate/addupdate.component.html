@@ -81,7 +81,7 @@
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="gap-6 p-6">
+            <div class="grid grid-cols-2 gap-6 p-6">
               <app-input
                 label="รหัสโครงการ *"
                 [control]="form.controls.project_code"
@@ -95,6 +95,8 @@
                 placeholder="เช่น โครงการพัฒนาระบบสารสนเทศ"
                 [required]="true"
               ></app-input>
+            </div>
+            <div class="gap-6 p-6 pt-0">
               <app-input
                 label="งบประมาณโครงการ *"
                 [control]="form.controls.project_budget_amount"
@@ -102,8 +104,10 @@
                 [required]="true"
                 type="number"
               ></app-input>
+            </div>
+            <div class="grid grid-cols-2 gap-6 p-6 pt-0">
               <app-select
-                label="ปีงบประมาณ *"
+                label="ปีงบประมาณ"
                 [control]="form.controls.fiscal_year_id"
                 [options]="fiscal_years()"
                 optionLabel="fiscal_year"
@@ -113,7 +117,7 @@
                 [searchable]="true"
               />
               <app-select
-                label="เจ้าของโครงการ *"
+                label="เจ้าของโครงการ"
                 [control]="form.controls.staff_id"
                 [options]="staffs()"
                 optionLabel="full_name"
