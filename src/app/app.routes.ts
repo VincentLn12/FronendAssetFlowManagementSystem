@@ -200,6 +200,28 @@ export const routes: Routes = [
                 (m) => m.ExpenseTypesAddUpdateComponent,
               ),
           },
+          // หมวดเงิน
+          {
+            path: 'fundcategorys',
+            loadComponent: () =>
+              import('./features/fundcategorys/fundcategorys.component').then(
+                (m) => m.FundcategorysComponent,
+              ),
+          },
+          {
+            path: 'fundcategorys/create',
+            loadComponent: () =>
+              import('./features/fundcategorys/fundcategorysaddupdate/addupdate.component').then(
+                (m) => m.FundcategorysAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'fundcategorys/update/:id',
+            loadComponent: () =>
+              import('./features/fundcategorys/fundcategorysaddupdate/addupdate.component').then(
+                (m) => m.FundcategorysAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,
