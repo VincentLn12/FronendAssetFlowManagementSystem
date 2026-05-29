@@ -284,6 +284,28 @@ export const routes: Routes = [
                 (m) => m.VendorsAddUpdateComponent,
               ),
           },
+          // บันทึกการจัดซื้อจัดจ้าง
+          {
+            path: 'procurements',
+            loadComponent: () =>
+              import('./features/procurementrecord/procurementrecord.component').then(
+                (m) => m.ProcurementrecordComponent,
+              ),
+          },
+          {
+            path: 'procurements/create',
+            loadComponent: () =>
+              import('./features/procurementrecord/procurementrecordaddupdate/addupdate.component').then(
+                (m) => m.ProcurementsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'procurements/update/:id',
+            loadComponent: () =>
+              import('./features/procurementrecord/procurementrecordaddupdate/addupdate.component').then(
+                (m) => m.ProcurementsAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,

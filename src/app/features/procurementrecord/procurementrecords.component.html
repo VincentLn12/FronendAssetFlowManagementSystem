@@ -1,0 +1,19 @@
+<app-data-table
+  title="ระบบจัดการเอกสารการจัดซื้อจัดจ้าง"
+  subtitle="จัดการข้อมูลเอกสารการจัดซื้อจัดจ้าง"
+  [data]="procurementrecords()"
+  [columns]="columns"
+  [idKey]="'procurement_record_id'"
+  [isAdmin]="true"
+  [sortOptions]="sortOptions"
+  [totalItems]="procurementrecord?.count ?? 0"
+  [pageSize]="Params.pageSize"
+  [currentPage]="Params.pageNumber"
+  (search)="onSearch($event)"
+  (sortChange)="onSort($event)"
+  (pageChange)="onPageChange($event)"
+  (add)="goToCreate()"
+  (edit)="goToEdit($event)"
+  (delete)="deleteProcurementrecord($event)"
+>
+</app-data-table>
