@@ -293,6 +293,13 @@ export const routes: Routes = [
               ),
           },
           {
+            path: 'procurements/:id',
+            loadComponent: () =>
+              import('./features/procurementrecord/detail/procurementrecorddetails.component').then(
+                (m) => m.ProcurementrecordDetailsComponent,
+              ),
+          },
+          {
             path: 'procurements/create',
             loadComponent: () =>
               import('./features/procurementrecord/procurementrecordaddupdate/addupdate.component').then(

@@ -7,6 +7,7 @@ import { TableState } from '../../../shared/TableState';
 import { AlertService } from '../../../shared.service';
 import { procurementrecordTypes } from './interface/procurementrecordTypes';
 import { ProcurementrecordService } from './service/procurementrecord.service';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-departments',
@@ -22,6 +23,8 @@ export class ProcurementrecordComponent implements OnInit {
 
   procurementrecord?: Pagination<procurementrecordTypes>;
   procurementrecords = signal<procurementrecordTypes[]>([]);
+
+  baseFileUrl = environment.baseFileUrl;
 
   Params = new Params();
 
@@ -78,6 +81,11 @@ export class ProcurementrecordComponent implements OnInit {
       state: { procurementrecord },
     });
   }
+  goToDetail(procurementrecord: procurementrecordTypes) {
+    this.router.navigate(['/admin/procurements', procurementrecord.procurement_record_id], {
+      state: { procurementrecord },
+    });
+  }
 
   sortOptions = [
     { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },
@@ -86,7 +94,18 @@ export class ProcurementrecordComponent implements OnInit {
     { label: 'เก่าสุด', value: 'oldest' },
   ];
 
-  columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' }[] = [
+  columns: {
+    label: string;
+    key: string;
+    type?: 'text' | 'price' | 'badge' | 'file';
+    pipe?: 'thaiDate';
+  }[] = [
+    { label: 'วันที่', key: 'document_date', pipe: 'thaiDate' },
     { label: 'เลขที่เอกสาร', key: 'document_no' },
+    { label: 'เบิกจ่าย', key: 'expense_type_name' },
+    { label: 'ชื่อบริษัท', key: 'vendor_name' },
+    { label: 'ผู้เบิก', key: 'staff_fullname' },
+    { label: 'สถานะ', key: 'status', type: 'badge' },
+    { label: 'ไฟล์แนบ', key: 'attachment_file_path', type: 'file' },
   ];
 }

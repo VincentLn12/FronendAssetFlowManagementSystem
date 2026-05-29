@@ -15,5 +15,8 @@
   (add)="goToCreate()"
   (edit)="goToEdit($event)"
   (delete)="deleteProcurementrecord($event)"
+  [fileBaseUrl]="baseFileUrl"
+  [enableDetail]="true"
+  (detail)="goToDetail($event)"
 >
 </app-data-table>

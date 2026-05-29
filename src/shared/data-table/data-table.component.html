@@ -116,9 +116,9 @@
                 </th>
               }
 
-              @if (isAdmin) {
+              @if (isAdmin || enableDetail) {
                 <th
-                  class="px-6 py-3 text-right text-xs font-bold uppercase tracking-wide text-white xl:px-8 xl:py-4 xl:text-sm"
+                  class="px-6 py-2 text-center text-xs font-bold uppercase tracking-wide text-white xl:px-8 xl:py-4 xl:text-sm"
                 >
                   การจัดการ
                 </th>
@@ -150,6 +150,18 @@
                             : getValue(item, col.key)
                         }}
                       </span>
+                    } @else if (col.type === 'file') {
+                      @if (getValue(item, col.key) !== '-') {
+                        <button
+                          type="button"
+                          (click)="openFileFromBackend(getValue(item, col.key))"
+                          class="inline-flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-1.5 text-sm font-semibold text-amber-700 ring-1 ring-amber-200 transition hover:bg-amber-100 hover:text-amber-900"
+                        >
+                          ดูไฟล์
+                        </button>
+                      } @else {
+                        <span class="text-slate-400">ไม่มีไฟล์</span>
+                      }
                     } @else {
                       @if (col.pipe === 'thaiDate') {
                         <span class="leading-relaxed text-slate-800">
@@ -170,21 +182,33 @@
 
                 @if (isAdmin) {
                   <td class="whitespace-nowrap px-6 py-4 text-right xl:px-8 xl:py-5">
-                    <button
-                      type="button"
-                      (click)="edit.emit(item)"
-                      class="mr-3 text-sm font-semibold text-blue-700 transition hover:text-blue-900 hover:underline xl:mr-4 xl:text-base"
-                    >
-                      แก้ไข
-                    </button>
+                    <div class="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        (click)="edit.emit(item)"
+                        class="text-sm font-semibold text-blue-700 transition hover:text-blue-900 hover:underline xl:text-base"
+                      >
+                        แก้ไข
+                      </button>
 
-                    <button
-                      type="button"
-                      (click)="delete.emit(item[idKey])"
-                      class="text-sm font-semibold text-red-600 transition hover:text-red-800 hover:underline xl:text-base"
-                    >
-                      ลบออก
-                    </button>
+                      <button
+                        type="button"
+                        (click)="delete.emit(item[idKey])"
+                        class="text-sm font-semibold text-red-600 transition hover:text-red-800 hover:underline xl:text-base"
+                      >
+                        ลบ
+                      </button>
+
+                      @if (enableDetail) {
+                        <button
+                          type="button"
+                          (click)="detail.emit(item)"
+                          class="text-sm font-semibold text-amber-600 transition hover:text-amber-800 hover:underline xl:text-base"
+                        >
+                          รายละเอียด
+                        </button>
+                      }
+                    </div>
                   </td>
                 }
               </tr>

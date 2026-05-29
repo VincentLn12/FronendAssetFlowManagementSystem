@@ -113,12 +113,12 @@ export class ProcurementsAddUpdateComponent implements OnInit {
   }
 
   private loadProcurements(id: number) {
-    const stateloadProjects = history.state?.procurementrecord as
+    const stateloadProcurementrecord = history.state?.procurementrecord as
       | procurementrecordCreateTypes
       | undefined;
 
-    if (stateloadProjects?.project_id === id) {
-      this.patchForm(stateloadProjects);
+    if (stateloadProcurementrecord?.procurement_record_id === id) {
+      this.patchForm(stateloadProcurementrecord);
       return;
     }
 

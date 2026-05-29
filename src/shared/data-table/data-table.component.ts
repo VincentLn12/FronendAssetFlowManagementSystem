@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThaiDatePipe } from '../../app/shared/pipes/thai-date-pipe';
- 
+
 @Component({
   selector: 'app-data-table',
   standalone: true,
@@ -24,7 +24,11 @@ export class DataTableComponent {
 
   @Input() idKey = 'id';
   @Input() sortOptions: { label: string; value: string }[] = [];
+  @Input() openFile = (url: string) => window.open(url, '_blank');
+  @Input() fileBaseUrl = '';
+  @Input() enableDetail = false;
 
+  @Output() detail = new EventEmitter<any>();
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
@@ -56,5 +60,13 @@ export class DataTableComponent {
 
   getValue(item: any, key: string) {
     return key.split('.').reduce((obj, prop) => obj?.[prop], item) ?? '-';
+  }
+
+  openFileFromBackend(path: string | null | undefined) {
+    if (!path || path === '-') return;
+
+    const url = path.startsWith('http') ? path : `${this.fileBaseUrl}${path}`;
+
+    window.open(url, '_blank');
   }
 }

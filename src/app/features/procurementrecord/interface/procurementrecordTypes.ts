@@ -10,6 +10,7 @@ export interface procurementrecordTypes {
   status: string;
   remark: string;
   project_id: number;
+  project_code: string;
   fiscal_year_id: number;
   fiscal_year_name: string;
   operation_type_id: number;

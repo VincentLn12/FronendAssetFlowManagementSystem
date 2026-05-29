@@ -14,7 +14,7 @@ export class InputComponent {
   @Input() placeholder: string = '';
   @Input() type: string = 'text';
   @Input() required: boolean = false;
-
+   
   get isInvalid() {
     return this.control?.invalid && this.control?.touched;
   }
