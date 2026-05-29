@@ -56,6 +56,42 @@
             <span class="text-sm">หน้าหลัก</span>
           }
         </a>
+        <!-- กลุ่ม 4 -->
+        @if (sidebarOpen) {
+          <p class="px-4 pt-6 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            จัดซื้อ / จัดจ้าง / เบิกจ่าย
+          </p>
+        }
+
+        <a
+          routerLink="/admin/procurements"
+          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>request_quote</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">เอกสารจัดซื้อ/จัดจ้าง</span>
+          }
+        </a>  
+        <!-- กลุ่ม 3 -->
+        @if (sidebarOpen) {
+          <p class="px-4 pt-6 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            ร้านค้า
+          </p>
+        }
+
+        <a
+          routerLink="/admin/vendors"
+          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>storefront</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">บริษัท/ร้านค้า</span>
+          }
+        </a>
 
         <!-- กลุ่ม 1 -->
         @if (sidebarOpen) {
@@ -210,68 +246,6 @@
           <mat-icon>assignment</mat-icon>
           @if (sidebarOpen) {
             <span class="text-sm">โครงการ</span>
-          }
-        </a>
-
-        <!-- กลุ่ม 3 -->
-        @if (sidebarOpen) {
-          <p class="px-4 pt-6 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-            ร้านค้า
-          </p>
-        }
-
-        <a
-          routerLink="/admin/vendors"
-          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>storefront</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">บริษัท/ร้านค้า</span>
-          }
-        </a>
-
-        <!-- กลุ่ม 4 -->
-        @if (sidebarOpen) {
-          <p class="px-4 pt-6 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-            จัดซื้อ / จัดจ้าง / เบิกจ่าย
-          </p>
-        }
-
-        <a
-          routerLink="/admin/operation-types"
-          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>sync_alt</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">ประเภทดำเนินการ</span>
-          }
-        </a>
-
-        <a
-          routerLink="/admin/expense-types"
-          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>receipt_long</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">ประเภทค่าใช้จ่าย</span>
-          }
-        </a>
-
-        <a
-          routerLink="/admin/procurements"
-          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>request_quote</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">เอกสารจัดซื้อ/จัดจ้าง</span>
           }
         </a>
 

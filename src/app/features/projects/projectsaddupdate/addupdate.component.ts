@@ -97,8 +97,6 @@ export class ProjectsAddUpdateComponent implements OnInit {
       next: (res) => {
         this.fiscal_years.set(res.fiscal_year.data);
         this.staffs.set(res.staff.data);
-        console.log('fiscal_years', this.fiscal_years());
-        console.log('staffs', this.staffs());
       },
       error: () => {
         this.snackbar.error('โหลดข้อมูลตัวเลือกไม่สำเร็จ');

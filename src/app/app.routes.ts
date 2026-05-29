@@ -264,6 +264,26 @@ export const routes: Routes = [
                 (m) => m.ProjectsAddUpdateComponent,
               ),
           },
+          // ร้านค้า
+          {
+            path: 'vendors',
+            loadComponent: () =>
+              import('./features/vendors/vendors.component').then((m) => m.VendorsComponent),
+          },
+          {
+            path: 'vendors/create',
+            loadComponent: () =>
+              import('./features/vendors/vendorsaddupdate/addupdate.component').then(
+                (m) => m.VendorsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'vendors/update/:id',
+            loadComponent: () =>
+              import('./features/vendors/vendorsaddupdate/addupdate.component').then(
+                (m) => m.VendorsAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,
