@@ -209,16 +209,20 @@
               >
                 หน่วยนับ
               </label>
-
-              <input
-                type="text"
-                placeholder="เช่น เล่ม, ชุด, งาน"
+              <select
                 class="w-full rounded-lg border border-slate-300 px-3 py-2 text-base outline-none focus:border-blue-500 sm:rounded-xl sm:px-4"
-                [ngModel]="form().unit_name"
-                (ngModelChange)="form.set({ ...form(), unit_name: $event })"
-              />
-            </div>
+                [ngModel]="form().unit_id"
+                (ngModelChange)="form.set({ ...form(), unit_id: $event })"
+              >
+                <option [ngValue]="null">-- เลือกหน่วยนับ --</option>
 
+                @for (item of unit(); track item.unit_id) {
+                  <option [ngValue]="item.unit_id">
+                    {{ item.unit_name }}
+                  </option>
+                }
+              </select>
+            </div>
             <!-- หน่วยละ -->
             <div>
               <label

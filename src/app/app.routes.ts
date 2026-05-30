@@ -345,6 +345,29 @@ export const routes: Routes = [
                 (m) => m.AssetCategoriesAddUpdateComponent,
               ),
           },
+          //หน่วยนับ
+          {
+            path: 'materialUnits',
+            loadComponent: () =>
+              import('./features/materialUnits/materialUnits.component').then(
+                (m) => m.MaterialUnitsComponent,
+              ),
+          },
+
+          {
+            path: 'materialUnits/create',
+            loadComponent: () =>
+              import('./features/materialUnits/materialUnitsaddupdate/addupdate.component').then(
+                (m) => m.MaterialUnitsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'materialUnits/update/:id',
+            loadComponent: () =>
+              import('./features/materialUnits/materialUnitsaddupdate/addupdate.component').then(
+                (m) => m.MaterialUnitsAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,

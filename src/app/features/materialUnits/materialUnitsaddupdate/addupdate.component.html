@@ -81,50 +81,13 @@
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="grid grid-cols-2 gap-6 p-6">
+            <div class="gap-6 p-6">
               <app-input
-                label="รหัสโครงการ *"
-                [control]="form.controls.project_code"
-                placeholder="เช่น 123-456-789"
+                label="ชื่อหน่วยวัสดุ"
+                [control]="form.controls.unit_name"
+                placeholder="เช่น ชิ้น, กล่อง, ลัง"
                 [required]="true"
               ></app-input>
-              <app-input
-                label="ชื่อโครงการ *"
-                [control]="form.controls.project_name"
-                placeholder="เช่น โครงการพัฒนาระบบสารสนเทศ"
-                [required]="true"
-              ></app-input>
-            </div>
-            <div class="gap-6 p-6 pt-0">
-              <app-input
-                label="งบประมาณโครงการ *"
-                [control]="form.controls.project_budget_amount"
-                placeholder="เช่น PRJ-2024-001"
-                [required]="true"
-                type="number"
-              ></app-input>
-            </div>
-            <div class="grid grid-cols-2 gap-6 p-6 pt-0">
-              <app-select
-                label="ปีงบประมาณ"
-                [control]="form.controls.fiscal_year_id"
-                [options]="fiscal_years()"
-                optionLabel="fiscal_year"
-                optionValue="fiscal_year_id"
-                placeholder="-- เลือกปีงบประมาณ --"
-                [required]="true"
-                [searchable]="true"
-              />
-              <app-select
-                label="เจ้าของโครงการ"
-                [control]="form.controls.staff_id"
-                [options]="staffs()"
-                optionLabel="full_name"
-                optionValue="staff_id"
-                placeholder="-- เลือกเจ้าของโครงการ --"
-                [required]="true"
-                [searchable]="true"
-              />
             </div>
 
             <!-- Footer -->

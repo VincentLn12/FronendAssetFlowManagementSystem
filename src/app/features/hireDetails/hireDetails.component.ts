@@ -4,9 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Params } from '../../shared/models/allType';
 import { AlertService } from '../../../shared.service';
-import { hireDetailType } from './interface/hireDetailType';
+import { hireDetailCreateType, hireDetailType } from './interface/hireDetailType';
 import { HireDetailsService } from './service/hireDetail.service';
 import { toThaiBahtText } from '../../shared/thai-baht-text';
+import { MaterialUnitsService } from '../materialUnits/service/materialUnits.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-departments',
@@ -17,32 +19,35 @@ import { toThaiBahtText } from '../../shared/thai-baht-text';
 export class HireDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private hireDetailsService = inject(HireDetailsService);
+  private MaterialUnitsService = inject(MaterialUnitsService);
   private alertService = inject(AlertService);
+  private snackbar = inject(AlertService);
 
   hiredetails = signal<hireDetailType[]>([]);
   Params = new Params();
 
   procurement_record_id = signal<number | null>(null);
+  unit = signal<any[]>([]);
 
   isFormOpen = signal(false);
   isEditMode = signal(false);
 
-  form = signal<hireDetailType>({
+  form = signal<hireDetailCreateType>({
     hire_detail_id: 0,
     procurement_record_id: 0,
-    document_no: '',
     item_no: 1,
     hire_name: '',
     quantity: 0,
-    unit_name: '',
     unit_price: 0,
     total_amount: 0,
     total_text: '',
     operation_reason: '',
     remark: '',
+    unit_id: null,
   });
 
   ngOnInit(): void {
+    this.loadDropdowns();
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : null;
 
@@ -61,6 +66,24 @@ export class HireDetailsComponent implements OnInit {
     });
   }
 
+  private loadDropdowns() {
+    forkJoin({
+      unit: this.MaterialUnitsService.getMaterialUnits({
+        sort: '',
+        search: '',
+        pageSize: 100,
+        pageNumber: 1,
+      }),
+    }).subscribe({
+      next: (res) => {
+        this.unit.set(res.unit.data);
+      },
+      error: () => {
+        this.snackbar.error('โหลดข้อมูลตัวเลือกไม่สำเร็จ', 'กรุณาลองใหม่อีกครั้ง');
+      },
+    });
+  }
+
   openAddForm() {
     const procurementId = this.procurement_record_id();
     if (!procurementId) return;
@@ -71,16 +94,15 @@ export class HireDetailsComponent implements OnInit {
     this.form.set({
       hire_detail_id: 0,
       procurement_record_id: procurementId,
-      document_no: '',
       item_no: this.hiredetails().length + 1,
       hire_name: '',
       quantity: 0,
-      unit_name: '',
       unit_price: 0,
       total_amount: 0,
       total_text: '',
       operation_reason: '',
       remark: '',
+      unit_id: null,
     });
   }
 

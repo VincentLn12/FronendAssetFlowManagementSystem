@@ -5,12 +5,13 @@ export interface hireDetailType {
   item_no: number;
   hire_name: string;
   quantity: number;
-  unit_name: string;
   unit_price: number;
   total_amount: number;
   total_text: string;
   operation_reason: string;
   remark: string;
+  unit_id: number;
+  unit_name: string;
 }
 
 export interface hireDetailCreateType {
@@ -19,7 +20,7 @@ export interface hireDetailCreateType {
   item_no: number;
   hire_name: string;
   quantity: number;
-  unit_name: string;
+  unit_id: number | null;
   unit_price: number;
   total_amount: number;
   total_text: string;
