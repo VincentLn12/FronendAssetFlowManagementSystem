@@ -314,6 +314,14 @@ export const routes: Routes = [
                 (m) => m.ProcurementrecordDetailsComponent,
               ),
           },
+          // รายละเอียดการจ้าง
+          {
+            path: 'hireDetails/:id',
+            loadComponent: () =>
+              import('./features/hireDetails/hireDetails.component').then(
+                (m) => m.HireDetailsComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,
