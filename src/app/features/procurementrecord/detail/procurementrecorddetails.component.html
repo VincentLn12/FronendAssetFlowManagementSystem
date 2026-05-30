@@ -1,10 +1,10 @@
-<div class="min-h-screen bg-slate-50 px-4 py-4 font-sans sm:px-6 lg:px-8">
+<div class="min-h-screen bg-slate-50 px-4 py-4 text-base leading-relaxed sm:px-6 lg:px-8">
   <div class="mx-auto max-w-[1920px]">
     <!-- Back button -->
     <button
       type="button"
       (click)="cancel()"
-      class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-blue-800"
+      class="mb-4 inline-flex items-center gap-2 text-base font-medium text-slate-500 transition hover:text-blue-800"
     >
       <span class="text-lg leading-none">←</span>
       กลับไปหน้ารายการ
@@ -30,18 +30,20 @@
             </div>
 
             <div>
-              <p class="mb-0.5 text-xs font-semibold uppercase tracking-widest text-amber-600">
+              <p class="mb-0.5 text-sm font-semibold uppercase tracking-widest text-amber-600">
                 ระบบบริหารจัดการงานพัสดุ
               </p>
-              <h1 class="text-2xl font-bold tracking-tight text-blue-900">
+              <h1 class="text-3xl font-bold tracking-tight text-blue-900">
                 รายละเอียดเอกสารจัดซื้อจัดจ้าง
               </h1>
-              <p class="mt-1 text-sm text-slate-500">เลขที่เอกสาร {{ item.document_no || '-' }}</p>
+              <p class="mt-1 text-base text-slate-500">
+                เลขที่เอกสาร {{ item.document_no || '-' }}
+              </p>
             </div>
           </div>
 
           <span
-            class="inline-flex w-fit items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-800 ring-1 ring-blue-300"
+            class="inline-flex w-fit items-center rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-800 ring-1 ring-blue-300"
           >
             {{ item.status || 'ไม่ระบุสถานะ' }}
           </span>
@@ -52,56 +54,58 @@
         <!-- Detail Card -->
         <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-3">
-            <h2 class="text-base font-semibold text-white">ข้อมูลเอกสาร</h2>
-            <p class="mt-0.5 text-sm text-blue-200">แสดงรายละเอียดจากข้อมูลที่ส่งมาจากหน้ารายการ</p>
+            <h2 class="text-lg font-semibold text-white">ข้อมูลเอกสาร</h2>
+            <p class="mt-0.5 text-base text-blue-200">
+              แสดงรายละเอียดจากข้อมูลที่ส่งมาจากหน้ารายการ
+            </p>
           </div>
 
           <div class="space-y-6 p-6">
             <!-- กลุ่มข้อมูลเอกสาร -->
             <section>
-              <h3 class="mb-4 text-sm font-bold text-blue-900">ข้อมูลทั่วไป</h3>
+              <h3 class="mb-4 text-base font-bold text-blue-900">ข้อมูลทั่วไป</h3>
 
               <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">เลขที่เอกสาร</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">เลขที่เอกสาร</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.document_no || '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">วันที่เอกสาร</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
-                    {{ item.document_date || '-' }}
+                  <p class="text-sm font-semibold text-slate-500">วันที่เอกสาร</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
+                    {{ item.document_date ? (item.document_date | thaiDate) : '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">วันที่ตรวจรับ</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
-                    {{ item.inspection_date || '-' }}
+                  <p class="text-sm font-semibold text-slate-500">วันที่ตรวจรับ</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
+                    {{ item.inspection_date ? (item.inspection_date | thaiDate) : '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">เลขที่อ้างอิง</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">เลขที่อ้างอิง</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.reference_no || '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">วันที่อนุมัติ</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
-                    {{ item.approval_date || '-' }}
+                  <p class="text-sm font-semibold text-slate-500">วันที่อนุมัติ</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
+                    {{ item.approval_date ? (item.approval_date | thaiDate) : '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">สถานะ</p>
+                  <p class="text-sm font-semibold text-slate-500">สถานะ</p>
                   <p class="mt-1">
                     <span
-                      class="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800 ring-1 ring-blue-300"
+                      class="inline-flex rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-800 ring-1 ring-blue-300"
                     >
                       {{ item.status || '-' }}
                     </span>
@@ -112,40 +116,40 @@
 
             <!-- กลุ่มข้อมูลการเงิน -->
             <section>
-              <h3 class="mb-4 text-sm font-bold text-blue-900">ข้อมูลการเงินและงบประมาณ</h3>
+              <h3 class="mb-4 text-base font-bold text-blue-900">ข้อมูลการเงินและงบประมาณ</h3>
 
               <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">จำนวนเงิน</p>
-                  <p class="mt-1 text-lg font-bold text-blue-900">
+                  <p class="text-sm font-semibold text-slate-500">จำนวนเงิน</p>
+                  <p class="mt-1 text-xl font-bold text-blue-900">
                     {{ item.total_amount || '0' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 md:col-span-2">
-                  <p class="text-xs font-semibold text-slate-500">จำนวนเงินเป็นตัวอักษร</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">จำนวนเงินเป็นตัวอักษร</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.amount_text || 'ศูนย์บาทถ้วน' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">ปีงบประมาณ</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">ปีงบประมาณ</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.fiscal_year_name || '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">หมวดเงิน</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">หมวดเงิน</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.fund_category_name || '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">งบประมาณ</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">งบประมาณ</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.budget_source_name || '-' }}
                   </p>
                 </div>
@@ -154,47 +158,47 @@
 
             <!-- กลุ่มข้อมูลที่เกี่ยวข้อง -->
             <section>
-              <h3 class="mb-4 text-sm font-bold text-blue-900">ข้อมูลที่เกี่ยวข้อง</h3>
+              <h3 class="mb-4 text-base font-bold text-blue-900">ข้อมูลที่เกี่ยวข้อง</h3>
 
               <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">รหัสโครงการ</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">รหัสโครงการ</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.project_code || '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">ดำเนินการ</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">ดำเนินการ</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.operation_type_name || '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">เบิกจ่ายเป็นค่าวัสดุ/จ้าง</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">เบิกจ่ายเป็นค่าวัสดุ/จ้าง</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.expense_type_name || '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">สาขาวิชา</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">สาขาวิชา</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.department_name || '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">บริษัท/ร้าน</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">บริษัท/ร้าน</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.vendor_name || '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">ผู้เบิกจ่าย</p>
-                  <p class="mt-1 text-sm font-bold text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">ผู้เบิกจ่าย</p>
+                  <p class="mt-1 text-base font-bold text-slate-800">
                     {{ item.staff_fullname || '-' }}
                   </p>
                 </div>
@@ -203,18 +207,18 @@
 
             <!-- หมายเหตุ / ไฟล์แนบ -->
             <section>
-              <h3 class="mb-4 text-sm font-bold text-blue-900">หมายเหตุและไฟล์แนบ</h3>
+              <h3 class="mb-4 text-base font-bold text-blue-900">หมายเหตุและไฟล์แนบ</h3>
 
               <div class="grid gap-4 lg:grid-cols-[1fr_280px]">
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">หมายเหตุ</p>
-                  <p class="mt-1 min-h-10 text-sm font-medium text-slate-800">
+                  <p class="text-sm font-semibold text-slate-500">หมายเหตุ</p>
+                  <p class="mt-1 min-h-10 text-base font-medium text-slate-800">
                     {{ item.remark || '-' }}
                   </p>
                 </div>
 
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
-                  <p class="text-xs font-semibold text-slate-500">ไฟล์แนบ</p>
+                  <p class="text-sm font-semibold text-slate-500">ไฟล์แนบ</p>
 
                   @if (item.attachment_file_path) {
                     <!-- <button
@@ -225,7 +229,7 @@
                       📎 ดูไฟล์แนบ
                     </button> -->
                   } @else {
-                    <p class="mt-2 text-sm font-medium text-slate-400">ไม่มีไฟล์แนบ</p>
+                    <p class="mt-2 text-base font-medium text-slate-400">ไม่มีไฟล์แนบ</p>
                   }
                 </div>
               </div>
@@ -240,7 +244,7 @@
 
         <!-- Side Card -->
         <aside class="h-fit rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h3 class="flex items-center gap-2 text-sm font-semibold text-blue-900">
+          <h3 class="flex items-center gap-2 text-base font-semibold text-blue-900">
             <span
               class="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-xs text-blue-700"
             >
@@ -249,21 +253,21 @@
             สรุปเอกสาร
           </h3>
 
-          <div class="mt-4 space-y-3 text-sm">
+          <div class="mt-4 space-y-3 text-base">
             <div class="rounded-xl bg-blue-50 px-4 py-3 text-blue-800 ring-1 ring-blue-200">
-              <p class="text-xs font-semibold">เลขที่เอกสาร</p>
+              <p class="text-sm font-semibold">เลขที่เอกสาร</p>
               <p class="mt-1 font-bold">{{ item.document_no || '-' }}</p>
             </div>
 
             <div class="rounded-xl bg-amber-50 px-4 py-3 text-amber-800 ring-1 ring-amber-200">
-              <p class="text-xs font-semibold">จำนวนเงิน</p>
+              <p class="text-sm font-semibold">จำนวนเงิน</p>
               <p class="mt-1 font-bold">
                 {{ item.total_amount || '0' }}
               </p>
             </div>
 
             <div class="rounded-xl bg-slate-50 px-4 py-3 text-slate-700 ring-1 ring-slate-200">
-              <p class="text-xs font-semibold">สถานะ</p>
+              <p class="text-sm font-semibold">สถานะ</p>
               <p class="mt-1 font-bold">{{ item.status || '-' }}</p>
             </div>
           </div>
@@ -277,8 +281,8 @@
           <span class="text-2xl">!</span>
         </div>
 
-        <h2 class="text-xl font-bold text-blue-900">ไม่พบข้อมูลเอกสาร</h2>
-        <p class="mt-2 text-sm text-slate-500">กรุณากลับไปหน้ารายการแล้วกดดูรายละเอียดใหม่</p>
+        <h2 class="text-2xl font-bold text-blue-900">ไม่พบข้อมูลเอกสาร</h2>
+        <p class="mt-2 text-base text-slate-500">กรุณากลับไปหน้ารายการแล้วกดดูรายละเอียดใหม่</p>
       </div>
     }
   </div>

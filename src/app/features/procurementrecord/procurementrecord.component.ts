@@ -82,7 +82,7 @@ export class ProcurementrecordComponent implements OnInit {
     });
   }
   goToDetail(procurementrecord: procurementrecordTypes) {
-    this.router.navigate(['/admin/procurements', procurementrecord.procurement_record_id], {
+    this.router.navigate(['/admin/procurements/detail', procurementrecord.procurement_record_id], {
       state: { procurementrecord },
     });
   }

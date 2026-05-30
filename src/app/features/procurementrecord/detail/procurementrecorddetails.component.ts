@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { procurementrecordTypes } from '../interface/procurementrecordTypes';
+import { ThaiDatePipe } from "../../../shared/pipes/thai-date-pipe";
 
 @Component({
   selector: 'app-procurementrecord-details',
-  imports: [],
+  imports: [ThaiDatePipe],
   templateUrl: './procurementrecorddetails.component.html',
 })
 export class ProcurementrecordDetailsComponent {

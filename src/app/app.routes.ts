@@ -292,13 +292,7 @@ export const routes: Routes = [
                 (m) => m.ProcurementrecordComponent,
               ),
           },
-          {
-            path: 'procurements/:id',
-            loadComponent: () =>
-              import('./features/procurementrecord/detail/procurementrecorddetails.component').then(
-                (m) => m.ProcurementrecordDetailsComponent,
-              ),
-          },
+
           {
             path: 'procurements/create',
             loadComponent: () =>
@@ -311,6 +305,13 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/procurementrecord/procurementrecordaddupdate/addupdate.component').then(
                 (m) => m.ProcurementsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'procurements/detail/:id',
+            loadComponent: () =>
+              import('./features/procurementrecord/detail/procurementrecorddetails.component').then(
+                (m) => m.ProcurementrecordDetailsComponent,
               ),
           },
           {

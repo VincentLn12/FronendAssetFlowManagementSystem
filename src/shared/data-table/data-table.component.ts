@@ -28,13 +28,13 @@ export class DataTableComponent {
   @Input() fileBaseUrl = '';
   @Input() enableDetail = false;
 
-  @Output() detail = new EventEmitter<any>();
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() search = new EventEmitter<string>();
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<string>();
+  @Output() detail = new EventEmitter<any>();
 
   get totalPages() {
     return Math.ceil(this.totalItems / this.pageSize) || 1;

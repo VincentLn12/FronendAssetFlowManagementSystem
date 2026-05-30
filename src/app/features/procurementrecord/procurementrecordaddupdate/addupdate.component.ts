@@ -18,6 +18,7 @@ import { FundcategorysService } from '../../fundcategorys/service/fundcategorys.
 import { BudgetsourceService } from '../../budgetsource/service/budgetSource.service';
 import { DatePickerComponent } from '../../../shared/date-picker/date-picker.component';
 import { ProjectsService } from '../../projects/service/projects.service';
+import { toThaiBahtText } from '../../../shared/thai-baht-text';
 
 @Component({
   selector: 'app-addupdate',
@@ -98,7 +99,7 @@ export class ProcurementsAddUpdateComponent implements OnInit {
 
       this.form.patchValue(
         {
-          amount_text: this.toThaiBahtText(value),
+          amount_text: toThaiBahtText(value),
         },
         { emitEvent: false },
       );
@@ -271,13 +272,10 @@ export class ProcurementsAddUpdateComponent implements OnInit {
         ...raw,
 
         procurement_record_id: this.procurement_record_id() ?? 0,
-
         document_date: this.formatDates(raw.document_date),
-
         approval_date: raw.status === 'ดำเนินการแล้ว' ? raw.approval_date || null : null,
-
         total_amount: totalAmount,
-        amount_text: this.toThaiBahtText(totalAmount),
+        amount_text: toThaiBahtText(totalAmount),
 
         attachment_file_path: filePath ?? raw.attachment_file_path,
       } as any;
@@ -331,77 +329,6 @@ export class ProcurementsAddUpdateComponent implements OnInit {
     { label: 'รอดำเนินการ', value: 'รอดำเนินการ' },
     { label: 'ดำเนินการแล้ว', value: 'ดำเนินการแล้ว' },
   ];
-
-  private toThaiBahtText(amount: number): string {
-    amount = Number(amount || 0);
-
-    if (amount <= 0) return 'ศูนย์บาทถ้วน';
-
-    if (amount > 100000000) {
-      return 'จำนวนเงินต้องไม่เกินหนึ่งร้อยล้านบาท';
-    }
-
-    const numberText = ['', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า'];
-    const positionText = ['', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน'];
-
-    const convertLessThanMillion = (num: string): string => {
-      let result = '';
-      const len = num.length;
-
-      for (let i = 0; i < len; i++) {
-        const digit = Number(num[i]);
-        const pos = len - i - 1;
-
-        if (digit === 0) continue;
-
-        if (pos === 0) {
-          if (digit === 1 && len > 1) {
-            result += 'เอ็ด';
-          } else {
-            result += numberText[digit];
-          }
-        } else if (pos === 1) {
-          if (digit === 1) {
-            result += 'สิบ';
-          } else if (digit === 2) {
-            result += 'ยี่สิบ';
-          } else {
-            result += numberText[digit] + 'สิบ';
-          }
-        } else {
-          result += numberText[digit] + positionText[pos];
-        }
-      }
-
-      return result;
-    };
-
-    const convert = (num: string): string => {
-      num = String(Number(num));
-
-      if (num === '0') return '';
-
-      if (num.length > 6) {
-        const millionPart = num.slice(0, -6);
-        const restPart = num.slice(-6);
-
-        return convertLessThanMillion(millionPart) + 'ล้าน' + convertLessThanMillion(restPart);
-      }
-
-      return convertLessThanMillion(num);
-    };
-
-    const fixed = amount.toFixed(2);
-    const [baht, satang] = fixed.split('.');
-
-    const bahtText = convert(baht);
-
-    if (satang === '00') {
-      return `${bahtText}บาทถ้วน`;
-    }
-
-    return `${bahtText}บาท${convertLessThanMillion(satang)}สตางค์`;
-  }
 }
 
 export type ProcurementRecordStatus = 'ร่าง' | 'รอดำเนินการ' | 'ดำเนินการแล้ว';
