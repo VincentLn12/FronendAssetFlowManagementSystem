@@ -322,6 +322,29 @@ export const routes: Routes = [
                 (m) => m.HireDetailsComponent,
               ),
           },
+          // ประเภทครุภัณฑ์หลัก
+          {
+            path: 'assetCategorie',
+            loadComponent: () =>
+              import('./features/assetCategories/assetCategories.component').then(
+                (m) => m.AssetCategoriesComponent,
+              ),
+          },
+
+          {
+            path: 'assetCategorie/create',
+            loadComponent: () =>
+              import('./features/assetCategories/assetCategoriesaddupdate/addupdate.component').then(
+                (m) => m.AssetCategoriesAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'assetCategorie/update/:id',
+            loadComponent: () =>
+              import('./features/assetCategories/assetCategoriesaddupdate/addupdate.component').then(
+                (m) => m.AssetCategoriesAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,
