@@ -11,16 +11,27 @@
     class="custom-select"
     dropdownPanelClass="custom-select-panel"
     appendTo="body"
-    [items]="options"
+    [items]="filteredOptions"
     [bindLabel]="optionLabel"
     [bindValue]="optionValue"
     [placeholder]="placeholder"
-    [searchable]="searchable"
+    [searchable]="false"
     [clearable]="clearable"
     [formControl]="control"
     [notFoundText]="'ไม่พบข้อมูล'"
-    [typeToSearchText]="'พิมพ์เพื่อค้นหา'"
+    (open)="onOpenSelect()"
   >
+    <ng-template ng-header-tmp>
+      <input
+        type="text"
+        class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:border-emerald-500"
+        placeholder="พิมพ์เพื่อค้นหา"
+        [(ngModel)]="searchText"
+        [ngModelOptions]="{ standalone: true }"
+        (input)="filterOptions()"
+        autofocus
+      />
+    </ng-template>
   </ng-select>
 
   <app-input-error [control]="control" [label]="label" type="select" />

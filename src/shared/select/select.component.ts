@@ -19,4 +19,34 @@ export class SelectComponent {
   @Input() required = false;
   @Input() searchable = true;
   @Input() clearable = true;
+
+  searchText = '';
+  filteredOptions: any[] = [];
+
+  ngOnInit() {
+    this.filteredOptions = this.options ?? [];
+  }
+
+  ngOnChanges() {
+    this.filteredOptions = this.options ?? [];
+  }
+
+  onOpenSelect() {
+    this.searchText = '';
+    this.filteredOptions = this.options ?? [];
+  }
+
+  filterOptions() {
+    const text = this.searchText.toLowerCase().trim();
+
+    if (!text) {
+      this.filteredOptions = this.options ?? [];
+      return;
+    }
+
+    this.filteredOptions = (this.options ?? []).filter((item: any) => {
+      const label = String(item[this.optionLabel] ?? '').toLowerCase();
+      return label.includes(text);
+    });
+  }
 }
