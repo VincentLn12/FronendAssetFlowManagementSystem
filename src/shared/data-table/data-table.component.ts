@@ -29,6 +29,7 @@ export class DataTableComponent {
   @Input() enableDetail = false;
   @Input() To = false;
   @Input() Namepath = 'ไป';
+  @Input() backs = false;
 
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<any>();
@@ -38,6 +39,7 @@ export class DataTableComponent {
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<string>();
   @Output() detail = new EventEmitter<any>();
+  @Output() back = new EventEmitter<any>();
 
   get totalPages() {
     return Math.ceil(this.totalItems / this.pageSize) || 1;

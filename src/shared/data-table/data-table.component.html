@@ -1,5 +1,16 @@
 <div class="min-h-screen bg-slate-50 px-3 py-3 font-sans sm:px-6 sm:py-4">
   <div class="mx-auto max-w-[1920px]">
+    @if (backs) {
+      <button
+        type="button"
+        (click)="back.emit()"
+        class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-blue-800 transition"
+      >
+        <span class="text-lg leading-none">←</span>
+        กลับไปหน้ารายการ
+      </button>
+    }
+
     <!-- Header -->
     <div
       class="relative mb-3 overflow-hidden rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm sm:mb-4 sm:rounded-2xl sm:px-6 sm:py-4"
@@ -118,7 +129,7 @@
 
               @if (isAdmin || enableDetail) {
                 <th
-                  class="px-6 py-2 text-center text-xs font-bold uppercase tracking-wide text-white xl:px-8 xl:py-4 xl:text-sm"
+                  class="px-6 py-2 ml-10 text-center text-xs font-bold uppercase tracking-wide text-white xl:px-8 xl:py-4 xl:text-sm"
                 >
                   การจัดการ
                 </th>
@@ -187,7 +198,7 @@
                         <button
                           type="button"
                           (click)="pathTo.emit(item)"
-                          class="text-sm font-semibold text-amber-600 transition hover:text-amber-800 hover:underline xl:text-base"
+                          class="text-sm font-semibold text-purple-500 transition hover:text-amber-800 hover:underline xl:text-base"
                         >
                           {{ Namepath }}
                         </button>

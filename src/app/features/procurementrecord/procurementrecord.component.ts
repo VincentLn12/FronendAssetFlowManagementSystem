@@ -118,7 +118,7 @@ export class ProcurementrecordComponent implements OnInit {
     { label: 'วันที่', key: 'document_date', pipe: 'thaiDate' },
     { label: 'เลขที่เอกสาร', key: 'document_no' },
     { label: 'เบิกจ่าย', key: 'expense_type_name' },
-    { label: 'ชื่อบริษัท', key: 'vendor_name' },
+    // { label: 'ชื่อบริษัท', key: 'vendor_name' },
     { label: 'ผู้เบิก', key: 'staff_fullname' },
     { label: 'สถานะ', key: 'status', type: 'badge' },
     { label: 'ไฟล์แนบ', key: 'attachment_file_path', type: 'file' },

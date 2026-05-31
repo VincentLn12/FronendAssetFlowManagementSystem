@@ -131,6 +131,8 @@ export class AssetItemsComponent implements OnInit {
     this.router.navigate(['/admin/assetsubItems', mat.asset_id], {
       state: {
         assetItem: mat,
+        procurementrecord: history.state?.procurementrecord,
+        procurement_record_id: this.procurement_record_id(),
       },
     });
   }
@@ -149,4 +151,8 @@ export class AssetItemsComponent implements OnInit {
       { label: 'วันที่รับ', key: 'receive_date', pipe: 'thaiDate' },
       { label: 'ผู้เบิก', key: 'staff_name' },
     ];
+
+  cancel() {
+    this.router.navigate(['/admin/procurements']);
+  }
 }

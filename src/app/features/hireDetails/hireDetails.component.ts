@@ -189,6 +189,21 @@ export class HireDetailsComponent implements OnInit {
     });
   }
 
+  cancel() {
+    const id = history.state?.procurement_record_id;
+
+    if (!id) {
+      this.router.navigate(['/admin/procurements']);
+      return;
+    }
+
+    this.router.navigate(['/admin/assetItems', id], {
+      state: {
+        procurementrecord: history.state?.procurementrecord,
+      },
+    });
+  }
+
   confirmDelete(id: number) {
     const procurementId = this.procurement_record_id();
 

@@ -115,7 +115,21 @@ export class AssetSubItemsComponent implements OnInit {
       },
     });
   }
+  cancel() {
+    const procurementId = history.state?.procurement_record_id;
+    const procurementrecord = history.state?.procurementrecord;
 
+    if (!procurementId) {
+      this.router.navigate(['/admin/procurements']);
+      return;
+    }
+
+    this.router.navigate(['/admin/assetItems', procurementId], {
+      state: {
+        procurementrecord,
+      },
+    });
+  }
   sortOptions = [
     { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },
     { label: 'ชื่อ ฮ-ก', value: 'nameDesc' },
