@@ -368,6 +368,29 @@ export const routes: Routes = [
                 (m) => m.MaterialUnitsAddUpdateComponent,
               ),
           },
+          // รายการครุภัณฑ์
+
+          {
+            path: 'assetItems/create',
+            loadComponent: () =>
+              import('./features/assetItems/assetItemsaddupdate/addupdate.component').then(
+                (m) => m.AssetItemsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'assetItems/update/:id',
+            loadComponent: () =>
+              import('./features/assetItems/assetItemsaddupdate/addupdate.component').then(
+                (m) => m.AssetItemsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'assetItems/:id',
+            loadComponent: () =>
+              import('./features/assetItems/assetItems.component').then(
+                (m) => m.AssetItemsComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,
