@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-input',
-  imports: [InputErrorComponent, ReactiveFormsModule,CommonModule],
+  imports: [InputErrorComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './input.component.html',
 })
 export class InputComponent {
@@ -14,7 +14,8 @@ export class InputComponent {
   @Input() placeholder: string = '';
   @Input() type: string = 'text';
   @Input() required: boolean = false;
-   
+  @Input() readonly = false;
+
   get isInvalid() {
     return this.control?.invalid && this.control?.touched;
   }

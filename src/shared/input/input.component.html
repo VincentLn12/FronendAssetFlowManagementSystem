@@ -12,9 +12,12 @@
     [type]="type"
     [formControl]="control"
     [placeholder]="placeholder"
+    [readonly]="readonly"
     [ngClass]="{
       'border-red-500 focus:border-red-500 focus:ring-red-500/10': isInvalid,
       'border-slate-300 focus:border-emerald-500 focus:ring-emerald-500/10': !isInvalid,
+      'bg-slate-100 cursor-not-allowed': readonly,
+      'bg-white': !readonly,
     }"
     class="w-full px-4 py-3 bg-white border rounded-xl text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-4 transition-all duration-200"
   />

@@ -1,0 +1,156 @@
+<div class="min-h-screen bg-slate-50 px-4 py-4 sm:px-6 lg:px-8 font-sans">
+  <div class="mx-auto max-w-[1920px]">
+    <!-- Back button -->
+    <button
+      type="button"
+      (click)="cancel()"
+      class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-blue-800 transition"
+    >
+      <span class="text-lg leading-none">←</span>
+      กลับไปหน้ารายการ
+    </button>
+
+    <!-- Content -->
+    <div class="grid gap-5">
+      <!-- Form Card -->
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-3">
+          <div class="flex justify-between items-center gap-3">
+            <h2 class="text-base font-semibold text-white">ข้อมูล{{ name }}</h2>
+            <span
+              class="inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold"
+              [ngClass]="
+                isEditMode()
+                  ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-300'
+                  : 'bg-blue-50 text-blue-800 ring-1 ring-blue-300'
+              "
+            >
+              {{ isEditMode() ? 'โหมดแก้ไข' : 'โหมดเพิ่มข้อมูล' }}
+            </span>
+          </div>
+          <p class="mt-0.5 text-sm text-blue-200">กรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบันทึก</p>
+        </div>
+
+        @if (isLoading()) {
+          <div class="space-y-4 p-6">
+            <div class="h-4 w-40 animate-pulse rounded bg-slate-200"></div>
+            <div class="h-11 w-full animate-pulse rounded-lg bg-slate-200"></div>
+            <div class="h-10 w-48 animate-pulse rounded-lg bg-slate-200"></div>
+          </div>
+        } @else {
+          <form [formGroup]="form" (ngSubmit)="submit()">
+            <div class="grid grid-cols-2 gap-6 p-6">
+              <app-input
+                label="ชื่อรายการย่อย"
+                [control]="form.controls.sub_item_name"
+                placeholder="เช่น: เมาส์, คีย์บอร์ด, เก้าอี้สำนักงาน"
+                [required]="true"
+              ></app-input>
+              <app-select
+                label="ประเภทครุภัณฑ์"
+                [control]="form.controls.asset_category_id"
+                [options]="asset_category()"
+                optionLabel="category_name"
+                optionValue="asset_category_id"
+                placeholder="-- เลือกหน่วยงาน --"
+                [required]="true"
+                [searchable]="true"
+              />
+            </div>
+            <div class="grid grid-cols-3 gap-6 p-6 -mt-10">
+              <app-input
+                label="เลขรันเริ่มต้น"
+                [control]="form.controls.running_start_no"
+                placeholder="เช่น: 1"
+                [required]="true"
+                type="number"
+              ></app-input>
+              <app-input
+                label="เลขรันสิ้นสุด"
+                [control]="form.controls.running_end_no"
+                placeholder="เช่น: 20"
+                [required]="true"
+                type="number"
+              ></app-input>
+              <app-input
+                label="ปีท้ายรหัส"
+                [control]="form.controls.fiscal_asset_year"
+                placeholder="เช่น: 69"
+                [required]="true"
+                type="number"
+              ></app-input>
+            </div>
+            <div class="grid grid-cols-3 gap-6 p-6 -mt-10">
+              <app-input
+                label="ราคา/หน่วย"
+                [control]="form.controls.unit_price"
+                [required]="true"
+                type="number"
+              ></app-input>
+              <app-input
+                label="จำนวน"
+                [control]="form.controls.quantity"
+                placeholder="เช่น: 1"
+                [required]="true"
+                type="number"
+              ></app-input>
+              <app-select
+                label="หน่วยนับ"
+                [control]="form.controls.unit_id"
+                [options]="unit()"
+                optionLabel="unit_name"
+                optionValue="unit_id"
+                placeholder="-- เลือกหน่วยงาน --"
+                [required]="true"
+                [searchable]="true"
+              />
+            </div>
+            <div class="grid grid-cols-2 gap-6 p-6 -mt-10">
+              <app-input
+                label="มูลค่ารวม"
+                type="number"
+                [readonly]="true"
+                [control]="form.controls.total_price"
+              />
+              <app-input
+                label="อายุการใช้งาน (ปี)"
+                [control]="form.controls.useful_life_year"
+                placeholder="เช่น: 5"
+                [required]="true"
+                type="number"
+              ></app-input>
+            </div>
+
+            <!-- Footer -->
+            <div
+              class="flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4 sm:flex-row sm:items-center sm:justify-end"
+            >
+              <button
+                type="button"
+                (click)="cancel()"
+                class="inline-flex justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 transition"
+                [disabled]="isSubmitting()"
+              >
+                ยกเลิก
+              </button>
+
+              <button
+                type="submit"
+                class="inline-flex justify-center rounded-xl bg-blue-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50 transition"
+                [disabled]="isSubmitting() || form.invalid"
+              >
+                @if (isSubmitting()) {
+                  กำลังบันทึก...
+                } @else if (isEditMode()) {
+                  บันทึกการแก้ไข
+                } @else {
+                  บันทึกข้อมูล
+                }
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+    </div>
+  </div>
+</div>

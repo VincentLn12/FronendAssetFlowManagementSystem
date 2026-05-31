@@ -27,9 +27,12 @@ export class DataTableComponent {
   @Input() openFile = (url: string) => window.open(url, '_blank');
   @Input() fileBaseUrl = '';
   @Input() enableDetail = false;
+  @Input() To = false;
+  @Input() Namepath = 'ไป';
 
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<any>();
+  @Output() pathTo = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() search = new EventEmitter<string>();
   @Output() pageChange = new EventEmitter<number>();

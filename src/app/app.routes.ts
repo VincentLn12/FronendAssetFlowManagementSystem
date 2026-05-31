@@ -369,7 +369,6 @@ export const routes: Routes = [
               ),
           },
           // รายการครุภัณฑ์
-
           {
             path: 'assetItems/create',
             loadComponent: () =>
@@ -389,6 +388,28 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/assetItems/assetItems.component').then(
                 (m) => m.AssetItemsComponent,
+              ),
+          },
+          // รายการครุภัณฑ์ย่อย
+          {
+            path: 'assetsubItems/create',
+            loadComponent: () =>
+              import('./features/assetsubItems/assetsubItemsaddupdate/addupdate.component').then(
+                (m) => m.AssetSubItemsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'assetsubItems/update/:id',
+            loadComponent: () =>
+              import('./features/assetsubItems/assetsubItemsaddupdate/addupdate.component').then(
+                (m) => m.AssetSubItemsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'assetsubItems/:id',
+            loadComponent: () =>
+              import('./features/assetsubItems/assetsubItem.component').then(
+                (m) => m.AssetSubItemsComponent,
               ),
           },
           {

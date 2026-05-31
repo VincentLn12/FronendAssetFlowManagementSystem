@@ -86,6 +86,21 @@ export class ProcurementrecordComponent implements OnInit {
       state: { procurementrecord },
     });
   }
+  gotoPathTo(procurementrecord: procurementrecordTypes) {
+    if (procurementrecord.expense_type_name === 'ครุภัณฑ์') {
+      this.router.navigate(['/admin/assetItems', procurementrecord.procurement_record_id], {
+        state: { procurementrecord },
+      });
+    } else if (procurementrecord.expense_type_name === 'วัสดุ') {
+      this.router.navigate(['/admin/assetItems', procurementrecord.procurement_record_id], {
+        state: { procurementrecord },
+      });
+    } else if (procurementrecord.expense_type_name === 'จัดจ้าง') {
+      this.router.navigate(['/admin/hireDetails', procurementrecord.procurement_record_id], {
+        state: { procurementrecord },
+      });
+    }
+  }
 
   sortOptions = [
     { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },

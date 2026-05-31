@@ -30,6 +30,19 @@ export class AssetItemsComponent implements OnInit {
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : null;
+    const procurementrecord = history.state?.procurementrecord;
+
+    // ถ้าไม่มี state แปลว่าเข้าจากการพิมพ์ URL เอง
+    if (!procurementrecord) {
+      this.router.navigate(['/admin/procurements']);
+      return;
+    }
+
+    // กันประเภทผิด
+    if (procurementrecord.expense_type_name !== 'ครุภัณฑ์') {
+      this.router.navigate(['/admin/procurements']);
+      return;
+    }
 
     if (id && Number.isFinite(id)) {
       this.procurement_record_id.set(id);
@@ -108,6 +121,14 @@ export class AssetItemsComponent implements OnInit {
 
   goToEdit(mat: assetItemsTypes) {
     this.router.navigate(['/admin/assetItems/update', mat.asset_id], {
+      state: {
+        assetItem: mat,
+      },
+    });
+  }
+
+  goToAssetsubItems(mat: assetItemsTypes) {
+    this.router.navigate(['/admin/assetsubItems', mat.asset_id], {
       state: {
         assetItem: mat,
       },

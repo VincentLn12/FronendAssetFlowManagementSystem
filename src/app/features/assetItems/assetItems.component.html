@@ -15,5 +15,7 @@
   (add)="goToCreate()"
   (edit)="goToEdit($event)"
   (delete)="deleteAssetItems($event)"
+  [To]="true"
+  (pathTo)="goToAssetsubItems($event)"
 >
 </app-data-table>

@@ -183,6 +183,15 @@
                 @if (isAdmin) {
                   <td class="whitespace-nowrap px-6 py-4 text-right xl:px-8 xl:py-5">
                     <div class="flex items-center justify-end gap-2">
+                      @if (To) {
+                        <button
+                          type="button"
+                          (click)="pathTo.emit(item)"
+                          class="text-sm font-semibold text-amber-600 transition hover:text-amber-800 hover:underline xl:text-base"
+                        >
+                          {{ Namepath }}
+                        </button>
+                      }
                       <button
                         type="button"
                         (click)="edit.emit(item)"
