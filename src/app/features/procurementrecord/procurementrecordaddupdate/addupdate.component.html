@@ -10,66 +10,24 @@
       กลับไปหน้ารายการ
     </button>
 
-    <!-- Header -->
-    <div
-      class="relative mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-white px-6 py-5 shadow-sm"
-    >
-      <!-- เส้นสีทอง-น้ำเงินด้านบน สไตล์ราชการ -->
-      <div class="absolute inset-x-0 top-0 flex h-1.5">
-        <div class="w-1/3 bg-amber-500"></div>
-        <div class="w-1/3 bg-blue-800"></div>
-        <div class="w-1/3 bg-amber-500"></div>
-      </div>
-
-      <div class="flex flex-col gap-4 pt-1 sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex items-start gap-4">
-          <div
-            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white"
-            [ngClass]="isEditMode() ? 'bg-amber-500' : 'bg-blue-800'"
-          >
-            @if (isEditMode()) {
-              <span class="text-xl">✎</span>
-            } @else {
-              <span class="text-xl">＋</span>
-            }
-          </div>
-
-          <div>
-            <p class="mb-0.5 text-xs font-semibold uppercase tracking-widest text-amber-600">
-              ระบบบริหารจัดการงานพัสดุ
-            </p>
-            <h1 class="text-2xl font-bold tracking-tight text-blue-900">
-              {{ title() }}
-            </h1>
-            <p class="mt-1 text-sm text-slate-500">
-              @if (isEditMode()) {
-                ปรับปรุง{{ name }}ให้ถูกต้องและเป็นปัจจุบัน
-              } @else {
-                เพิ่มข้อมูล{{ name }}เข้าสู่ระบบ
-              }
-            </p>
-          </div>
-        </div>
-
-        <span
-          class="inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold"
-          [ngClass]="
-            isEditMode()
-              ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-300'
-              : 'bg-blue-50 text-blue-800 ring-1 ring-blue-300'
-          "
-        >
-          {{ isEditMode() ? 'โหมดแก้ไข' : 'โหมดเพิ่มข้อมูล' }}
-        </span>
-      </div>
-    </div>
-
     <!-- Content -->
-    <div class="grid gap-5 lg:grid-cols-[1fr_280px]">
+    <div class="grid gap-5">
       <!-- Form Card -->
       <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
         <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-3">
-          <h2 class="text-base font-semibold text-white">ข้อมูล{{ name }}</h2>
+          <div class="flex justify-between items-center gap-3">
+            <h2 class="text-base font-semibold text-white">ข้อมูล{{ name }}</h2>
+            <span
+              class="inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold"
+              [ngClass]="
+                isEditMode()
+                  ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-300'
+                  : 'bg-blue-50 text-blue-800 ring-1 ring-blue-300'
+              "
+            >
+              {{ isEditMode() ? 'โหมดแก้ไข' : 'โหมดเพิ่มข้อมูล' }}
+            </span>
+          </div>
           <p class="mt-0.5 text-sm text-blue-200">กรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบันทึก</p>
         </div>
 
@@ -254,38 +212,6 @@
           </form>
         }
       </div>
-
-      <!-- Help Card -->
-      <aside class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm h-fit">
-        <h3 class="flex items-center gap-2 text-sm font-semibold text-blue-900">
-          <span
-            class="flex h-6 w-6 items-center justify-center rounded-md bg-blue-100 text-blue-700 text-xs"
-            >?</span
-          >
-          คำแนะนำ
-        </h3>
-
-        <ul class="mt-4 space-y-3 text-sm text-slate-600">
-          <li class="flex gap-2">
-            <span class="text-amber-500 font-bold">•</span>
-            กรอกชื่อให้ตรงกับเอกสารหรือโครงสร้างหน่วยงานจริง
-          </li>
-          <li class="flex gap-2">
-            <span class="text-amber-500 font-bold">•</span>
-            หลีกเลี่ยงการใช้ชื่อย่อ หากไม่ได้เป็นชื่อทางการ
-          </li>
-          <li class="flex gap-2">
-            <span class="text-amber-500 font-bold">•</span>
-            หลังบันทึก ระบบจะพากลับไปยังหน้ารายการอัตโนมัติ
-          </li>
-        </ul>
-
-        <div
-          class="mt-5 rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 text-xs text-blue-800"
-        >
-          ช่องที่มีเครื่องหมาย * คือข้อมูลที่จำเป็นต้องกรอก
-        </div>
-      </aside>
     </div>
   </div>
 </div>
