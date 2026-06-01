@@ -93,7 +93,7 @@
           </p>
         }
         <a
-          routerLink="/admin/ะำหะรItems"
+          routerLink="/admin/ะำหะรItems  "
           routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
           class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
           [ngClass]="{ 'justify-center': !sidebarOpen }"
@@ -112,6 +112,17 @@
           <mat-icon>request_quote</mat-icon>
           @if (sidebarOpen) {
             <span class="text-sm">ประเภทครุภัณฑ์หลัก</span>
+          }
+        </a>
+        <a
+          routerLink="/admin/acquisitionMethod"
+          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>request_quote</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">วิธีการได้มา</span>
           }
         </a>
 

@@ -441,6 +441,29 @@ export const routes: Routes = [
                 (m) => m.AssetRepairsDetailsComponent,
               ),
           },
+          // วิธีการได้มา
+          {
+            path: 'acquisitionMethod',
+            loadComponent: () =>
+              import('./features/acquisitionMethod/acquisitionMethod.component').then(
+                (m) => m.AcquisitionMethodComponent,
+              ),
+          },
+
+          {
+            path: 'acquisitionMethod/create',
+            loadComponent: () =>
+              import('./features/acquisitionMethod/acquisitionMethodaddupdate/addupdate.component').then(
+                (m) => m.AcquisitionMethodAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'acquisitionMethod/update/:id',
+            loadComponent: () =>
+              import('./features/acquisitionMethod/acquisitionMethodaddupdate/addupdate.component').then(
+                (m) => m.AcquisitionMethodAddUpdateComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,
