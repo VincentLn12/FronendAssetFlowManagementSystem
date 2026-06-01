@@ -72,7 +72,7 @@ export class AssetCategoriesComponent implements OnInit {
 
   goToEdit(assetCategories: AssetCategoriesTypes) {
     this.router.navigate(['/admin/assetCategorie/update', assetCategories.asset_category_id], {
-      state: { assetCategories },
+      state: { assetCategories  },
     });
   }
 

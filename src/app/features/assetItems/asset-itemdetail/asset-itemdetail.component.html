@@ -1,0 +1,197 @@
+<div class="min-h-screen bg-slate-100 p-4">
+  @if (assetItems(); as item) {
+    <div class="mx-auto max-w-[1400px] bg-white p-8 text-[16px] text-black shadow">
+      <!-- Header -->
+      <h1 class="mb-4 text-center text-2xl font-bold">ทะเบียนคุมทรัพย์สิน ปีงบประมาณ 2569</h1>
+
+      <div class="mb-4 grid grid-cols-12 gap-y-2">
+        <div class="col-span-7"></div>
+        <div class="col-span-5">
+          ส่วนราชการ
+          <span class="border-b border-dotted border-black px-4"> มหาวิทยาลัยราชภัฏกาญจนบุรี </span>
+        </div>
+
+        <div class="col-span-7"></div>
+        <div class="col-span-5">
+          หน่วยงาน
+          <span class="border-b border-dotted border-black px-4">
+            {{ item.department_name || '-' }}
+          </span>
+        </div>
+
+        <div class="col-span-7"></div>
+        <div class="col-span-5">
+          ศูนย์ต้นทุน
+          <span class="border-b border-dotted border-black px-4">
+            สำนักงานณบดีคณะวิทยาศาสตร์และเทคโนโลยี
+          </span>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="space-y-3">
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-4">
+            ประเภท
+            <span class="inline-block min-w-64 border-b border-dotted border-black px-2">
+              {{ item.asset_sub_items[0]?.category_name || '-' }}
+            </span>
+          </div>
+
+          <div class="col-span-4">
+            รหัส
+            <span class="inline-block min-w-72 border-b border-dotted border-black px-2">
+              {{ item.project_code }}
+            </span>
+          </div>
+
+          <div class="col-span-4">
+            ลักษณะ/คุณสมบัติ
+            <span class="inline-block min-w-56 border-b border-dotted border-black px-2">
+              <!-- {{ item.asset_sub_items[0]?.sub_item_name || '-' }} -->
+            </span>
+          </div>
+        </div>
+
+        <div>
+          สถานที่ตั้ง/หน่วยงานที่รับผิดชอบ
+          <span class="inline-block min-w-[600px] border-b border-dotted border-black px-2">
+            {{ (item.department_name || '-') + ' (' + (item.staff_name || '-') + ')' }}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-7">
+            ชื่อผู้ขาย/ผู้รับจ้าง/ผู้บริจาค
+            <span class="inline-block min-w-80 border-b border-dotted border-black px-2">
+              {{ item.vendor_name || '-' }}
+            </span>
+          </div>
+
+          <div class="col-span-5">
+            โทรศัพท์
+            <span class="inline-block min-w-48 border-b border-dotted border-black px-2">
+              {{ item.vendor_tel || '-' }}
+            </span>
+          </div>
+        </div>
+
+        <div>
+          ที่อยู่
+          <span class="inline-block min-w-[900px] border-b border-dotted border-black px-2">
+            {{ item.vendor_address || '-' }}
+          </span>
+        </div>
+
+        <div>
+          ประเภทเงิน
+          <span class="ml-3">( / ) เงินงบประมาณ</span>
+          <span class="ml-6">( ) เงินนอกงบประมาณ</span>
+          <span class="ml-6">( ) เงินบริจาค/เงินช่วยเหลือ</span>
+          <span class="ml-6">( ) อื่นๆ</span>
+        </div>
+
+        <div>
+          วิธีการได้มา
+          <span class="ml-3">
+            ( {{ item.acquisition_method_name === 'ตกลงราคา' ? '/' : '' }} ) ตกลงราคา
+          </span>
+          <span class="ml-4">
+            ( {{ item.acquisition_method_name === 'สอบราคา' ? '/' : '' }} ) สอบราคา
+          </span>
+          <span class="ml-4">
+            ( {{ item.acquisition_method_name === 'ประกวดราคา' ? '/' : '' }} ) ประกวดราคา
+          </span>
+          <span class="ml-4">
+            ( {{ item.acquisition_method_name === 'e-Market' ? '/' : '' }} ) e-Market
+          </span>
+          <span class="ml-4">
+            ( {{ item.acquisition_method_name === 'e-Bidding' ? '/' : '' }} ) e-Bidding
+          </span>
+          <span class="ml-4">
+            ( {{ item.acquisition_method_name === 'e-Auction' ? '/' : '' }} ) e-Auction
+          </span>
+          <span class="ml-4">
+            ( {{ item.acquisition_method_name === 'วิธีพิเศษ' ? '/' : '' }} ) วิธีพิเศษ
+          </span>
+          <span class="ml-4">
+            ( {{ item.acquisition_method_name === 'รับบริจาค' ? '/' : '' }} ) รับบริจาค
+          </span>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="mt-8 overflow-x-auto">
+        <table class="w-full border-collapse border border-black text-[15px]">
+          <thead>
+            <tr>
+              <th class="border border-black px-2 py-2">ว.ด.ป.</th>
+              <th class="border border-black px-2 py-2">ที่เอกสาร<br />(ใบเบิก)</th>
+              <th class="border border-black px-2 py-2">รายการ</th>
+              <th class="border border-black px-2 py-2">จำนวน</th>
+              <th class="border border-black px-2 py-2">หน่วย</th>
+              <th class="border border-black px-2 py-2">ราคาต่อ<br />หน่วย/ชุด</th>
+              <th class="border border-black px-2 py-2">มูลค่ารวม</th>
+              <th class="border border-black px-2 py-2">อายุ<br />การใช้งาน (ปี)</th>
+              <th class="border border-black px-2 py-2">ผู้เบิก</th>
+              <th class="border border-black px-2 py-2">หมายเหตุ</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (sub of item.asset_sub_items; track sub.asset_sub_item_id) {
+              <tr>
+                <td class="border border-black px-2 py-3 text-center">
+                  {{ item.receive_date | thaiDate }}
+                </td>
+
+                <td class="border border-black px-2 py-3 text-center">
+                  <!-- {{ item.project_code || '-' }} -->
+                  2/2569
+                </td>
+
+                <td class="border border-black px-2 py-3">
+                  {{ sub.sub_item_name }}
+                </td>
+
+                <td class="border border-black px-2 py-3 text-center">
+                  {{ sub.quantity }}
+                </td>
+
+                <td class="border border-black px-2 py-3 text-center">
+                  {{ sub.unit_name }}
+                </td>
+
+                <td class="border border-black px-2 py-3 text-right">
+                  {{ sub.unit_price | number: '1.2-2' }}
+                </td>
+
+                <td class="border border-black px-2 py-3 text-right">
+                  {{ sub.total_price | number: '1.2-2' }}
+                </td>
+
+                <td class="border border-black px-2 py-3 text-center">
+                  {{ sub.useful_life_year }}
+                </td>
+
+                <td class="border border-black px-2 py-3">
+                  {{ item.staff_name || '-' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-6 flex justify-end">
+        <button
+          type="button"
+          (click)="cancel()"
+          class="rounded-lg border border-slate-400 px-6 py-2 font-semibold hover:bg-slate-100"
+        >
+          กลับ
+        </button>
+      </div>
+    </div>
+  }
+</div>

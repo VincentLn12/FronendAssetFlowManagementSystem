@@ -81,29 +81,43 @@
               ></app-input>
             </div>
             <div class="grid grid-cols-3 gap-6 p-6 -mt-10">
-              <app-input
-                label="ราคา/หน่วย"
-                [control]="form.controls.unit_price"
-                [required]="true"
-                type="number"
-              ></app-input>
-              <app-input
-                label="จำนวน"
-                [control]="form.controls.quantity"
-                placeholder="เช่น: 1"
-                [required]="true"
-                type="number"
-              ></app-input>
-              <app-select
-                label="หน่วยนับ"
-                [control]="form.controls.unit_id"
-                [options]="unit()"
-                optionLabel="unit_name"
-                optionValue="unit_id"
-                placeholder="-- เลือกหน่วยงาน --"
-                [required]="true"
-                [searchable]="true"
-              />
+              <div>
+                <app-input
+                  label="ราคา/หน่วย"
+                  [control]="form.controls.unit_price"
+                  [required]="true"
+                  type="number"
+                ></app-input>
+              </div>
+
+              <div>
+                <app-input
+                  label="จำนวน"
+                  [control]="form.controls.quantity"
+                  placeholder="เช่น: 1"
+                  [required]="true"
+                  type="number"
+                  min="1"
+                  step="1"
+                ></app-input>
+
+                @if (form.controls.quantity.hasError('pattern')) {
+                  <p class="mt-1 text-sm text-red-600">กรุณากรอกเป็นจำนวนเต็มเท่านั้น</p>
+                }
+              </div>
+
+              <div>
+                <app-select
+                  label="หน่วยนับ"
+                  [control]="form.controls.unit_id"
+                  [options]="unit()"
+                  optionLabel="unit_name"
+                  optionValue="unit_id"
+                  placeholder="-- เลือกหน่วยนับ --"
+                  [required]="true"
+                  [searchable]="true"
+                />
+              </div>
             </div>
             <div class="grid grid-cols-2 gap-6 p-6 -mt-10">
               <app-input

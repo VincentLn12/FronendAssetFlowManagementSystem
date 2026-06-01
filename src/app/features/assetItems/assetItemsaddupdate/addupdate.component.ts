@@ -15,6 +15,7 @@ import { AssetCategoriesService } from '../../assetCategories/service/assetCateg
 import { MaterialUnitsService } from '../../materialUnits/service/materialUnits.service';
 import { SelectComponent } from '../../../../shared';
 import { DatePickerComponent } from '../../../shared/date-picker/date-picker.component';
+import { AcquisitionMethodService } from '../../acquisitionMethod/service/acquisitionMethod.service';
 
 @Component({
   selector: 'app-asset-items-addupdate',
@@ -52,6 +53,7 @@ export class AssetItemsAddUpdateComponent implements OnInit {
   private staffsService = inject(StaffsService);
   private assetCategoriesService = inject(AssetCategoriesService);
   private materialUnitsService = inject(MaterialUnitsService);
+  private acquisitionMethodsService = inject(AcquisitionMethodService);
 
   asset_category = signal<any[]>([]);
   staffs = signal<any[]>([]);
@@ -59,6 +61,7 @@ export class AssetItemsAddUpdateComponent implements OnInit {
   departments = signal<any[]>([]);
   vendors = signal<any[]>([]);
   fund_categorys = signal<any[]>([]);
+  aquisition_methods = signal<any[]>([]);
 
   form = this.fb.group({
     asset_id: [null as number | null],
@@ -71,6 +74,7 @@ export class AssetItemsAddUpdateComponent implements OnInit {
     department_id: [null as number | null, [Validators.required]],
     staff_id: [null as number | null, [Validators.required]],
     vendor_id: [null as number | null, [Validators.required]],
+    acquisition_method_id: [null as number | null, [Validators.required]],
   });
 
   ngOnInit(): void {
@@ -153,6 +157,12 @@ export class AssetItemsAddUpdateComponent implements OnInit {
         pageSize: 100,
         pageNumber: 1,
       }),
+      aquisition_methods: this.acquisitionMethodsService.getAcquisitionMethods({
+        sort: '',
+        search: '',
+        pageSize: 100,
+        pageNumber: 1,
+      }),
     }).subscribe({
       next: (res) => {
         this.asset_category.set(res.assetCategories.data);
@@ -161,6 +171,7 @@ export class AssetItemsAddUpdateComponent implements OnInit {
         this.departments.set(res.department.data);
         this.vendors.set(res.vendor.data);
         this.fund_categorys.set(res.fund_category.data);
+        this.aquisition_methods.set(res.aquisition_methods.data);
       },
       error: () => {
         this.snackbar.error('โหลดข้อมูลตัวเลือกไม่สำเร็จ');
@@ -180,6 +191,7 @@ export class AssetItemsAddUpdateComponent implements OnInit {
       department_id: item.department_id ?? null,
       staff_id: item.staff_id ?? null,
       vendor_id: item.vendor_id ?? null,
+      acquisition_method_id: item.acquisition_method_id ?? null,
     });
   }
 
@@ -200,6 +212,7 @@ export class AssetItemsAddUpdateComponent implements OnInit {
       department_id: this.form.controls.department_id.value,
       staff_id: this.form.controls.staff_id.value,
       vendor_id: this.form.controls.vendor_id.value,
+      acquisition_method_id: this.form.controls.acquisition_method_id.value,
     };
 
     this.isSubmitting.set(true);
@@ -225,6 +238,6 @@ export class AssetItemsAddUpdateComponent implements OnInit {
   cancel() {
     const procurementRecordId = this.form.controls.procurement_record_id.value;
 
-    this.router.navigate(['/admin/assetItems', procurementRecordId]);
+    this.router.navigate(['/admin/assetItems', procurementRecordId], {});
   }
 }

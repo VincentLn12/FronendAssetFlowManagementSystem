@@ -32,17 +32,17 @@ export class AssetItemsComponent implements OnInit {
     const id = idParam ? Number(idParam) : null;
     const procurementrecord = history.state?.procurementrecord;
 
-    // ถ้าไม่มี state แปลว่าเข้าจากการพิมพ์ URL เอง
-    if (!procurementrecord) {
-      this.router.navigate(['/admin/procurements']);
-      return;
-    }
+    // // ถ้าไม่มี state แปลว่าเข้าจากการพิมพ์ URL เอง
+    // if (!procurementrecord) {
+    //   this.router.navigate(['/admin/procurements']);
+    //   return;
+    // }
 
-    // กันประเภทผิด
-    if (procurementrecord.expense_type_name !== 'ครุภัณฑ์') {
-      this.router.navigate(['/admin/procurements']);
-      return;
-    }
+    // // กันประเภทผิด
+    // if (procurementrecord.expense_type_name !== 'ครุภัณฑ์') {
+    //   this.router.navigate(['/admin/procurements']);
+    //   return;
+    // }
 
     if (id && Number.isFinite(id)) {
       this.procurement_record_id.set(id);
@@ -139,6 +139,15 @@ export class AssetItemsComponent implements OnInit {
 
   goToAssetRepairs(mat: assetItemsTypes) {
     this.router.navigate(['/admin/assetRepairs', mat.asset_id], {
+      state: {
+        assetItem: mat,
+        procurementrecord: history.state?.procurementrecord,
+        procurement_record_id: this.procurement_record_id(),
+      },
+    });
+  }
+  goToAssetItemDetails(mat: assetItemsTypes) {
+    this.router.navigate(['/admin/assetItems/details', mat.asset_id], {
       state: {
         assetItem: mat,
         procurementrecord: history.state?.procurementrecord,

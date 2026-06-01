@@ -3,7 +3,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Pagination } from '../../../shared/models/pagination';
 import { Params } from '../../../shared/models/allType';
-import { assetItemsTypes, assetItemsCreateTypes } from '../interface/assetItemsTypes';
+import {
+  assetItemsTypes,
+  assetItemsCreateTypes,
+  assetItemsdetailsTypes,
+} from '../interface/assetItemsTypes';
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +57,9 @@ export class AssetItemsService {
 
   getAssetItem(id: number) {
     return this.http.get<assetItemsCreateTypes>(this.baseUrl + 'AssetItem/' + id);
+  }
+  getAssetItemDetails(id: number) {
+    return this.http.get<assetItemsdetailsTypes>(this.baseUrl + 'AssetItem/details/' + id);
   }
 
   createAssetItems(payload: Partial<assetItemsCreateTypes>) {

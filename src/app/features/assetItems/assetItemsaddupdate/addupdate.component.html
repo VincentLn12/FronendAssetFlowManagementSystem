@@ -87,7 +87,7 @@
               />
             </div>
 
-            <div class="grid grid-cols-2 gap-6 p-6 -mt-10">
+            <div class="grid grid-cols-3 gap-6 p-6 -mt-10">
               <app-select
                 label="ประเภทเงิน"
                 [control]="form.controls.fund_category_id"
@@ -95,6 +95,16 @@
                 optionLabel="fund_name"
                 optionValue="fund_category_id"
                 placeholder="-- เลือกประเภทเงิน --"
+                [required]="true"
+                [searchable]="true"
+              />
+              <app-select
+                label="วิธีได้มา"
+                [control]="form.controls.acquisition_method_id"
+                [options]="aquisition_methods()"
+                optionLabel="acquisition_method_name"
+                optionValue="acquisition_method_id"
+                placeholder="-- เลือกวิธีได้มา--"
                 [required]="true"
                 [searchable]="true"
               />

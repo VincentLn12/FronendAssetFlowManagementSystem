@@ -50,7 +50,7 @@ export class AssetSubItemsAddUpdateComponent implements OnInit {
     running_start_no: [0],
     running_end_no: [0],
     fiscal_asset_year: [0, [Validators.required]],
-    quantity: [1, [Validators.required]],
+    quantity: [1, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
     unit_id: [null as number | null, [Validators.required]],
     unit_price: [0 as number | null],
     total_price: [0 as number | null],

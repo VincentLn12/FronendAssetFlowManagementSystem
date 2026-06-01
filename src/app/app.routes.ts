@@ -384,6 +384,13 @@ export const routes: Routes = [
               ),
           },
           {
+            path: 'assetItems/details/:id',
+            loadComponent: () =>
+              import('./features/assetItems/asset-itemdetail/asset-itemdetail.component').then(
+                (m) => m.AssetItemdetailComponent,
+              ),
+          },
+          {
             path: 'assetItems/:id',
             loadComponent: () =>
               import('./features/assetItems/assetItems.component').then(
