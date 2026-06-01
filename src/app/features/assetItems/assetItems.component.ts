@@ -137,6 +137,16 @@ export class AssetItemsComponent implements OnInit {
     });
   }
 
+  goToAssetRepairs(mat: assetItemsTypes) {
+    this.router.navigate(['/admin/assetRepairs', mat.asset_id], {
+      state: {
+        assetItem: mat,
+        procurementrecord: history.state?.procurementrecord,
+        procurement_record_id: this.procurement_record_id(),
+      },
+    });
+  }
+
   sortOptions = [
     { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },
     { label: 'ชื่อ ฮ-ก', value: 'nameDesc' },

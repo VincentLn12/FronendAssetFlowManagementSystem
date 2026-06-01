@@ -288,7 +288,7 @@ export const routes: Routes = [
           {
             path: 'procurements',
             loadComponent: () =>
-              import('./features/procurementrecord/procurementrecord.component').then(
+              import('./features/procurementrecord/procurementrecord.components').then(
                 (m) => m.ProcurementrecordComponent,
               ),
           },
@@ -410,6 +410,35 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/assetsubItems/assetsubItem.component').then(
                 (m) => m.AssetSubItemsComponent,
+              ),
+          },
+          // ประวัติการซ่อมบำรุงรักษาทรัพย์สิน
+          {
+            path: 'assetRepairs/create',
+            loadComponent: () =>
+              import('./features/assetRepairs/assetRepairsaddupdate/addupdate.component').then(
+                (m) => m.AssetRepairsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'assetRepairs/update/:id',
+            loadComponent: () =>
+              import('./features/assetRepairs/assetRepairsaddupdate/addupdate.component').then(
+                (m) => m.AssetRepairsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'assetRepairs/:id',
+            loadComponent: () =>
+              import('./features/assetRepairs/assetRepairs.component').then(
+                (m) => m.AssetRepairsComponent,
+              ),
+          },
+          {
+            path: 'assetRepairs/detail/:id',
+            loadComponent: () =>
+              import('./features/assetRepairs/details/assetRepairsDetails.component').then(
+                (m) => m.AssetRepairsDetailsComponent,
               ),
           },
           {

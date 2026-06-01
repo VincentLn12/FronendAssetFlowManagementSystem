@@ -194,6 +194,15 @@
                 @if (isAdmin) {
                   <td class="whitespace-nowrap px-6 py-4 text-right xl:px-8 xl:py-5">
                     <div class="flex items-center justify-end gap-2">
+                      @if (Repairs) {
+                        <button
+                          type="button"
+                          (click)="repair.emit(item)"
+                          class="text-sm font-semibold text-green-600 transition hover:text-green-800 hover:underline xl:text-base"
+                        >
+                          เเจ้งซ่อม
+                        </button>
+                      }
                       @if (To) {
                         <button
                           type="button"
