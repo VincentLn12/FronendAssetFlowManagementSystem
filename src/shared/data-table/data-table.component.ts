@@ -26,11 +26,7 @@ export class DataTableComponent {
   @Input() sortOptions: { label: string; value: string }[] = [];
   @Input() openFile = (url: string) => window.open(url, '_blank');
   @Input() fileBaseUrl = '';
-  @Input() enableDetail = false;
-  @Input() To = false;
   @Input() Namepath = 'ไป';
-  @Input() backs = false;
-  @Input() Repairs = false;
 
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<any>();
@@ -75,5 +71,21 @@ export class DataTableComponent {
     const url = path.startsWith('http') ? path : `${this.fileBaseUrl}${path}`;
 
     window.open(url, '_blank');
+  }
+
+  get showPathTo() {
+    return this.pathTo.observed;
+  }
+
+  get showBack() {
+    return this.back.observed;
+  }
+
+  get showRepair() {
+    return this.repair.observed;
+  }
+
+  get showDetail() {
+    return this.detail.observed;
   }
 }
