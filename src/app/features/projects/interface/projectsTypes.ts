@@ -7,6 +7,7 @@ export interface projectsTypes {
   project_budget_amount: number;
   staff_id: number;
   staff_name: string;
+  filePath: string;
 }
 
 export interface ProjectAddUpdateDto {
@@ -16,4 +17,5 @@ export interface ProjectAddUpdateDto {
   fiscal_year_id: number;
   project_budget_amount: number;
   staff_id: number;
+  filePath: string;
 }

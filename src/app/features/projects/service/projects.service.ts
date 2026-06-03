@@ -46,4 +46,14 @@ export class ProjectsService {
   deleteProjects(id: number) {
     return this.http.delete<void>(this.baseUrl + 'Projects/' + id);
   }
+
+  uploadFile(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<{ fileName: string; filePath: string }>(
+      this.baseUrl + 'Projects/upload',
+      formData,
+    );
+  }
 }

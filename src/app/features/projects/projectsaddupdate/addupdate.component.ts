@@ -30,6 +30,7 @@ export class ProjectsAddUpdateComponent implements OnInit {
   project_id = signal<number | null>(null);
   isEditMode = computed(() => this.project_id() !== null);
   name = 'ชือโครงการ';
+  selectedFile: File | null = null;
 
   fiscal_years = signal<any[]>([]);
   staffs = signal<any[]>([]);
@@ -44,6 +45,7 @@ export class ProjectsAddUpdateComponent implements OnInit {
     fiscal_year_id: [null as number | null, Validators.required],
     project_budget_amount: [0, [Validators.required, Validators.min(0)]],
     staff_id: [null as number | null, Validators.required],
+    filePath: [''],
   });
 
   ngOnInit(): void {
@@ -103,6 +105,16 @@ export class ProjectsAddUpdateComponent implements OnInit {
       },
     });
   }
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files || input.files.length === 0) {
+      this.selectedFile = null;
+      return;
+    }
+
+    this.selectedFile = input.files[0];
+  }
 
   private patchForm(exp: ProjectAddUpdateDto) {
     this.form.patchValue({
@@ -111,6 +123,7 @@ export class ProjectsAddUpdateComponent implements OnInit {
       fiscal_year_id: exp.fiscal_year_id,
       project_budget_amount: exp.project_budget_amount,
       staff_id: exp.staff_id,
+      filePath: exp.filePath,
     });
   }
 
@@ -120,30 +133,48 @@ export class ProjectsAddUpdateComponent implements OnInit {
       return;
     }
 
-    const payload: Partial<ProjectAddUpdateDto> = {
-      project_id: this.project_id() ?? 0,
-      project_code: this.form.value.project_code!,
-      project_name: this.form.value.project_name!,
-      fiscal_year_id: this.form.value.fiscal_year_id!,
-      project_budget_amount: this.form.value.project_budget_amount!,
-      staff_id: this.form.value.staff_id!,
-    };
-
     this.isSubmitting.set(true);
 
-    const request$ = this.isEditMode()
-      ? this.projectsService.updateProjects(this.project_id()!, payload)
-      : this.projectsService.createProjects(payload);
+    const saveProject = (filePath?: string) => {
+      const payload: Partial<ProjectAddUpdateDto> = {
+        project_id: this.project_id() ?? 0,
+        project_code: this.form.value.project_code!,
+        project_name: this.form.value.project_name!,
+        fiscal_year_id: this.form.value.fiscal_year_id!,
+        project_budget_amount: this.form.value.project_budget_amount!,
+        staff_id: this.form.value.staff_id!,
+        filePath: filePath ?? this.form.value.filePath ?? '',
+      };
 
-    request$.pipe(finalize(() => this.isSubmitting.set(false))).subscribe({
-      next: () => {
-        this.snackbar.success(this.isEditMode() ? 'แก้ไขข้อมูลสำเร็จ' : 'เพิ่มข้อมูลสำเร็จ');
-        this.router.navigate(['/admin/projects']);
-      },
-      error: () => {
-        this.snackbar.error(this.isEditMode() ? 'แก้ไขข้อมูลไม่สำเร็จ' : 'เพิ่มข้อมูลไม่สำเร็จ');
-      },
-    });
+      const request$ = this.isEditMode()
+        ? this.projectsService.updateProjects(this.project_id()!, payload)
+        : this.projectsService.createProjects(payload);
+
+      request$.pipe(finalize(() => this.isSubmitting.set(false))).subscribe({
+        next: () => {
+          this.snackbar.success(this.isEditMode() ? 'แก้ไขข้อมูลสำเร็จ' : 'เพิ่มข้อมูลสำเร็จ');
+          this.router.navigate(['/admin/projects']);
+        },
+        error: () => {
+          this.snackbar.error(this.isEditMode() ? 'แก้ไขข้อมูลไม่สำเร็จ' : 'เพิ่มข้อมูลไม่สำเร็จ');
+        },
+      });
+    };
+
+    if (this.selectedFile) {
+      this.projectsService.uploadFile(this.selectedFile).subscribe({
+        next: (res) => {
+          saveProject(res.filePath);
+        },
+        error: (err) => {
+          console.error('Upload error:', err);
+          this.isSubmitting.set(false);
+          this.snackbar.error('อัปโหลดไฟล์ไม่สำเร็จ');
+        },
+      });
+    } else {
+      saveProject();
+    }
   }
 
   cancel() {

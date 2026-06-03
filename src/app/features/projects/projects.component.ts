@@ -7,6 +7,7 @@ import { TableState } from '../../../shared/TableState';
 import { AlertService } from '../../../shared.service';
 import { projectsTypes } from './interface/projectsTypes';
 import { ProjectsService } from './service/projects.service';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-departments',
@@ -22,6 +23,7 @@ export class ProjectsComponent implements OnInit {
 
   project?: Pagination<projectsTypes>;
   projects = signal<projectsTypes[]>([]);
+  baseFileUrl = environment.baseFileUrl;
 
   Params = new Params();
 
@@ -84,11 +86,12 @@ export class ProjectsComponent implements OnInit {
     { label: 'เก่าสุด', value: 'oldest' },
   ];
 
-  columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' }[] = [
+  columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' | 'file' }[] = [
     { label: 'รหัสโครงการ', key: 'project_code' },
     { label: 'ชื่อโครงการ', key: 'project_name' },
     { label: 'ปีโครงการ', key: 'fiscal_year_name' },
     { label: 'งบประมาณ', key: 'project_budget_amount', type: 'price' },
     { label: 'ผู้รับผิดชอบ', key: 'staff_name' },
+    { label: 'ไฟล์แนบ', key: 'filePath', type: 'file' },
   ];
 }

@@ -126,6 +126,15 @@
                 [searchable]="true"
               />
             </div>
+            <div class="gap-6 p-6 pt-0 -mt-5">
+              <label class="text-sm font-bold text-slate-700"> ไฟล์แนบ </label>
+
+              <input
+                type="file"
+                (change)="onFileSelected($event)"
+                class="w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-700 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200"
+              />
+            </div>
 
             <!-- Footer -->
             <div

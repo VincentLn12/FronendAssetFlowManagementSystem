@@ -8,7 +8,6 @@ import { AlertService } from '../../../shared.service';
 import { procurementrecordTypes } from './interface/procurementrecordTypes';
 import { ProcurementrecordService } from './service/procurementrecord.service';
 import { environment } from '../../../environments/environment.development';
-import { CdkAriaLive } from '../../../../node_modules/@angular/cdk/types/_a11y-module-chunk';
 
 @Component({
   selector: 'app-departments',
