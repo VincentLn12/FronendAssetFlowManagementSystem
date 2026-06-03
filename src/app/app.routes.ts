@@ -474,7 +474,6 @@ export const routes: Routes = [
               ),
           },
           // การเบิกครุภัณฑ์
-
           {
             path: 'AssetWithdrawal/create',
             loadComponent: () =>
@@ -518,6 +517,29 @@ export const routes: Routes = [
                 (m) => m.projectProcurementsAddUpdateComponent,
               ),
           },
+          // ประเภทการใช้งานครุภัณฑ์
+          {
+            path: 'assetUsageType',
+            loadComponent: () =>
+              import('./features/assetUsageType/assetUsageType.component').then(
+                (m) => m.AssetUsageTypeComponent,
+              ),
+          },
+          {
+            path: 'assetUsageType/create',
+            loadComponent: () =>
+              import('./features/assetUsageType/assetUsageTypeaddupdate/addupdate.component').then(
+                (m) => m.AssetUsageTypeAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'assetUsageType/update/:id',
+            loadComponent: () =>
+              import('./features/assetUsageType/assetUsageTypeaddupdate/addupdate.component').then(
+                (m) => m.AssetUsageTypeAddUpdateComponent,
+              ),
+          },
+
           {
             path: '**',
             component: NotFoundComponent,
