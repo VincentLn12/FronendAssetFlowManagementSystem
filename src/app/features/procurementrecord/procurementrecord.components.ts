@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { Pagination } from '../../shared/models/pagination';
 import { Params } from '../../shared/models/allType';
@@ -17,10 +17,12 @@ import { environment } from '../../../environments/environment.development';
 })
 export class ProcurementrecordComponent implements OnInit {
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private table = new TableState();
   private procurementrecordService = inject(ProcurementrecordService);
   private alertService = inject(AlertService);
 
+  project_id = signal<number | null>(null);
   procurementrecord?: Pagination<procurementrecordTypes>;
   procurementrecords = signal<procurementrecordTypes[]>([]);
 
@@ -29,17 +31,30 @@ export class ProcurementrecordComponent implements OnInit {
   Params = new Params();
 
   ngOnInit(): void {
-    this.getProcurementrecord();
+    this.route.queryParamMap.subscribe((params) => {
+      const projectId = Number(params.get('project_id'));
+      const projectName = params.get('project_name') ?? '';
+
+      if (projectId && Number.isFinite(projectId)) {
+        this.project_id.set(projectId);
+      } else {
+        this.project_id.set(null);
+        }
+
+      this.getProcurementrecord();
+    });
   }
 
   getProcurementrecord() {
-    this.procurementrecordService.getProcurementrecords(this.table.params).subscribe({
-      next: (response) => {
-        this.procurementrecord = response;
-        this.procurementrecords.set(response.data);
-      },
-      error: (error) => console.error(error),
-    });
+    this.procurementrecordService
+      .getProcurementrecords(this.table.params, this.project_id())
+      .subscribe({
+        next: (response) => {
+          this.procurementrecord = response;
+          this.procurementrecords.set(response.data);
+        },
+        error: (error) => console.error(error),
+      });
   }
 
   onSearch(value: string) {

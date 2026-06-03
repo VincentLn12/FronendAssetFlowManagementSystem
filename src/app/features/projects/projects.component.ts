@@ -1,8 +1,8 @@
+import { Params } from './../../shared/models/allType';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { Pagination } from '../../shared/models/pagination';
-import { Params } from '../../shared/models/allType';
 import { TableState } from '../../../shared/TableState';
 import { AlertService } from '../../../shared.service';
 import { projectsTypes } from './interface/projectsTypes';
@@ -76,6 +76,14 @@ export class ProjectsComponent implements OnInit {
   goToEdit(projects: projectsTypes) {
     this.router.navigate(['/admin/projects/update', projects.project_id], {
       state: { projects },
+    });
+  }
+
+  gotoPathTo(projects: projectsTypes) {
+    this.router.navigate(['/admin/procurements'], {
+      queryParams: {
+        project_id: projects.project_id,
+      },
     });
   }
 

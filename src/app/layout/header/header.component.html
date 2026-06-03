@@ -19,9 +19,13 @@
         [ngClass]="{ 'px-5': sidebarOpen, 'px-4 justify-center': !sidebarOpen }"
       >
         <div
-          class="w-11 h-11 rounded-xl flex items-center justify-center text-white bg-blue-700 shadow-md"
+          class="w-11 h-11 rounded-xl flex items-center justify-center bg-white shadow-md ring-1 ring-slate-200 overflow-hidden"
         >
-          <mat-icon>account_balance</mat-icon>
+          <img
+            src="/institute-Logo.png"
+            alt="Institute Logo"
+            class="w-full h-full object-contain p-1"
+          />
         </div>
 
         @if (sidebarOpen) {

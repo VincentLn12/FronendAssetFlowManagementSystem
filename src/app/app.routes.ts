@@ -292,7 +292,13 @@ export const routes: Routes = [
                 (m) => m.ProcurementrecordComponent,
               ),
           },
-
+          {
+            path: 'procurements/:id',
+            loadComponent: () =>
+              import('./features/procurementrecord/procurementrecord.components').then(
+                (m) => m.ProcurementrecordComponent,
+              ),
+          },
           {
             path: 'procurements/create',
             loadComponent: () =>

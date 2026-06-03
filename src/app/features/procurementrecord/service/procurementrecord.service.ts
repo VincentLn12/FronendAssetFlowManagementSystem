@@ -15,7 +15,7 @@ export class ProcurementrecordService {
   private baseUrl = environment.baseUrl;
   private http = inject(HttpClient);
 
-  getProcurementrecords(paramsData: Params) {
+  getProcurementrecords(paramsData: Params, project_id?: number | null) {
     let params = new HttpParams();
 
     if (paramsData.sort) {
@@ -24,6 +24,10 @@ export class ProcurementrecordService {
 
     if (paramsData.search) {
       params = params.append('search', paramsData.search);
+    }
+
+    if (project_id) {
+      params = params.append('ProjectId', project_id);
     }
 
     params = params.append('pageSize', paramsData.pageSize);
