@@ -8,6 +8,7 @@ import { TableState } from '../../../shared/TableState';
 import { AssetRepairsService } from './service/assetRepairs.service';
 import { assetRepairsTypes } from './interface/assetRepairsTypes';
 import { ThaiDatePipe } from '../../shared/pipes/thai-date-pipe';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-departments',
@@ -21,8 +22,8 @@ export class AssetRepairsComponent implements OnInit {
   private assetRepairsService = inject(AssetRepairsService);
   private alertService = inject(AlertService);
   private table = new TableState();
-
-  asset_id = signal<number | null>(null);
+  private location = inject(Location);
+  procurement_withdrawal_id = signal<number | null>(null);
   assetRepair?: Pagination<assetRepairsTypes>;
   assetRepairs = signal<assetRepairsTypes[]>([]);
   Params = new Params();
@@ -31,22 +32,9 @@ export class AssetRepairsComponent implements OnInit {
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : null;
-    const procurementrecord = history.state?.procurementrecord;
-
-    // // ถ้าไม่มี state แปลว่าเข้าจากการพิมพ์ URL เอง
-    // if (!procurementrecord) {
-    //   this.router.navigate(['/admin/procurements']);
-    //   return;
-    // }
-
-    // // กันประเภทผิด
-    // if (procurementrecord.expense_type_name !== 'ครุภัณฑ์') {
-    //   this.router.navigate(['/admin/procurements']);
-    //   return;
-    // }
 
     if (id && Number.isFinite(id)) {
-      this.asset_id.set(id);
+      this.procurement_withdrawal_id.set(id);
       this.LoadgetAssetRepairs(id);
     }
   }
@@ -62,7 +50,7 @@ export class AssetRepairsComponent implements OnInit {
   }
 
   onSearch(value: string) {
-    const id = this.asset_id();
+    const id = this.procurement_withdrawal_id();
 
     if (!id) return;
 
@@ -70,7 +58,7 @@ export class AssetRepairsComponent implements OnInit {
   }
 
   onPageChange(page: number) {
-    const id = this.asset_id();
+    const id = this.procurement_withdrawal_id();
 
     if (!id) return;
 
@@ -78,7 +66,7 @@ export class AssetRepairsComponent implements OnInit {
   }
 
   onSort(value: string) {
-    const id = this.asset_id();
+    const id = this.procurement_withdrawal_id();
 
     if (!id) return;
 
@@ -95,7 +83,7 @@ export class AssetRepairsComponent implements OnInit {
   }
 
   confirmDelete(id: number) {
-    const procurementId = this.asset_id();
+    const procurementId = this.procurement_withdrawal_id();
 
     if (!procurementId) return;
 
@@ -109,7 +97,7 @@ export class AssetRepairsComponent implements OnInit {
   }
 
   goToCreate() {
-    const asset_ids = this.asset_id();
+    const asset_ids = this.procurement_withdrawal_id();
 
     if (!asset_ids) return;
 
@@ -121,9 +109,9 @@ export class AssetRepairsComponent implements OnInit {
   }
 
   goToEdit(mat: assetRepairsTypes) {
-    this.router.navigate(['/admin/assetRepairs/update', mat.asset_id], {
+    this.router.navigate(['/admin/assetRepairs/update', mat.asset_repair_id], {
       state: {
-        assetItem: mat,
+        assetRepair: mat,
       },
     });
   }
@@ -151,19 +139,10 @@ export class AssetRepairsComponent implements OnInit {
     ];
 
   cancel() {
-    const assetId = this.assetRepairs()?.[0].asset_id;
-
-    if (!assetId) {
-      this.router.navigate(['/admin/procurements']);
-      return;
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      this.router.navigate(['/admin/AssetWithdrawal', this.procurement_withdrawal_id()]);
     }
-
-    this.router.navigate(['/admin/assetItems', assetId], {
-      state: {
-        assetItem: history.state?.assetItem,
-        procurementrecord: history.state?.procurementrecord,
-        procurement_record_id: history.state?.procurement_record_id,
-      },
-    });
   }
 }

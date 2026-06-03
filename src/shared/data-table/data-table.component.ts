@@ -90,6 +90,42 @@ export class DataTableComponent {
     return this.detail.observed;
   }
   get showwithdraw() {
-    return this.detail.observed;
+    return this.withdraw.observed;
+  }
+  isEmptyValue(value: any): boolean {
+    return (
+      value === null ||
+      value === undefined ||
+      value === '' ||
+      value === '-' ||
+      (Array.isArray(value) && value.length === 0)
+    );
+  }
+
+  getColumnValue(item: any, col: any): any {
+    const rawValue = this.getValue(item, col.key);
+
+    return col.transform ? col.transform(rawValue, item) : rawValue;
+  }
+
+  hasColumnData(col: any): boolean {
+    return this.data.some((item: any) => {
+      const value = this.getColumnValue(item, col);
+      return !this.isEmptyValue(value);
+    });
+  }
+
+  visibleColumns() {
+    return this.columns.filter((col: any) => this.hasColumnData(col));
+  }
+
+  displayValue(item: any, col: any): any {
+    const value = this.getColumnValue(item, col);
+
+    if (this.isEmptyValue(value)) {
+      return '-';
+    }
+
+    return value;
   }
 }

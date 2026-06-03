@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { procurementrecordTypes } from '../interface/procurementrecordTypes';
-import { ThaiDatePipe } from "../../../shared/pipes/thai-date-pipe";
-
+import { ThaiDatePipe } from '../../../shared/pipes/thai-date-pipe';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-procurementrecord-details',
   imports: [ThaiDatePipe],
@@ -11,6 +11,7 @@ import { ThaiDatePipe } from "../../../shared/pipes/thai-date-pipe";
 export class ProcurementrecordDetailsComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private location = inject(Location);
 
   isLoading = signal(false);
 
@@ -32,6 +33,10 @@ export class ProcurementrecordDetailsComponent {
   }
 
   cancel() {
-    this.router.navigate(['/admin/procurements']);
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/admin/procurementrecord']);
+    }
   }
 }

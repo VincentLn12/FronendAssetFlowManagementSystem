@@ -32,7 +32,7 @@ export class AssetRepairsDetailsComponent {
   }
 
   cancel() {
-    const assetId = this.assetRepairs()?.asset_id;
+    const assetId = this.assetRepairs()?.procurement_withdrawal_id;
 
     if (!assetId) {
       this.router.navigate(['/admin/procurements']);

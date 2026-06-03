@@ -116,20 +116,25 @@ export class AssetSubItemsComponent implements OnInit {
     });
   }
   cancel() {
-    const asset_id = this.asset_id();
+    // const asset_id = this.asset_id();
 
-    if (!asset_id) {
-      this.router.navigate(['/admin/procurements']);
-      return;
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      this.router.navigate(['/admin/assetItems']);
     }
+    // if (!asset_id) {
+    //   this.router.navigate(['/admin/procurements']);
+    //   return;
+    // }
 
-    this.router.navigate(['/admin/assetItems', asset_id], {
-      state: {
-        assetItem: history.state?.assetItem,
-        procurementrecord: history.state?.procurementrecord,
-        procurement_record_id: history.state?.procurement_record_id,
-      },
-    });
+    // this.router.navigate(['/admin/assetItems', asset_id], {
+    //   state: {
+    //     assetItem: history.state?.assetItem,
+    //     procurementrecord: history.state?.procurementrecord,
+    //     procurement_record_id: history.state?.procurement_record_id,
+    //   },
+    // });
   }
   sortOptions = [
     { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },

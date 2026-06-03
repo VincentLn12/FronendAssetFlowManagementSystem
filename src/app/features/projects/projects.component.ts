@@ -80,10 +80,11 @@ export class ProjectsComponent implements OnInit {
   }
 
   gotoPathTo(projects: projectsTypes) {
-    this.router.navigate(['/admin/procurements'], {
+    this.router.navigate(['/admin/project/procurementrecord'], {
       queryParams: {
         project_id: projects.project_id,
       },
+      state: { projects },
     });
   }
 

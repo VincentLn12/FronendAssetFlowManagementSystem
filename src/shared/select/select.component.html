@@ -7,32 +7,43 @@
     }
   </label>
 
-  <ng-select
-    class="custom-select"
-    dropdownPanelClass="custom-select-panel"
-    appendTo="body"
-    [items]="filteredOptions"
-    [bindLabel]="optionLabel"
-    [bindValue]="optionValue"
-    [placeholder]="placeholder"
-    [searchable]="false"
-    [clearable]="clearable"
-    [formControl]="control"
-    [notFoundText]="'ไม่พบข้อมูล'"
-    (open)="onOpenSelect()"
+  <div
+    class="relative rounded-xl transition-all"
+    [ngClass]="
+      readonly ? 'bg-slate-100 border border-slate-300 shadow-inner cursor-not-allowed' : 'bg-white'
+    "
   >
-    <ng-template ng-header-tmp>
-      <input
-        type="text"
-        class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:border-emerald-500"
-        placeholder="พิมพ์เพื่อค้นหา"
-        [(ngModel)]="searchText"
-        [ngModelOptions]="{ standalone: true }"
-        (input)="filterOptions()"
-        autofocus
-      />
-    </ng-template>
-  </ng-select>
+    <ng-select
+      class="custom-select"
+      [class.custom-select-readonly]="readonly"
+      dropdownPanelClass="custom-select-panel"
+      appendTo="body"
+      [items]="filteredOptions"
+      [bindLabel]="optionLabel"
+      [bindValue]="optionValue"
+      [placeholder]="placeholder"
+      [searchable]="false"
+      [clearable]="!readonly && clearable"
+      [readonly]="readonly"
+      [formControl]="control"
+      [notFoundText]="'ไม่พบข้อมูล'"
+      (open)="onOpenSelect()"
+    >
+      <ng-template ng-header-tmp>
+        @if (!readonly) {
+          <input
+            type="text"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:border-emerald-500"
+            placeholder="พิมพ์เพื่อค้นหา"
+            [(ngModel)]="searchText"
+            [ngModelOptions]="{ standalone: true }"
+            (input)="filterOptions()"
+            autofocus
+          />
+        }
+      </ng-template>
+    </ng-select>
+  </div>
 
   <app-input-error [control]="control" [label]="label" type="select" />
 </div>

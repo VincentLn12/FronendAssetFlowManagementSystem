@@ -2,11 +2,12 @@ import { Component, Input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { InputErrorComponent } from '../input-error/input-error.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-select',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, NgSelectModule, InputErrorComponent],
+  imports: [ReactiveFormsModule, FormsModule, NgSelectModule, InputErrorComponent, CommonModule],
   templateUrl: './select.component.html',
 })
 export class SelectComponent {
@@ -19,6 +20,7 @@ export class SelectComponent {
   @Input() required = false;
   @Input() searchable = true;
   @Input() clearable = true;
+  @Input() readonly = false;
 
   searchText = '';
   filteredOptions: any[] = [];

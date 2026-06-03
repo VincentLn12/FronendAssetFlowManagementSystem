@@ -292,13 +292,7 @@ export const routes: Routes = [
                 (m) => m.ProcurementrecordComponent,
               ),
           },
-          {
-            path: 'procurements/:id',
-            loadComponent: () =>
-              import('./features/procurementrecord/procurementrecord.components').then(
-                (m) => m.ProcurementrecordComponent,
-              ),
-          },
+
           {
             path: 'procurements/create',
             loadComponent: () =>
@@ -306,6 +300,7 @@ export const routes: Routes = [
                 (m) => m.ProcurementsAddUpdateComponent,
               ),
           },
+
           {
             path: 'procurements/update/:id',
             loadComponent: () =>
@@ -320,6 +315,7 @@ export const routes: Routes = [
                 (m) => m.ProcurementrecordDetailsComponent,
               ),
           },
+
           // รายละเอียดการจ้าง
           {
             path: 'hireDetails/:id',
@@ -498,6 +494,28 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/assetWithdrawal/assetWithdrawal.component').then(
                 (m) => m.AssetWithdrawalComponent,
+              ),
+          },
+          //โปรเจค
+          {
+            path: 'project/procurementrecord',
+            loadComponent: () =>
+              import('./features/procurementrecord/projectid/projectid.component').then(
+                (m) => m.ProjectidComponent,
+              ),
+          },
+          {
+            path: 'project/procurementrecord/create',
+            loadComponent: () =>
+              import('./features/procurementrecord/projectprocurementrecordaddupdate/addupdate.component').then(
+                (m) => m.projectProcurementsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'project/procurementrecord/update/:id',
+            loadComponent: () =>
+              import('./features/procurementrecord/projectprocurementrecordaddupdate/addupdate.component').then(
+                (m) => m.projectProcurementsAddUpdateComponent,
               ),
           },
           {

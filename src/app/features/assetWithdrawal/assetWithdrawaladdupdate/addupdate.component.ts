@@ -89,16 +89,16 @@ export class AssetWithdrawalAddUpdateComponent implements OnInit {
 
     this.isLoading.set(true);
 
-    // this.assetWithdrawalService
-    //   .getAssetWithdrawalbyProcuremen(id)
-    //   .pipe(finalize(() => this.isLoading.set(false)))
-    //   .subscribe({
-    //     next: (item) => this.patchForm(item),
-    //     error: () => {
-    //       this.snackbar.error('ไม่สามารถโหลดข้อมูลได้');
-    //       this.router.navigate(['/admin/AssetWithdrawal']);
-    //     },
-    //   });
+    this.assetWithdrawalService
+      .getAssetWithdrawalbyProcuremen(id)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (item) => this.patchForm(item),
+        error: () => {
+          this.snackbar.error('ไม่สามารถโหลดข้อมูลได้');
+          this.router.navigate(['/admin/AssetWithdrawal']);
+        },
+      });
   }
 
   private loadDropdowns() {
@@ -120,10 +120,6 @@ export class AssetWithdrawalAddUpdateComponent implements OnInit {
   }
 
   private patchForm(item: assetWithdrawalCreateTypes) {
-    const staff_fullname = this.route.snapshot.queryParamMap.get('staff_fullname');
-
-    const staff_fullnames = staff_fullname ? Number(staff_fullname) : null;
-
     this.form.patchValue({
       procurement_withdrawal_id: item.procurement_withdrawal_id ?? null,
       procurement_record_id: item.procurement_record_id ?? null,

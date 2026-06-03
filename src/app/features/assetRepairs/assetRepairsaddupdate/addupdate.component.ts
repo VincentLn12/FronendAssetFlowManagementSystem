@@ -30,7 +30,7 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
   private assetRepairsService = inject(AssetRepairsService);
   private snackbar = inject(SnackbarService);
 
-  asset_id = signal<number | null>(null);
+  procurement_withdrawal_id = signal<number | null>(null);
   asset_repair_id = signal<number | null>(null);
 
   isEditMode = computed(() => this.asset_repair_id() !== null);
@@ -56,7 +56,7 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
     repair_cost: [0],
     decree_document_no: [''],
     status: ['ส่งซ่อม', Validators.required],
-    asset_id: [0, Validators.required],
+    procurement_withdrawal_id: [0, Validators.required],
   });
 
   ngOnInit(): void {
@@ -75,9 +75,9 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
 
     // โหมดเพิ่ม
     if (assetId && Number.isFinite(assetId)) {
-      this.asset_id.set(assetId);
+      this.procurement_withdrawal_id.set(assetId);
       this.form.patchValue({
-        asset_id: assetId,
+        procurement_withdrawal_id: assetId,
       });
       return;
     }
@@ -109,7 +109,7 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
   }
 
   private patchForm(item: assetRepairsTypes) {
-    this.asset_id.set(item.asset_id);
+    this.procurement_withdrawal_id.set(item.procurement_withdrawal_id);
 
     this.form.patchValue({
       repair_document_no: item.repair_document_no ?? '',
@@ -120,7 +120,7 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
       repair_cost: item.repair_cost ?? 0,
       decree_document_no: item.decree_document_no ?? '',
       status: item.status ?? 'ส่งซ่อม',
-      asset_id: item.asset_id ?? 0,
+      procurement_withdrawal_id: item.procurement_withdrawal_id ?? 0,
     });
   }
 
@@ -134,7 +134,7 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
 
     const payload: assetRepairsTypes = {
       asset_repair_id: this.asset_repair_id() ?? 0,
-      asset_id: value.asset_id,
+      procurement_withdrawal_id: value.procurement_withdrawal_id,
       repair_document_no: value.repair_document_no.trim(),
       repair_date: value.repair_date.toISOString(),
       problem_description: value.problem_description.trim(),
@@ -164,7 +164,7 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
   }
 
   cancel() {
-    const assetId = this.asset_id() || history.state?.asset_id;
+    const assetId = this.procurement_withdrawal_id() || history.state?.asset_id;
 
     if (!assetId) {
       this.router.navigate(['/admin/assetRepairs', assetId]);

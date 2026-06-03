@@ -264,3 +264,24 @@ ng-select.custom-select {
 .flatpickr-next-month {
   pointer-events: auto !important;
 }
+
+::ng-deep .custom-select-readonly .ng-select-container {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+}
+
+::ng-deep .custom-select-readonly .ng-value-label {
+  color: #64748b !important;
+  font-weight: 600;
+}
+
+::ng-deep .custom-select-readonly .ng-placeholder {
+  color: #94a3b8 !important;
+}
+
+::ng-deep .custom-select-readonly .ng-arrow-wrapper,
+::ng-deep .custom-select-readonly .ng-clear-wrapper {
+  display: none !important;
+}

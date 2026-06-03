@@ -8,5 +8,5 @@ export interface assetRepairsTypes {
   repair_cost?: number | null;
   decree_document_no?: string | null;
   status: string;
-  asset_id: number;
+  procurement_withdrawal_id: number;
 }

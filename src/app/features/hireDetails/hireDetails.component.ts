@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +19,7 @@ import { forkJoin } from 'rxjs';
 export class HireDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private location = inject(Location);
 
   private hireDetailsService = inject(HireDetailsService);
   private MaterialUnitsService = inject(MaterialUnitsService);
@@ -192,16 +193,21 @@ export class HireDetailsComponent implements OnInit {
   cancel() {
     const id = history.state?.procurement_record_id;
 
-    if (!id) {
-      this.router.navigate(['/admin/procurements']);
-      return;
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/admin/projects']);
     }
+    // if (!id) {
+    //   this.router.navigate(['/admin/procurements']);
+    //   return;
+    // }
 
-    this.router.navigate(['/admin/assetItems', id], {
-      state: {
-        procurementrecord: history.state?.procurementrecord,
-      },
-    });
+    // this.router.navigate(['/admin/assetItems', id], {
+    //   state: {
+    //     procurementrecord: history.state?.procurementrecord,
+    //   },
+    // });
   }
 
   confirmDelete(id: number) {

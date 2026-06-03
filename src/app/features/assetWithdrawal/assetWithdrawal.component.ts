@@ -148,6 +148,10 @@ export class AssetWithdrawalComponent implements OnInit {
     ];
 
   cancel() {
-    this.router.navigate(['/admin/procurements']);
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      this.router.navigate(['/admin/procurements']);
+    }
   }
 }

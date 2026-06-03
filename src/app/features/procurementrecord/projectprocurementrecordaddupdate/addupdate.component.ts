@@ -21,7 +21,7 @@ import { ProjectsService } from '../../projects/service/projects.service';
 import { toThaiBahtText } from '../../../shared/thai-baht-text';
 
 @Component({
-  selector: 'app-addupdate',
+  selector: 'app-project-procurements-addupdate',
   standalone: true,
   imports: [
     CommonModule,
@@ -32,7 +32,7 @@ import { toThaiBahtText } from '../../../shared/thai-baht-text';
   ],
   templateUrl: './addupdate.component.html',
 })
-export class ProcurementsAddUpdateComponent implements OnInit {
+export class projectProcurementsAddUpdateComponent implements OnInit {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -54,7 +54,9 @@ export class ProcurementsAddUpdateComponent implements OnInit {
   isEditMode = computed(() => this.procurement_record_id() !== null);
   name = 'ชื่อโครงการ';
   selectedFile: File | null = null;
+  projectstate = history.state?.projects.projects;
 
+  //dropdown
   fiscal_years = signal<any[]>([]);
   staffs = signal<any[]>([]);
   operation_types = signal<any[]>([]);
@@ -93,6 +95,12 @@ export class ProcurementsAddUpdateComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.form.patchValue({
+      project_id: this.projectstate?.project_id ?? null,
+      fiscal_year_id: this.projectstate?.fiscal_year_id ?? null,
+    });
+
+    console.log(this.projectstate);
     this.loadDropdowns();
 
     this.form.controls.total_amount.valueChanges.subscribe((amount) => {
@@ -105,6 +113,7 @@ export class ProcurementsAddUpdateComponent implements OnInit {
         { emitEvent: false },
       );
     });
+
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : null;
 
@@ -125,7 +134,12 @@ export class ProcurementsAddUpdateComponent implements OnInit {
     }
 
     this.isLoading.set(true);
-
+    const projectId = this.projectstate?.project_id;
+    if (projectId) {
+      this.form.patchValue({
+        project_id: Number(projectId),
+      });
+    }
     this.procurementrecordService
       .getProcurementrecord(id)
       .pipe(finalize(() => this.isLoading.set(false)))
@@ -205,6 +219,19 @@ export class ProcurementsAddUpdateComponent implements OnInit {
         this.fund_categorys.set(res.fund_category.data);
         this.budget_sources.set(res.budget_source.data);
         this.projects.set(res.project.data);
+
+        const projectId = this.projectstate?.project_id;
+        const fiscalYearId = this.projectstate?.fiscal_year_id;
+
+        if (projectId) {
+          this.form.controls.project_id.setValue(Number(projectId));
+          this.form.controls.project_id.updateValueAndValidity();
+        }
+
+        if (fiscalYearId) {
+          this.form.controls.fiscal_year_id.setValue(Number(fiscalYearId));
+          this.form.controls.fiscal_year_id.updateValueAndValidity();
+        }
       },
       error: () => {
         this.snackbar.error('โหลดข้อมูลตัวเลือกไม่สำเร็จ');
