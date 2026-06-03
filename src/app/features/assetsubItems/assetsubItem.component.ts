@@ -116,17 +116,18 @@ export class AssetSubItemsComponent implements OnInit {
     });
   }
   cancel() {
-    const procurementId = history.state?.procurement_record_id;
-    const procurementrecord = history.state?.procurementrecord;
+    const asset_id = this.asset_id();
 
-    if (!procurementId) {
+    if (!asset_id) {
       this.router.navigate(['/admin/procurements']);
       return;
     }
 
-    this.router.navigate(['/admin/assetItems', procurementId], {
+    this.router.navigate(['/admin/assetItems', asset_id], {
       state: {
-        procurementrecord,
+        assetItem: history.state?.assetItem,
+        procurementrecord: history.state?.procurementrecord,
+        procurement_record_id: history.state?.procurement_record_id,
       },
     });
   }

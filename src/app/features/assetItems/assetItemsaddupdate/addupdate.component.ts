@@ -67,13 +67,11 @@ export class AssetItemsAddUpdateComponent implements OnInit {
     asset_id: [null as number | null],
     procurement_record_id: [null as number | null, [Validators.required]],
     item_no: [0],
-    asset_code_prefix: ['', [Validators.required]],
+    asset_code_prefix: [''],
     asset_name: ['', [Validators.required]],
     receive_date: [new Date().toISOString().split('T')[0], [Validators.required]],
     fund_category_id: [null as number | null, [Validators.required]],
     department_id: [null as number | null, [Validators.required]],
-    staff_id: [null as number | null, [Validators.required]],
-    vendor_id: [null as number | null, [Validators.required]],
     acquisition_method_id: [null as number | null, [Validators.required]],
   });
 
@@ -189,8 +187,6 @@ export class AssetItemsAddUpdateComponent implements OnInit {
       receive_date: item.receive_date ?? '',
       fund_category_id: item.fund_category_id ?? null,
       department_id: item.department_id ?? null,
-      staff_id: item.staff_id ?? null,
-      vendor_id: item.vendor_id ?? null,
       acquisition_method_id: item.acquisition_method_id ?? null,
     });
   }
@@ -210,8 +206,6 @@ export class AssetItemsAddUpdateComponent implements OnInit {
       receive_date: this.form.controls.receive_date.value ?? '',
       fund_category_id: this.form.controls.fund_category_id.value,
       department_id: this.form.controls.department_id.value,
-      staff_id: this.form.controls.staff_id.value,
-      vendor_id: this.form.controls.vendor_id.value,
       acquisition_method_id: this.form.controls.acquisition_method_id.value,
     };
 

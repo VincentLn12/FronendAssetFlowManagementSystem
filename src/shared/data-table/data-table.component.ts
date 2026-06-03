@@ -38,6 +38,7 @@ export class DataTableComponent {
   @Output() detail = new EventEmitter<any>();
   @Output() back = new EventEmitter<any>();
   @Output() repair = new EventEmitter<any>();
+  @Output() withdraw = new EventEmitter<any>();
 
   get totalPages() {
     return Math.ceil(this.totalItems / this.pageSize) || 1;
@@ -86,6 +87,9 @@ export class DataTableComponent {
   }
 
   get showDetail() {
+    return this.detail.observed;
+  }
+  get showwithdraw() {
     return this.detail.observed;
   }
 }

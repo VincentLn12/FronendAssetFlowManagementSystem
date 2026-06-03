@@ -7,11 +7,12 @@ import { AlertService } from '../../../shared.service';
 import { TableState } from '../../../shared/TableState';
 import { AssetRepairsService } from './service/assetRepairs.service';
 import { assetRepairsTypes } from './interface/assetRepairsTypes';
+import { ThaiDatePipe } from '../../shared/pipes/thai-date-pipe';
 
 @Component({
   selector: 'app-departments',
   standalone: true,
-  imports: [DataTableComponent],
+  imports: [ThaiDatePipe],
   templateUrl: './assetRepairs.component.html',
 })
 export class AssetRepairsComponent implements OnInit {

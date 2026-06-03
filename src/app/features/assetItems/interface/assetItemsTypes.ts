@@ -11,10 +11,6 @@ export interface assetItemsTypes {
   category_name: string | null;
   department_id: number | null;
   department_name: string | null;
-  staff_id: number | null;
-  staff_name: string | null;
-  vendor_id: number | null;
-  vendor_name: string | null;
   acquisition_method_id: number | null;
   acquisition_method_name: string | null;
 }
@@ -23,13 +19,11 @@ export interface assetItemsCreateTypes {
   asset_id: number | null;
   procurement_record_id: number | null;
   item_no: number;
-  asset_code_prefix: string;
+  asset_code_prefix?: string | null;
   asset_name: string;
   receive_date: string;
   fund_category_id: number | null;
   department_id: number | null;
-  staff_id: number | null;
-  vendor_id: number | null;
   acquisition_method_id: number | null;
 }
 

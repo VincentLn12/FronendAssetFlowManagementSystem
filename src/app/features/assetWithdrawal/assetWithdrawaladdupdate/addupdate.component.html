@@ -39,55 +39,34 @@
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="grid grid-cols-2 gap-6 p-6">
-              <app-input
-                label="รหัสรายการเเม่"
-                [control]="form.controls.asset_code_prefix"
-                placeholder="เช่น: 5800-5007"
-              ></app-input>
-              <app-input
-                label="ชื่อรายการ"
-                [control]="form.controls.asset_name"
-                placeholder="เช่น: คอมพิวเตอร์, โต๊ะทำงาน, เครื่องปรับอากาศ"
-                [required]="true"
-              ></app-input>
-            </div>
-
-            <div class="grid grid-cols-3 gap-6 p-6 -mt-10">
+            <div class="grid grid-cols-3 gap-6 p-6">
+              <app-date-picker
+                label="วันที่เบิก"
+                [control]="form.controls.withdrawal_date"
+                placeholder="เลือกวันที่เบิก"
+              />
               <app-select
-                label="หน่วยงานที่รับผิดชอบ"
-                [control]="form.controls.department_id"
-                [options]="departments()"
-                optionLabel="department_name"
-                optionValue="department_id"
-                placeholder="-- เลือกหน่วยงาน --"
+                label="ผู้เบิกคุรภัณฑ์"
+                [control]="form.controls.staff_id"
+                [options]="staffs()"
+                optionLabel="full_name"
+                optionValue="staff_id"
+                placeholder="-- เลือกผู้เบิกคุรภัณฑ์ --"
                 [required]="true"
                 [searchable]="true"
+              />
+              <app-input
+                label="สถานที่จัดเก็บ"
+                [control]="form.controls.storage_location"
+                placeholder="กรอกสถานที่จัดเก็บ"
               />
             </div>
-
-            <div class="grid grid-cols-3 gap-6 p-6 -mt-10">
-              <app-select
-                label="ประเภทเงิน"
-                [control]="form.controls.fund_category_id"
-                [options]="fund_categorys()"
-                optionLabel="fund_name"
-                optionValue="fund_category_id"
-                placeholder="-- เลือกประเภทเงิน --"
-                [required]="true"
-                [searchable]="true"
+            <div class="gap-6 p-6 -mt-10">
+              <app-textarea
+                label="หมายเหตุ"
+                [control]="form.controls.remark"
+                placeholder="กรอกหมายเหตุ (ถ้ามี)"
               />
-              <app-select
-                label="วิธีได้มา"
-                [control]="form.controls.acquisition_method_id"
-                [options]="aquisition_methods()"
-                optionLabel="acquisition_method_name"
-                optionValue="acquisition_method_id"
-                placeholder="-- เลือกวิธีได้มา--"
-                [required]="true"
-                [searchable]="true"
-              />
-              <app-date-picker label="วันที่รับ" [control]="form.controls.receive_date" />
             </div>
 
             <!-- Footer -->

@@ -4,26 +4,26 @@ import { DataTableComponent } from '../../../shared/data-table/data-table.compon
 import { Pagination } from '../../shared/models/pagination';
 import { Params } from '../../shared/models/allType';
 import { AlertService } from '../../../shared.service';
-import { assetItemsTypes } from './interface/assetItemsTypes';
-import { AssetItemsService } from './service/assetItems.service';
+import { assetWithdrawalTypes } from './interface/assetWithdrawalTypes';
+import { AssetWithdrawalService } from './service/assetWithdrawal.service';
 import { TableState } from '../../../shared/TableState';
 
 @Component({
   selector: 'app-departments',
   standalone: true,
   imports: [DataTableComponent],
-  templateUrl: './assetItems.component.html',
+  templateUrl: './assetWithdrawal.component.html',
 })
-export class AssetItemsComponent implements OnInit {
+export class AssetWithdrawalComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private assetItemsService = inject(AssetItemsService);
+  private assetWithdrawalService = inject(AssetWithdrawalService);
   private alertService = inject(AlertService);
   private table = new TableState();
 
   procurement_record_id = signal<number | null>(null);
-  assetItem?: Pagination<assetItemsTypes>;
-  assetItems = signal<assetItemsTypes[]>([]);
+  assetWithdrawal?: Pagination<assetWithdrawalTypes>;
+  assetWithdrawals = signal<assetWithdrawalTypes[]>([]);
   Params = new Params();
   totalCount = signal<number>(0);
 
@@ -32,28 +32,18 @@ export class AssetItemsComponent implements OnInit {
     const id = idParam ? Number(idParam) : null;
     const procurementrecord = history.state?.procurementrecord;
 
-    // // ถ้าไม่มี state แปลว่าเข้าจากการพิมพ์ URL เอง
-    // if (!procurementrecord) {
-    //   this.router.navigate(['/admin/procurements']);
-    //   return;
-    // }
-
-    // // กันประเภทผิด
-    // if (procurementrecord.expense_type_name !== 'ครุภัณฑ์') {
-    //   this.router.navigate(['/admin/procurements']);
-    //   return;
-    // }
+    console.log(procurementrecord);
 
     if (id && Number.isFinite(id)) {
       this.procurement_record_id.set(id);
-      this.LoadgetAssetItems(id);
+      this.LoadgetAssetWithdrawal(id);
     }
   }
 
-  LoadgetAssetItems(id: number) {
-    this.assetItemsService.getAssetItembyProcuremen(this.table.params, id).subscribe({
+  LoadgetAssetWithdrawal(id: number) {
+    this.assetWithdrawalService.getAssetWithdrawalbyProcuremens(this.table.params, id).subscribe({
       next: (response) => {
-        this.assetItems.set(response.data);
+        this.assetWithdrawals.set(response.data);
         this.totalCount.set(response.count);
       },
       error: (error) => console.error(error),
@@ -65,7 +55,7 @@ export class AssetItemsComponent implements OnInit {
 
     if (!id) return;
 
-    this.table.onSearch(value, () => this.LoadgetAssetItems(id));
+    this.table.onSearch(value, () => this.LoadgetAssetWithdrawal(id));
   }
 
   onPageChange(page: number) {
@@ -73,7 +63,7 @@ export class AssetItemsComponent implements OnInit {
 
     if (!id) return;
 
-    this.table.onPageChange(page, () => this.LoadgetAssetItems(id));
+    this.table.onPageChange(page, () => this.LoadgetAssetWithdrawal(id));
   }
 
   onSort(value: string) {
@@ -81,11 +71,11 @@ export class AssetItemsComponent implements OnInit {
 
     if (!id) return;
 
-    this.table.onSort(value, () => this.LoadgetAssetItems(id));
+    this.table.onSort(value, () => this.LoadgetAssetWithdrawal(id));
   }
 
-  deleteAssetItems(id: number) {
-    this.alertService.confirm('ยืนยันการลบ', 'คุณต้องการลบคำนำหน้านี้หรือไม่?').then((result) => {
+  deleteAssetWithdrawal(id: number) {
+    this.alertService.confirm('ยืนยันการลบ', 'คุณต้องการลบหรือไม่?').then((result) => {
       if (result.isConfirmed) {
         this.confirmDelete(id);
         this.alertService.successNo('ลบเรียบร้อยแล้ว');
@@ -98,10 +88,10 @@ export class AssetItemsComponent implements OnInit {
 
     if (!procurementId) return;
 
-    this.assetItemsService.deleteAssetItems(id).subscribe({
+    this.assetWithdrawalService.deleteAssetWithdrawal(id).subscribe({
       next: () => {
         this.alertService.successNo('ลบรายการเรียบร้อยแล้ว');
-        this.LoadgetAssetItems(procurementId);
+        this.LoadgetAssetWithdrawal(procurementId);
       },
       error: (error) => console.error(error),
     });
@@ -109,45 +99,31 @@ export class AssetItemsComponent implements OnInit {
 
   goToCreate() {
     const procurementId = this.procurement_record_id();
+    const procurementrecord = history.state?.procurementrecord;
 
     if (!procurementId) return;
 
-    this.router.navigate(['/admin/assetItems/create'], {
+    this.router.navigate(['/admin/AssetWithdrawal/create'], {
       queryParams: {
         procurement_record_id: procurementId,
       },
-    });
-  }
-
-  goToEdit(mat: assetItemsTypes) {
-    this.router.navigate(['/admin/assetItems/update', mat.asset_id], {
       state: {
-        assetItem: mat,
+        procurementrecord,
       },
     });
   }
 
-  goToAssetsubItems(mat: assetItemsTypes) {
-    this.router.navigate(['/admin/assetsubItems', mat.asset_id], {
+  goToEdit(mat: assetWithdrawalTypes) {
+    this.router.navigate(['/admin/AssetWithdrawal/update', mat.procurement_withdrawal_id], {
       state: {
-        assetItem: mat,
+        assetWithdrawal: mat,
         procurementrecord: history.state?.procurementrecord,
-        procurement_record_id: this.procurement_record_id(),
       },
     });
   }
 
-  goToAssetRepairs(mat: assetItemsTypes) {
-    this.router.navigate(['/admin/assetRepairs', mat.asset_id], {
-      state: {
-        assetItem: mat,
-        procurementrecord: history.state?.procurementrecord,
-        procurement_record_id: this.procurement_record_id(),
-      },
-    });
-  }
-  goToAssetItemDetails(mat: assetItemsTypes) {
-    this.router.navigate(['/admin/assetItems/details', mat.asset_id], {
+  goToAssetRepairs(mat: assetWithdrawalTypes) {
+    this.router.navigate(['/admin/assetRepairs', mat.procurement_withdrawal_id], {
       state: {
         assetItem: mat,
         procurementrecord: history.state?.procurementrecord,
@@ -165,9 +141,10 @@ export class AssetItemsComponent implements OnInit {
 
   columns: { label: string; key: string; type?: 'text' | 'price' | 'badge'; pipe?: 'thaiDate' }[] =
     [
-      { label: 'รหัส', key: 'asset_code_prefix' },
-      { label: 'ชื่อครุภัณฑ์', key: 'asset_name' },
-      { label: 'วันที่รับ', key: 'receive_date', pipe: 'thaiDate' },
+      { label: 'ครั้งที่', key: 'withdrawal_document_no' },
+      { label: 'วันที่เบิก', key: 'withdrawal_date', pipe: 'thaiDate' },
+      { label: 'ผู้เบิก', key: 'staff_name' },
+      { label: 'สถานที่เก็บ', key: 'storage_location' },
     ];
 
   cancel() {

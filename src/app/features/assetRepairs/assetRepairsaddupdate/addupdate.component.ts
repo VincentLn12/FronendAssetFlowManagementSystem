@@ -19,8 +19,8 @@ import { TextareaComponent, SelectComponent } from '../../../../shared';
     DatePickerComponent,
     InputComponent,
     TextareaComponent,
-    SelectComponent
-],
+    SelectComponent,
+  ],
   templateUrl: './addupdate.component.html',
 })
 export class AssetRepairsAddUpdateComponent implements OnInit {
@@ -132,7 +132,8 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
 
     const value = this.form.getRawValue();
 
-    const payload: Partial<assetRepairsTypes> = {
+    const payload: assetRepairsTypes = {
+      asset_repair_id: this.asset_repair_id() ?? 0,
       asset_id: value.asset_id,
       repair_document_no: value.repair_document_no.trim(),
       repair_date: value.repair_date.toISOString(),
@@ -155,7 +156,8 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
         this.snackbar.success(this.isEditMode() ? 'แก้ไขข้อมูลสำเร็จ' : 'เพิ่มข้อมูลสำเร็จ');
         this.cancel();
       },
-      error: () => {
+      error: (error) => {
+        console.log('error:', error.error);
         this.snackbar.error(this.isEditMode() ? 'แก้ไขข้อมูลไม่สำเร็จ' : 'เพิ่มข้อมูลไม่สำเร็จ');
       },
     });

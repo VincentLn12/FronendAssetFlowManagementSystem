@@ -1,21 +1,141 @@
-<app-data-table
-  title="ประวัติการซ่อมบำรุงรักษาทรัพย์สิน"
-  subtitle="จัดการประวัติการซ่อมบำรุงรักษาทรัพย์สิน"
-  [data]="assetRepairs()"
-  [columns]="columns"
-  [idKey]="'asset_repair_id'"
-  [isAdmin]="true"
-  [sortOptions]="sortOptions"
-  [totalItems]="assetRepair?.count ?? 0"
-  [pageSize]="Params.pageSize"
-  [currentPage]="Params.pageNumber"
-  (search)="onSearch($event)"
-  (sortChange)="onSort($event)"
-  (pageChange)="onPageChange($event)"
-  (add)="goToCreate()"
-  (edit)="goToEdit($event)"
-  (delete)="deleteAssetRepairs($event)"
-  (back)="cancel()"
-  (detail)="goToDetail($event)"
->
-</app-data-table>
+<div class="min-h-screen bg-slate-100 p-4">
+  <div class="mx-auto w-full max-w-[1920px] bg-white p-6 shadow">
+    <!-- ปุ่มกลับ + เพิ่ม -->
+    <div class="mb-4 flex items-center justify-between">
+      <button
+        type="button"
+        (click)="cancel()"
+        class="text-sm font-medium text-slate-600 hover:text-blue-800"
+      >
+        ← กลับไปหน้ารายการ
+      </button>
+
+      <button
+        type="button"
+        (click)="goToCreate()"
+        class="rounded-md bg-blue-800 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-900"
+      >
+        + เพิ่มประวัติซ่อม
+      </button>
+    </div>
+
+    <!-- หัวข้อ -->
+    <h1 class="mb-6 text-center text-xl font-bold text-black">ประวัติการซ่อมบำรุงรักษาทรัพย์สิน</h1>
+
+    <!-- ตาราง -->
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse border border-black text-[15px] text-black">
+        <thead>
+          <tr>
+            <th class="border border-black px-3 py-3 text-center font-semibold">ครั้งที่</th>
+
+            <th class="border border-black px-3 py-3 text-center font-semibold">ว. ด. ป.</th>
+
+            <th class="border border-black px-3 py-3 text-center font-semibold">เลขฎีกา</th>
+
+            <th class="border border-black px-3 py-3 text-center font-semibold">รายการ</th>
+
+            <th class="border border-black px-3 py-3 text-center font-semibold">จำนวนเงิน</th>
+
+            <th class="border border-black px-3 py-3 text-center font-semibold">หมายเหตุ</th>
+
+            <th class="border border-black px-3 py-3 text-center font-semibold">จัดการ</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (item of assetRepairs(); track item.asset_repair_id; let i = $index) {
+            <tr class="align-top">
+              <td class="border border-black px-3 py-3 text-center">
+                {{ i + 1 }}
+              </td>
+
+              <td class="border border-black px-3 py-3 text-center">
+                {{ item.repair_date | thaiDate }}
+              </td>
+
+              <td class="border border-black px-3 py-3 text-center">
+                {{ item.decree_document_no || '-' }}
+              </td>
+
+              <td class="border border-black px-3 py-3">
+                {{ item.problem_description || '-' }}
+              </td>
+
+              <td class="border border-black px-3 py-3 text-right">
+                {{ item.repair_cost || 0 }}
+              </td>
+
+              <td class="border border-black px-3 py-3">
+                <!-- {{ item.repair_description || '-' }} -->
+              </td>
+
+              <td class="border border-black px-3 py-3 text-center">
+                <div class="flex justify-center gap-2">
+                  <button
+                    type="button"
+                    (click)="goToDetail(item)"
+                    class="rounded border border-slate-400 px-2 py-1 text-xs font-semibold hover:bg-slate-100"
+                  >
+                    ดู
+                  </button>
+
+                  <button
+                    type="button"
+                    (click)="goToEdit(item)"
+                    class="rounded border border-blue-400 px-2 py-1 text-xs font-semibold text-blue-700 hover:bg-blue-50"
+                  >
+                    แก้ไข
+                  </button>
+
+                  <button
+                    type="button"
+                    (click)="deleteAssetRepairs(item.asset_repair_id)"
+                    class="rounded border border-red-400 px-2 py-1 text-xs font-semibold text-red-700 hover:bg-red-50"
+                  >
+                    ลบ
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="border border-black px-3 py-8 text-center text-slate-500">
+                ไม่พบข้อมูลประวัติการซ่อม
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination แบบง่าย -->
+    <div class="mt-4 flex items-center justify-between">
+      <p class="text-sm text-slate-600">ทั้งหมด {{ assetRepair?.count ?? 0 }} รายการ</p>
+
+      <div class="flex gap-2">
+        <button
+          type="button"
+          (click)="onPageChange(Params.pageNumber - 1)"
+          [disabled]="Params.pageNumber === 1"
+          class="rounded border border-slate-300 px-3 py-1 text-sm disabled:opacity-40"
+        >
+          ก่อนหน้า
+        </button>
+
+        <span class="rounded bg-blue-800 px-3 py-1 text-sm font-semibold text-white">
+          {{ Params.pageNumber }}
+        </span>
+
+        <button
+          type="button"
+          (click)="onPageChange(Params.pageNumber + 1)"
+          [disabled]="Params.pageNumber * Params.pageSize >= (assetRepair?.count ?? 0)"
+          class="rounded border border-slate-300 px-3 py-1 text-sm disabled:opacity-40"
+        >
+          ถัดไป
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

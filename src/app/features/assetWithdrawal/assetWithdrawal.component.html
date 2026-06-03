@@ -1,0 +1,21 @@
+<app-data-table
+  title="ประวัติการเบิกคุรุภัณฑ์"
+  subtitle="จัดการประวัติการเบิกคุรุภัณฑ์ทั้งหมด"
+  [data]="assetWithdrawals()"
+  [columns]="columns"
+  [idKey]="'procurement_withdrawal_id'"
+  [isAdmin]="true"
+  [sortOptions]="sortOptions"
+  [totalItems]="assetWithdrawal?.count ?? 0"
+  [pageSize]="Params.pageSize"
+  [currentPage]="Params.pageNumber"
+  (search)="onSearch($event)"
+  (sortChange)="onSort($event)"
+  (pageChange)="onPageChange($event)"
+  (add)="goToCreate()"
+  (edit)="goToEdit($event)"
+  (delete)="deleteAssetWithdrawal($event)"
+  (back)="cancel()"
+  (repair)="goToAssetRepairs($event)"
+>
+</app-data-table>

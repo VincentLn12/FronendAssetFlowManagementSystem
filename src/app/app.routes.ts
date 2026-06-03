@@ -471,6 +471,29 @@ export const routes: Routes = [
                 (m) => m.AcquisitionMethodAddUpdateComponent,
               ),
           },
+          // การเบิกครุภัณฑ์
+
+          {
+            path: 'AssetWithdrawal/create',
+            loadComponent: () =>
+              import('./features/assetWithdrawal/assetWithdrawaladdupdate/addupdate.component').then(
+                (m) => m.AssetWithdrawalAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'AssetWithdrawal/update/:id',
+            loadComponent: () =>
+              import('./features/assetWithdrawal/assetWithdrawaladdupdate/addupdate.component').then(
+                (m) => m.AssetWithdrawalAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'AssetWithdrawal/:id',
+            loadComponent: () =>
+              import('./features/assetWithdrawal/assetWithdrawal.component').then(
+                (m) => m.AssetWithdrawalComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,

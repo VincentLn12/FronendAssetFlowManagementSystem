@@ -8,6 +8,7 @@ import { AlertService } from '../../../shared.service';
 import { procurementrecordTypes } from './interface/procurementrecordTypes';
 import { ProcurementrecordService } from './service/procurementrecord.service';
 import { environment } from '../../../environments/environment.development';
+import { CdkAriaLive } from '../../../../node_modules/@angular/cdk/types/_a11y-module-chunk';
 
 @Component({
   selector: 'app-departments',
@@ -86,6 +87,7 @@ export class ProcurementrecordComponent implements OnInit {
       state: { procurementrecord },
     });
   }
+
   gotoPathTo(procurementrecord: procurementrecordTypes) {
     if (procurementrecord.expense_type_name === 'ครุภัณฑ์') {
       this.router.navigate(['/admin/assetItems', procurementrecord.procurement_record_id], {
@@ -100,6 +102,12 @@ export class ProcurementrecordComponent implements OnInit {
         state: { procurementrecord },
       });
     }
+  }
+
+  goToWithdraw(procurementrecord: procurementrecordTypes) {
+    this.router.navigate(['/admin/AssetWithdrawal', procurementrecord.procurement_record_id], {
+      state: { procurementrecord },
+    });
   }
 
   sortOptions = [

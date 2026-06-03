@@ -168,7 +168,7 @@
                           (click)="openFileFromBackend(getValue(item, col.key))"
                           class="inline-flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-1.5 text-sm font-semibold text-amber-700 ring-1 ring-amber-200 transition hover:bg-amber-100 hover:text-amber-900"
                         >
-                          ดู
+                          เปิด
                         </button>
                       } @else {
                         <span class="text-slate-400">ไม่มีไฟล์</span>
@@ -194,6 +194,16 @@
                 @if (isAdmin) {
                   <td class="whitespace-nowrap px-6 py-4 text-right xl:px-8 xl:py-5">
                     <div class="flex items-center justify-end gap-2">
+                      @if (showwithdraw) {
+                        <button
+                          type="button"
+                          title="เบิกของ"
+                          (click)="withdraw.emit(item)"
+                          class="rounded-md border border-green-200 bg-green-50 px-2.5 py-1 text-xs font-semibold text-green-800 transition hover:bg-green-100 xl:text-sm"
+                        >
+                          เบิก
+                        </button>
+                      }
                       @if (showDetail) {
                         <button
                           type="button"
