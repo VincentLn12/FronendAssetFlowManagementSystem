@@ -5,13 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, forkJoin } from 'rxjs';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { SnackbarService } from '../../../core/services/snackbar.service';
-import { AssetCategoriesService } from '../../assetCategories/service/assetCategories.service';
-import { MaterialUnitsService } from '../../materialUnits/service/materialUnits.service';
 import { SelectComponent } from '../../../../shared';
 import { AssetSubItemHistoryService } from '../service/assetSubItemHistory.service';
 import { assetSubItemHistoryTypes } from '../interface/assetSubItemHistoryTypes';
 import { AssetUsageTypeService } from '../../assetUsageType/service/assetUsageType.service';
 import { DatePickerComponent } from '../../../shared/date-picker/date-picker.component';
+import { StaffsService } from '../../staffs/service/staffsType.service';
 
 @Component({
   selector: 'app-asset-items-addupdate',
@@ -45,8 +44,10 @@ export class AssetSubItemHistoryAddUpdateComponent implements OnInit {
 
   //loaddropdown
   private AssetUsageTypeService = inject(AssetUsageTypeService);
+  private StaffsService = inject(StaffsService);
 
   AssetUsage = signal<any[]>([]);
+  Staffs = signal<any[]>([]);
 
   form = this.fb.group({
     sub_item_history_id: 0,
@@ -55,6 +56,7 @@ export class AssetSubItemHistoryAddUpdateComponent implements OnInit {
     history_type: this.fb.control<string | null>(null, Validators.required),
     usage_type_id: this.fb.control<number | null>(null, Validators.required),
     detail: this.fb.control<string | null>(null),
+    staff_id: this.fb.control<number | null>(null),
   });
 
   ngOnInit(): void {
@@ -109,9 +111,16 @@ export class AssetSubItemHistoryAddUpdateComponent implements OnInit {
         pageSize: 100,
         pageNumber: 1,
       }),
+      Staffs: this.StaffsService.getStaffs({
+        sort: '',
+        search: '',
+        pageSize: 100,
+        pageNumber: 1,
+      }),
     }).subscribe({
       next: (res) => {
         this.AssetUsage.set(res.assetCategories.data);
+        this.Staffs.set(res.Staffs.data);
       },
       error: () => {
         this.snackbar.error('โหลดข้อมูลตัวเลือกไม่สำเร็จ');
@@ -127,6 +136,7 @@ export class AssetSubItemHistoryAddUpdateComponent implements OnInit {
       history_type: item.history_type,
       usage_type_id: item.usage_type_id,
       detail: item.detail,
+      staff_id: item.staff_id,
     });
   }
 
@@ -145,6 +155,7 @@ export class AssetSubItemHistoryAddUpdateComponent implements OnInit {
       history_type: this.form.controls.history_type.value,
       usage_type_id: this.form.controls.usage_type_id.value,
       detail: this.form.controls.detail.value,
+      staff_id: this.form.controls.staff_id.value,
     };
 
     console.log('Payload:', payload);

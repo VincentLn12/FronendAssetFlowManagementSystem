@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { SnackbarService } from '../../../core/services/snackbar.service';
 import { assetRepairsTypes } from '../interface/assetRepairsTypes';
 import { AssetRepairsService } from '../service/assetRepairs.service';
 import { DatePickerComponent } from '../../../shared/date-picker/date-picker.component';
 import { TextareaComponent, SelectComponent } from '../../../../shared';
+import { StaffsService } from '../../staffs/service/staffsType.service';
 
 @Component({
   selector: 'app-addupdate',
@@ -28,10 +29,13 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private assetRepairsService = inject(AssetRepairsService);
+  private staffsService = inject(StaffsService);
   private snackbar = inject(SnackbarService);
 
   procurement_withdrawal_id = signal<number | null>(null);
   asset_repair_id = signal<number | null>(null);
+
+  staffs = signal<any[]>([]);
 
   isEditMode = computed(() => this.asset_repair_id() !== null);
 
@@ -47,7 +51,7 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
     { label: 'ยกเลิก', value: 'ยกเลิก' },
   ];
 
-  form = this.fb.nonNullable.group({
+  form = this.fb.group({
     repair_document_no: [''],
     repair_date: [new Date(), [Validators.required]],
     problem_description: [''],
@@ -57,9 +61,11 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
     decree_document_no: [''],
     status: ['ส่งซ่อม', Validators.required],
     procurement_withdrawal_id: [0, Validators.required],
+    staff_id: [null as number | null],
   });
 
   ngOnInit(): void {
+    this.loadDropdowns();
     const idParam = this.route.snapshot.paramMap.get('id');
     const repairId = idParam ? Number(idParam) : null;
 
@@ -108,6 +114,24 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
       });
   }
 
+  private loadDropdowns() {
+    forkJoin({
+      staff: this.staffsService.getStaffs({
+        sort: '',
+        search: '',
+        pageSize: 100,
+        pageNumber: 1,
+      }),
+    }).subscribe({
+      next: (res) => {
+        this.staffs.set(res.staff.data);
+      },
+      error: () => {
+        this.snackbar.error('โหลดข้อมูลตัวเลือกไม่สำเร็จ');
+      },
+    });
+  }
+
   private patchForm(item: assetRepairsTypes) {
     this.procurement_withdrawal_id.set(item.procurement_withdrawal_id);
 
@@ -121,6 +145,7 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
       decree_document_no: item.decree_document_no ?? '',
       status: item.status ?? 'ส่งซ่อม',
       procurement_withdrawal_id: item.procurement_withdrawal_id ?? 0,
+      staff_id: item.staff_id ?? null,
     });
   }
 
@@ -134,17 +159,19 @@ export class AssetRepairsAddUpdateComponent implements OnInit {
 
     const payload: assetRepairsTypes = {
       asset_repair_id: this.asset_repair_id() ?? 0,
-      procurement_withdrawal_id: value.procurement_withdrawal_id,
-      repair_document_no: value.repair_document_no.trim(),
-      repair_date: value.repair_date.toISOString(),
-      problem_description: value.problem_description.trim(),
+      procurement_withdrawal_id: value.procurement_withdrawal_id ?? 0,
+      repair_document_no: value.repair_document_no?.trim() ?? '',
+      repair_date: value.repair_date ? value.repair_date.toISOString() : new Date().toISOString(),
+      problem_description: value.problem_description?.trim() ?? '',
       repair_description: value.repair_description?.trim() || null,
       repair_shop_name: value.repair_shop_name?.trim() || null,
-      repair_cost: value.repair_cost,
+      repair_cost: value.repair_cost ?? 0,
       decree_document_no: value.decree_document_no?.trim() || null,
-      status: value.status,
+      status: value.status ?? 'ส่งซ่อม',
+      staff_id: value.staff_id ?? null,
     };
 
+    console.log('payload:', payload);
     this.isSubmitting.set(true);
 
     const request$ = this.isEditMode()

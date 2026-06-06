@@ -69,7 +69,17 @@
             </div>
 
             <!-- แถวที่ 2 -->
-            <div class="grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-2">
+            <div class="grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3">
+              <app-select
+                label="ผู้ใช้งานคุรภัณฑ์"
+                [control]="form.controls.staff_id"
+                [options]="Staffs()"
+                optionLabel="full_name"
+                optionValue="staff_id"
+                placeholder="-- เลือกประเภทการใช้งาน --"
+                [required]="true"
+                [searchable]="true"
+              />
               <app-select
                 label="ประเภทการใช้งานครุภัณฑ์"
                 [control]="form.controls.usage_type_id"

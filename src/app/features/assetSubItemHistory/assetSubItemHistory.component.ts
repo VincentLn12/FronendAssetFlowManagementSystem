@@ -136,7 +136,7 @@ export class AssetSubItemHistoryComponent implements OnInit {
 
   columns: { label: string; key: string; type?: 'text' | 'price' | 'badge'; pipe?: 'thaiDate' }[] =
     [
-      // { label: 'วันที่', key: 'history_date', pipe: 'thaiDate' },
+      { label: 'ผู้ใช้', key: 'fullName' },
       { label: 'ใช้ทำอะไร', key: 'usage_type_name' },
       { label: 'รายละเอียด', key: 'detail' },
     ];

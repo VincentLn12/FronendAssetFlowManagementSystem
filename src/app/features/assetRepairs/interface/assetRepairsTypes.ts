@@ -9,4 +9,6 @@ export interface assetRepairsTypes {
   decree_document_no?: string | null;
   status: string;
   procurement_withdrawal_id: number;
+  staff_id?: number | null;
+  fullName?: string | null;
 }

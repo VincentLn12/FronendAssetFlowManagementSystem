@@ -6,4 +6,6 @@ export interface assetSubItemHistoryTypes {
   usage_type_id: number | null;
   usage_type_name?: string | null;
   detail: string | null;
+  staff_id?: number | null;
+  fullName?: string | null;
 }

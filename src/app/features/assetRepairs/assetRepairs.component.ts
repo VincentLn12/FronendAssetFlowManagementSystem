@@ -122,21 +122,9 @@ export class AssetRepairsComponent implements OnInit {
     });
   }
 
-  sortOptions = [
-    { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },
-    { label: 'ชื่อ ฮ-ก', value: 'nameDesc' },
-    { label: 'ใหม่ล่าสุด', value: 'latest' },
-    { label: 'เก่าสุด', value: 'oldest' },
-  ];
 
-  columns: { label: string; key: string; type?: 'text' | 'price' | 'badge'; pipe?: 'thaiDate' }[] =
-    [
-      { label: 'ครั้งที่', key: 'repair_document_no' },
-      { label: 'วันที่ซ่อม', key: 'repair_date', pipe: 'thaiDate' },
-      { label: 'ร้านซ่อม', key: 'repair_shop_name' },
-      { label: 'ค่าใช้จ่าย', key: 'repair_cost' },
-      { label: 'สถานะ', key: 'status', type: 'badge' },
-    ];
+
+  
 
   cancel() {
     if (window.history.length > 1) {

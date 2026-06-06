@@ -65,10 +65,16 @@
               >
                 ว. ด. ป.
               </th>
+
               <th
                 class="px-6 py-3 text-center text-xs font-bold uppercase tracking-wide text-white xl:px-8 xl:py-4 xl:text-sm"
               >
                 เลขฎีกา
+              </th>
+              <th
+                class="px-6 py-3 text-center text-xs font-bold uppercase tracking-wide text-white xl:px-8 xl:py-4 xl:text-sm"
+              >
+                ผู้เเจ้งซ่อม
               </th>
               <th
                 class="px-6 py-3 text-left text-xs font-bold uppercase tracking-wide text-white xl:px-8 xl:py-4 xl:text-sm"
@@ -116,6 +122,11 @@
                   >
                     {{ item.decree_document_no || '-' }}
                   </span>
+                </td>
+                <td
+                  class="px-6 py-4 text-center text-sm text-slate-800 xl:px-8 xl:py-5 xl:text-base"
+                >
+                  {{ item.fullName || '-' }}
                 </td>
 
                 <td class="px-6 py-4 text-sm text-slate-800 xl:px-8 xl:py-5 xl:text-base">

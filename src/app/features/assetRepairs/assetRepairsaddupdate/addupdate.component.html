@@ -81,7 +81,7 @@
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="grid grid-cols-2 gap-6 p-6">
+            <div class="grid grid-cols-3 gap-6 p-6">
               <app-input
                 label="เลขฎีกา *"
                 [control]="form.controls.decree_document_no"
@@ -89,6 +89,14 @@
                 [required]="true"
               ></app-input>
               <app-date-picker label="วันที่ซ่อม" [control]="form.controls.repair_date" />
+              <app-select
+                label="ผู้รับผิดชอบ"
+                [control]="form.controls.staff_id"
+                [options]="staffs()"
+                optionLabel="full_name"
+                optionValue="staff_id"
+                placeholder="เลือกผู้รับผิดชอบ"
+              />
             </div>
             <div class="gap-6 p-6 -mt-10">
               <app-textarea
