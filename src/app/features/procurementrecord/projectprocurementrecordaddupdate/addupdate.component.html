@@ -1,22 +1,18 @@
-<div class="min-h-screen bg-slate-50 px-4 py-4 sm:px-6 lg:px-8 font-sans">
+<div class="min-h-screen bg-slate-50 px-4 py-4 font-sans sm:px-6 lg:px-8">
   <div class="mx-auto max-w-[1920px]">
-    <!-- Back button -->
     <button
       type="button"
       (click)="cancel()"
-      class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-blue-800 transition"
+      class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-blue-800"
     >
       <span class="text-lg leading-none">←</span>
       กลับไปหน้ารายการ
     </button>
 
-    <!-- Content -->
     <div class="grid gap-5">
-      <!-- Form Card -->
-      <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-        <!-- Header -->
+      <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-3">
-          <div class="flex justify-between items-center gap-3">
+          <div class="flex items-center justify-between gap-3">
             <h2 class="text-base font-semibold text-white">ข้อมูล{{ name }}</h2>
 
             <span
@@ -42,7 +38,6 @@
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="submit()">
-            <!-- แถวบนสุด: ปีงบประมาณ + โครงการ -->
             <div class="grid grid-cols-1 gap-6 p-6 md:grid-cols-2">
               <app-select
                 label="ปีงบประมาณ"
@@ -66,14 +61,13 @@
               />
             </div>
 
-            <!-- แถวที่ 1 -->
-            <div class="grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3 -mt-5">
+            <div class="-mt-5 grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3">
               <app-input
                 label="เลขที่เอกสาร"
                 [control]="form.controls.document_no"
                 placeholder="เช่น 123-456-789"
                 [required]="true"
-              ></app-input>
+              />
 
               <app-select
                 label="ดำเนินการ"
@@ -97,9 +91,9 @@
               />
             </div>
 
-            <!-- แถวที่ 2 -->
-            <div class="grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3 -mt-5">
+            <div class="-mt-5 grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3">
               <app-date-picker label="วันที่ตรวจรับ" [control]="form.controls.inspection_date" />
+
               <app-select
                 label="เบิกจ่ายเป็นค่าวัสดุ/จ้าง"
                 [control]="form.controls.expense_type_id"
@@ -122,8 +116,7 @@
               />
             </div>
 
-            <!-- แถวที่ 3 -->
-            <div class="grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3 -mt-5">
+            <div class="-mt-5 grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3">
               <app-input
                 label="จำนวนเงิน"
                 type="number"
@@ -132,7 +125,7 @@
               />
 
               <div class="space-y-2">
-                <label class="text-sm font-bold text-slate-700"> จำนวนเงินเป็นตัวอักษร </label>
+                <label class="text-sm font-bold text-slate-700">จำนวนเงินเป็นตัวอักษร</label>
 
                 <div
                   class="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-3 text-slate-600"
@@ -153,8 +146,7 @@
               />
             </div>
 
-            <!-- แถวที่ 4 -->
-            <div class="grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3 -mt-5">
+            <div class="-mt-5 grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3">
               <app-select
                 label="งบประมาณ"
                 [control]="form.controls.budget_source_id"
@@ -187,34 +179,50 @@
               />
             </div>
 
-            <!-- หมายเหตุ -->
-            <div class="px-6 pb-6 -mt-5">
+            <div class="-mt-5 px-6 pb-6">
               <app-input
                 label="หมายเหตุ"
                 [control]="form.controls.remark"
                 placeholder="เช่น ตรวจรับสินค้าครบถ้วน"
-              ></app-input>
+              />
             </div>
 
-            <!-- ไฟล์แนบ -->
-            <div class="px-6 pb-6 -mt-5">
-              <label class="mb-2 block text-sm font-bold text-slate-700"> ไฟล์แนบ </label>
+            <div class="-mt-5 px-6 pb-6">
+              <label class="mb-2 block text-sm font-bold text-slate-700">ไฟล์แนบ</label>
 
               <input
                 type="file"
                 (change)="onFileSelected($event)"
-                class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-700 transition-all duration-200 focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
+                class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-700 transition-all duration-200 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10"
               />
             </div>
 
-            <!-- Footer -->
+            @if (isAssetType() && !this.isEditMode()) {
+              <app-procurement-asset-section
+                [fundCategorys]="fund_categorys()"
+                [departments]="departments()"
+                [acquisitionMethods]="aquisition_methods()"
+                [assetCategories]="asset_category()"
+                [units]="unit()"
+                (payloadChange)="assetPayload.set($event)"
+                (validityChange)="isAssetSectionValid.set($event)"
+              />
+            }
+            @if (isHireType() && !this.isEditMode()) {
+              <app-procurement-hire-section
+                [units]="unit()"
+                (payloadChange)="hirePayload.set($event)"
+                (validityChange)="isHireSectionValid.set($event)"
+              />
+            }
+
             <div
               class="flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4 sm:flex-row sm:items-center sm:justify-end"
             >
               <button
                 type="button"
                 (click)="cancel()"
-                class="inline-flex justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 transition"
+                class="inline-flex justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                 [disabled]="isSubmitting()"
               >
                 ยกเลิก
@@ -222,8 +230,10 @@
 
               <button
                 type="submit"
-                class="inline-flex justify-center rounded-xl bg-blue-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50 transition"
-                [disabled]="isSubmitting() || form.invalid"
+                class="inline-flex justify-center rounded-xl bg-blue-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50"
+                [disabled]="
+                  isSubmitting() || form.invalid || (isAssetType() && !isAssetSectionValid())
+                "
               >
                 @if (isSubmitting()) {
                   กำลังบันทึก...

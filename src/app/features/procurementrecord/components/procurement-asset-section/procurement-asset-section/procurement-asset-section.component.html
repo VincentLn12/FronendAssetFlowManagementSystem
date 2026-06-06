@@ -1,0 +1,212 @@
+<div class="mx-auto mb-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+  <!-- Alert Information -->
+  <div class="mb-8 rounded-xl border-l-4 border-blue-800 bg-blue-50 p-5">
+    <div class="flex flex-wrap items-start justify-between gap-4">
+      <div>
+        <div
+          class="mb-3 inline-flex items-center rounded-full bg-blue-900 px-3 py-1 text-xs font-semibold tracking-wide text-white shadow-sm"
+        >
+          ระเบียบงานครุภัณฑ์
+        </div>
+        <h2 class="text-lg font-bold text-slate-800">ข้อมูลครุภัณฑ์</h2>
+        <p class="mt-1 max-w-3xl text-sm leading-relaxed text-slate-600">
+          กรอกข้อมูลตามลำดับจากครุภัณฑ์หลักก่อน แล้วจึงเพิ่มครุภัณฑ์ย่อย
+          เพื่อให้ข้อมูลทะเบียนและเลขลำดับถูกต้องตามระเบียบ
+        </p>
+      </div>
+
+      <div
+        class="rounded-xl bg-white px-5 py-3 text-sm text-slate-600 shadow-sm ring-1 ring-slate-200/60"
+      >
+        <p class="font-semibold text-slate-800">📌 แนวทางการกรอกข้อมูล</p>
+        <ul class="mt-2 space-y-1 text-xs text-slate-500">
+          <li>1. บันทึกข้อมูลครุภัณฑ์หลัก</li>
+          <li>2. เพิ่มรายการย่อย (ถ้ามี)</li>
+          <li>3. ตรวจสอบเลขลำดับก่อนบันทึก</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Asset -->
+  <div class="rounded-xl border border-slate-200 bg-slate-50/50 p-6">
+    <div class="mb-6 flex items-center gap-3 border-b border-slate-200 pb-4">
+      <span
+        class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-900 text-sm font-bold text-white shadow-sm"
+      >
+        1
+      </span>
+      <div>
+        <h3 class="text-base font-bold text-slate-800">ครุภัณฑ์หลัก</h3>
+        <p class="text-xs text-slate-500">ข้อมูลรายการแม่ที่ใช้เป็นแม่แบบสำหรับรายการย่อยทั้งหมด</p>
+      </div>
+    </div>
+
+    <div [formGroup]="assetItemForm" class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-5">
+      <app-input
+        label="ชื่อครุภัณฑ์หลัก"
+        [control]="assetItemForm.controls.asset_name"
+        placeholder="เช่น เครื่องคอมพิวเตอร์"
+        [required]="true"
+      />
+      <app-date-picker label="วันที่รับเข้าระบบ" [control]="assetItemForm.controls.receive_date" />
+      <app-select
+        label="ประเภทเงิน"
+        [control]="assetItemForm.controls.fund_category_id"
+        [options]="fundCategorys"
+        optionLabel="fund_name"
+        optionValue="fund_category_id"
+        placeholder="-- เลือกประเภทเงิน --"
+        [required]="true"
+      />
+      <app-select
+        label="หน่วยงานผู้รับผิดชอบ"
+        [control]="assetItemForm.controls.department_id"
+        [options]="departments"
+        optionLabel="department_name"
+        optionValue="department_id"
+        placeholder="-- เลือกหน่วยงาน --"
+        [required]="true"
+      />
+      <app-select
+        label="วิธีได้มา"
+        [control]="assetItemForm.controls.acquisition_method_id"
+        [options]="acquisitionMethods"
+        optionLabel="acquisition_method_name"
+        optionValue="acquisition_method_id"
+        placeholder="-- เลือกวิธีได้มา --"
+        [required]="true"
+      />
+    </div>
+  </div>
+
+  <!-- Sub Assets Header -->
+  <div
+    class="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-slate-200 pt-8"
+  >
+    <div>
+      <div
+        class="mb-2 inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600"
+      >
+        ขั้นตอนที่ 2
+      </div>
+      <h3 class="text-base font-bold text-slate-800">ครุภัณฑ์ย่อย</h3>
+      <p class="mt-1 text-sm text-slate-500">เพิ่มรายการย่อยของครุภัณฑ์หลักทีละรายการให้ครบถ้วน</p>
+    </div>
+
+    <button
+      type="button"
+      class="inline-flex items-center gap-2 rounded-xl bg-slate-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+      (click)="addAssetSubItem()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      เพิ่มครุภัณฑ์ย่อย
+    </button>
+  </div>
+
+  <!-- Sub Assets Form Array -->
+  <div class="mt-4 space-y-5">
+    @for (group of assetSubItemForms; track $index; let i = $index) {
+      <div
+        [formGroup]="group"
+        class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:border-blue-300"
+      >
+        <div class="mb-5 flex items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div class="flex items-center gap-3">
+            <span
+              class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-800"
+            >
+              {{ i + 1 }}
+            </span>
+            <div>
+              <p class="font-semibold text-slate-800">รายการย่อยที่ {{ i + 1 }}</p>
+            </div>
+          </div>
+
+          @if (assetSubItems.length > 1) {
+            <button
+              type="button"
+              class="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 hover:text-red-700"
+              (click)="removeAssetSubItem(i)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              ลบรายการ
+            </button>
+          }
+        </div>
+
+        <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div class="md:col-span-2 lg:col-span-2">
+            <app-input
+              label="ชื่อครุภัณฑ์ย่อย"
+              [control]="$any(group).controls.sub_item_name"
+              placeholder="เช่น จอภาพ / เครื่องสำรองไฟ"
+              [required]="true"
+            />
+          </div>
+
+          <app-select
+            label="ประเภทครุภัณฑ์"
+            [control]="$any(group).controls.asset_category_id"
+            [options]="assetCategories"
+            optionLabel="category_name"
+            optionValue="asset_category_id"
+            placeholder="-- เลือกประเภทครุภัณฑ์ --"
+            [required]="true"
+          />
+          <app-input
+            label="อายุการใช้งาน (ปี)"
+            type="number"
+            [control]="$any(group).controls.useful_life_year"
+            [required]="true"
+          />
+
+          <app-input
+            label="จำนวน"
+            type="number"
+            [control]="$any(group).controls.quantity"
+            [required]="true"
+          />
+          <app-input label="ราคา/หน่วย" type="number" [control]="$any(group).controls.unit_price" />
+          <app-select
+            label="หน่วยนับ"
+            [control]="$any(group).controls.unit_id"
+            [options]="units"
+            optionLabel="unit_name"
+            optionValue="unit_id"
+            placeholder="-- เลือกหน่วยนับ --"
+            [required]="true"
+          />
+          <app-input
+            label="มูลค่ารวม"
+            type="number"
+            [control]="$any(group).controls.total_price"
+            [readonly]="true"
+          />
+        </div>
+      </div>
+    }
+  </div>
+</div>

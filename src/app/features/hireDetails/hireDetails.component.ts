@@ -7,8 +7,8 @@ import { AlertService } from '../../../shared.service';
 import { hireDetailCreateType, hireDetailType } from './interface/hireDetailType';
 import { HireDetailsService } from './service/hireDetail.service';
 import { toThaiBahtText } from '../../shared/thai-baht-text';
-import { MaterialUnitsService } from '../materialUnits/service/materialUnits.service';
 import { forkJoin } from 'rxjs';
+import { MaterialUnitsService } from '../materialUnits/service/materialUnits.service';
 
 @Component({
   selector: 'app-departments',

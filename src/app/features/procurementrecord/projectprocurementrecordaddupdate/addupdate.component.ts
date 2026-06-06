@@ -1,27 +1,43 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize, forkJoin } from 'rxjs';
+import { Observable, finalize, forkJoin } from 'rxjs';
 import { InputComponent } from '../../../../shared/input/input.component';
-import { SnackbarService } from '../../../core/services/snackbar.service';
 import { SelectComponent } from '../../../../shared';
+import { DatePickerComponent } from '../../../shared/date-picker/date-picker.component';
+import { SnackbarService } from '../../../core/services/snackbar.service';
+import { toThaiBahtText } from '../../../shared/thai-baht-text';
+import {
+  procurementrecordCreateTypes,
+  procurementWithAssetsCreateTypes,
+} from '../interface/procurementrecordTypes';
+
+import { ProcurementrecordService } from '../service/procurementrecord.service';
 import { FiscalyearsService } from '../../fiscalyears/service/fiscalyears.service';
 import { StaffsService } from '../../staffs/service/staffsType.service';
-import { procurementrecordCreateTypes } from '../interface/procurementrecordTypes';
-import { ProcurementrecordService } from '../service/procurementrecord.service';
 import { OperationsTypeService } from '../../operationTypes/service/operationTypes.service';
 import { ExpensetypesService } from '../../expenseTypes/service/expenseTypes.service';
 import { DepartmentService } from '../../departments/service/department.service';
 import { VendorsService } from '../../vendors/service/vendors.service';
 import { FundcategorysService } from '../../fundcategorys/service/fundcategorys.service';
 import { BudgetsourceService } from '../../budgetsource/service/budgetSource.service';
-import { DatePickerComponent } from '../../../shared/date-picker/date-picker.component';
 import { ProjectsService } from '../../projects/service/projects.service';
-import { toThaiBahtText } from '../../../shared/thai-baht-text';
+
+import { AssetCategoriesService } from '../../assetCategories/service/assetCategories.service';
+import { AcquisitionMethodService } from '../../acquisitionMethod/service/acquisitionMethod.service';
+import {
+  AssetSectionPayload,
+  ProcurementAssetSectionComponent,
+} from '../components/procurement-asset-section/procurement-asset-section/procurement-asset-section.component';
+import {
+  HireSectionPayload,
+  ProcurementHireSectionComponent,
+} from '../components/procurement-asset-section/procurement-hire-section/procurement-hire-section.component';
+import { MaterialUnitsService } from '../../materialUnits/service/materialUnits.service';
 
 @Component({
-  selector: 'app-project-procurements-addupdate',
+  selector: 'app-addupdate',
   standalone: true,
   imports: [
     CommonModule,
@@ -29,15 +45,16 @@ import { toThaiBahtText } from '../../../shared/thai-baht-text';
     InputComponent,
     SelectComponent,
     DatePickerComponent,
+    ProcurementAssetSectionComponent,
+    ProcurementHireSectionComponent,
   ],
   templateUrl: './addupdate.component.html',
 })
-export class projectProcurementsAddUpdateComponent implements OnInit {
+export class ProcurementsAddUpdateComponents implements OnInit {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
-  private location = inject(Location);
 
   private procurementrecordService = inject(ProcurementrecordService);
   private fiscalyearsService = inject(FiscalyearsService);
@@ -49,14 +66,19 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
   private budgetsourceService = inject(BudgetsourceService);
   private staffsService = inject(StaffsService);
   private projectsService = inject(ProjectsService);
+  private assetCategoriesService = inject(AssetCategoriesService);
+  private materialUnitsService = inject(MaterialUnitsService);
+  private acquisitionMethodsService = inject(AcquisitionMethodService);
 
   procurement_record_id = signal<number | null>(null);
+  projectstate = history.state?.projects?.projects ?? history.state?.projects ?? null;
   isEditMode = computed(() => this.procurement_record_id() !== null);
-  name = 'ชื่อโครงการ';
-  selectedFile: File | null = null;
-  projectstate = history.state?.projects.projects;
 
-  //dropdown
+  name = 'เอกสารการจัดซื้อจัดจ้าง';
+  title = computed(() => (this.isEditMode() ? `แก้ไข${this.name}` : `เพิ่ม${this.name}`));
+
+  selectedFile: File | null = null;
+
   fiscal_years = signal<any[]>([]);
   staffs = signal<any[]>([]);
   operation_types = signal<any[]>([]);
@@ -67,18 +89,44 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
   budget_sources = signal<any[]>([]);
   projects = signal<any[]>([]);
 
-  title = computed(() => (this.isEditMode() ? `แก้ไข${this.name}` : `เพิ่ม${this.name}`));
+  asset_category = signal<any[]>([]);
+  unit = signal<any[]>([]);
+  aquisition_methods = signal<any[]>([]);
+
+  assetPayload = signal<AssetSectionPayload | null>(null);
+  isAssetSectionValid = signal(false);
+
+  selectedExpenseTypeId = signal<number | null>(null);
+
   isLoading = signal(false);
   isSubmitting = signal(false);
 
-  form = this.fb.nonNullable.group({
-    procurement_record_id: this.procurement_record_id() ?? 0,
+  selectedExpenseTypeName = computed(() => {
+    const id = this.selectedExpenseTypeId();
+
+    return (
+      this.expense_types().find((x) => Number(x.expense_type_id) === Number(id))
+        ?.expense_type_name ?? ''
+    );
+  });
+
+  isAssetType = computed(() => {
+    const type = this.selectedExpenseTypeName();
+
+    return type === 'ครุภัณฑ์' || type.includes('ครุ') || type.includes('คุรุ');
+  });
+  isHireType = computed(() => this.selectedExpenseTypeName() === 'จัดจ้าง');
+  hirePayload = signal<HireSectionPayload | null>(null);
+  isHireSectionValid = signal(false);
+
+  form = this.fb.group({
+    procurement_record_id: [0],
     document_no: ['', Validators.required],
     document_date: [new Date().toISOString().split('T')[0]],
     inspection_date: [new Date().toISOString().split('T')[0]],
     total_amount: [0, Validators.required],
     amount_text: [''],
-    approval_date: [new Date().toISOString().split('T')[0]],
+    approval_date: [new Date().toISOString().split('T')[0] as string | null],
     reference_no: [''],
     status: ['ร่าง'],
     remark: [''],
@@ -99,8 +147,6 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
       project_id: this.projectstate?.project_id ?? null,
       fiscal_year_id: this.projectstate?.fiscal_year_id ?? null,
     });
-
-    console.log(this.projectstate);
     this.loadDropdowns();
 
     this.form.controls.total_amount.valueChanges.subscribe((amount) => {
@@ -114,6 +160,12 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
       );
     });
 
+    this.selectedExpenseTypeId.set(this.form.controls.expense_type_id.value);
+
+    this.form.controls.expense_type_id.valueChanges.subscribe((id) => {
+      this.selectedExpenseTypeId.set(id ? Number(id) : null);
+    });
+
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : null;
 
@@ -124,27 +176,22 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
   }
 
   private loadProcurements(id: number) {
-    const stateloadProcurementrecord = history.state?.procurementrecord as
+    const stateProcurementrecord = history.state?.procurementrecord as
       | procurementrecordCreateTypes
       | undefined;
 
-    if (stateloadProcurementrecord?.procurement_record_id === id) {
-      this.patchForm(stateloadProcurementrecord);
+    if (stateProcurementrecord?.procurement_record_id === id) {
+      this.patchForm(stateProcurementrecord);
       return;
     }
 
     this.isLoading.set(true);
-    const projectId = this.projectstate?.project_id;
-    if (projectId) {
-      this.form.patchValue({
-        project_id: Number(projectId),
-      });
-    }
+
     this.procurementrecordService
       .getProcurementrecord(id)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
-        next: (prefixes) => this.patchForm(prefixes),
+        next: (response) => this.patchForm(response),
         error: () => {
           this.snackbar.error('ไม่สามารถโหลดข้อมูลได้');
           this.router.navigate(['/admin/procurements']);
@@ -208,6 +255,24 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
         pageSize: 100,
         pageNumber: 1,
       }),
+      assetCategories: this.assetCategoriesService.getAssetCategories({
+        sort: '',
+        search: '',
+        pageSize: 100,
+        pageNumber: 1,
+      }),
+      unit: this.materialUnitsService.getMaterialUnits({
+        sort: '',
+        search: '',
+        pageSize: 100,
+        pageNumber: 1,
+      }),
+      aquisition_methods: this.acquisitionMethodsService.getAcquisitionMethods({
+        sort: '',
+        search: '',
+        pageSize: 100,
+        pageNumber: 1,
+      }),
     }).subscribe({
       next: (res) => {
         this.fiscal_years.set(res.fiscal_year.data);
@@ -220,19 +285,22 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
         this.budget_sources.set(res.budget_source.data);
         this.projects.set(res.project.data);
 
+        this.asset_category.set(res.assetCategories.data);
+        this.unit.set(res.unit.data);
+        this.aquisition_methods.set(res.aquisition_methods.data);
+
         const projectId = this.projectstate?.project_id;
         const fiscalYearId = this.projectstate?.fiscal_year_id;
 
         if (projectId) {
           this.form.controls.project_id.setValue(Number(projectId));
-          this.form.controls.project_id.updateValueAndValidity();
         }
 
         if (fiscalYearId) {
           this.form.controls.fiscal_year_id.setValue(Number(fiscalYearId));
-          this.form.controls.fiscal_year_id.updateValueAndValidity();
         }
       },
+
       error: () => {
         this.snackbar.error('โหลดข้อมูลตัวเลือกไม่สำเร็จ');
       },
@@ -273,8 +341,11 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
       staff_id: exp.staff_id,
       attachment_file_path: exp.attachment_file_path,
     });
+
+    this.selectedExpenseTypeId.set(exp.expense_type_id);
   }
-  formatDates = (value: any) => {
+
+  private formatDates(value: any): string | null {
     if (!value) return null;
 
     if (value instanceof Date) {
@@ -282,7 +353,46 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
     }
 
     return value;
-  };
+  }
+
+  private buildProcurementPayload(filePath?: string): procurementrecordCreateTypes {
+    const raw = this.form.getRawValue();
+    const totalAmount = Number(raw.total_amount || 0);
+
+    return {
+      procurement_record_id: this.procurement_record_id() ?? 0,
+      document_no: raw.document_no ?? '',
+      document_date: this.formatDates(raw.document_date) ?? '',
+      inspection_date: this.formatDates(raw.inspection_date) ?? '',
+      total_amount: totalAmount,
+      amount_text: toThaiBahtText(totalAmount),
+      approval_date: raw.status === 'ดำเนินการแล้ว' ? this.formatDates(raw.approval_date) : null,
+      reference_no: raw.reference_no ?? '',
+      status: raw.status ?? 'ร่าง',
+      remark: raw.remark ?? '',
+      project_id: raw.project_id ?? 0,
+      fiscal_year_id: raw.fiscal_year_id ?? 0,
+      operation_type_id: raw.operation_type_id ?? 0,
+      expense_type_id: raw.expense_type_id ?? 0,
+      department_id: raw.department_id ?? 0,
+      vendor_id: raw.vendor_id ?? 0,
+      fund_category_id: raw.fund_category_id ?? 0,
+      budget_source_id: raw.budget_source_id ?? 0,
+      staff_id: raw.staff_id ?? 0,
+      attachment_file_path: filePath ?? raw.attachment_file_path ?? '',
+    };
+  }
+
+  private buildFullAssetPayload(
+    procurementPayload: procurementrecordCreateTypes,
+    asset: AssetSectionPayload,
+  ): procurementWithAssetsCreateTypes {
+    return {
+      procurement_record: procurementPayload,
+      asset_item: asset.asset_item,
+      asset_sub_items: asset.asset_sub_items,
+    };
+  }
 
   submit() {
     if (this.form.invalid) {
@@ -290,39 +400,73 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
       return;
     }
 
+    if (this.isAssetType() && !this.isEditMode()) {
+      if (!this.assetPayload() || !this.isAssetSectionValid()) {
+        this.snackbar.error('กรุณากรอกข้อมูลครุภัณฑ์ให้ครบถ้วน');
+        return;
+      }
+    }
+
+    if (this.isHireType() && !this.isEditMode()) {
+      if (!this.hirePayload() || !this.isHireSectionValid()) {
+        this.snackbar.error('กรุณากรอกข้อมูลจัดจ้างให้ครบถ้วน');
+        return;
+      }
+    }
+
     this.isSubmitting.set(true);
 
     const saveData = (filePath?: string) => {
-      const raw = this.form.getRawValue();
-      const totalAmount = Number(raw.total_amount || 0);
+      const procurementPayload = this.buildProcurementPayload(filePath);
 
-      const payload = {
-        ...raw,
+      let request$: Observable<any>;
 
-        procurement_record_id: this.procurement_record_id() ?? 0,
-        document_date: this.formatDates(raw.document_date),
-        approval_date: raw.status === 'ดำเนินการแล้ว' ? raw.approval_date || null : null,
-        total_amount: totalAmount,
-        amount_text: toThaiBahtText(totalAmount),
+      if (this.isAssetType() && !this.isEditMode()) {
+        const asset = this.assetPayload();
 
-        attachment_file_path: filePath ?? raw.attachment_file_path,
-      } as any;
+        if (!asset) {
+          this.snackbar.error('ไม่พบข้อมูลครุภัณฑ์');
+          this.isSubmitting.set(false);
+          return;
+        }
 
-      console.log('Payload:', payload);
+        request$ = this.procurementrecordService.createProcurementWithAssets(
+          this.buildFullAssetPayload(procurementPayload, asset),
+        );
+      } else if (this.isHireType() && !this.isEditMode()) {
+        const hire = this.hirePayload();
 
-      const request$ = this.isEditMode()
-        ? this.procurementrecordService.updateProcurementrecord(
-            this.procurement_record_id()!,
-            payload,
-          )
-        : this.procurementrecordService.createProcurementrecord(payload);
+        if (!hire) {
+          this.snackbar.error('ไม่พบข้อมูลจัดจ้าง');
+          this.isSubmitting.set(false);
+          return;
+        }
+
+        request$ = this.procurementrecordService.createProcurementWithHire({
+          procurement_record: procurementPayload,
+          hire_details: hire.hire_details,
+        });
+      } else if (this.isEditMode()) {
+        request$ = this.procurementrecordService.updateProcurementrecord(
+          this.procurement_record_id()!,
+          procurementPayload,
+        );
+      } else {
+        request$ = this.procurementrecordService.createProcurementrecord(procurementPayload);
+      }
 
       request$.pipe(finalize(() => this.isSubmitting.set(false))).subscribe({
         next: () => {
           this.snackbar.success(this.isEditMode() ? 'แก้ไขข้อมูลสำเร็จ' : 'เพิ่มข้อมูลสำเร็จ');
-          this.router.navigate(['/admin/procurements']);
+          this.router.navigate(['/admin/project/procurementrecord'], {
+            queryParams: {
+              project_id: this.projectstate?.project_id,
+              fiscal_year_id: this.projectstate?.fiscal_year_id,
+            },
+            state: { projects: this.projectstate },
+          });
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Save error:', err);
           this.snackbar.error(this.isEditMode() ? 'แก้ไขข้อมูลไม่สำเร็จ' : 'เพิ่มข้อมูลไม่สำเร็จ');
         },
@@ -331,10 +475,8 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
 
     if (this.selectedFile) {
       this.procurementrecordService.uploadFile(this.selectedFile).subscribe({
-        next: (res) => {
-          saveData(res.filePath);
-        },
-        error: (err) => {
+        next: (res) => saveData(res.filePath),
+        error: (err: any) => {
           console.error('Upload error:', err);
           this.isSubmitting.set(false);
           this.snackbar.error('อัปโหลดไฟล์ไม่สำเร็จ');
@@ -346,12 +488,12 @@ export class projectProcurementsAddUpdateComponent implements OnInit {
   }
 
   cancel() {
-    if (window.history.length > 1) {
-      this.location.back();
-    } else {
-      this.router.navigate(['/admin/projects']);
-    }
-    this.router.navigate(['/admin/procurements']);
+    this.router.navigate(['/admin/project/procurementrecord'], {
+      queryParams: {
+        project_id: this.projectstate?.project_id,
+      },
+      state: { projects: this.projectstate },
+    });
   }
 
   statusOptions: {

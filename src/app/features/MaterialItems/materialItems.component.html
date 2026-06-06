@@ -1,0 +1,124 @@
+<div class="min-h-screen bg-slate-100 p-4">
+  <div class="mx-auto max-w-[1900px] rounded bg-white p-4 shadow">
+    <div class="mb-4 text-center">
+      <h1 class="text-xl font-bold text-slate-800">รายการวัสดุ</h1>
+      <p class="text-sm text-slate-500">ทะเบียนคุมวัสดุ</p>
+    </div>
+
+    <div class="mb-3 flex justify-end">
+      <button
+        type="button"
+        (click)="goToCreate()"
+        class="rounded bg-blue-800 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-900"
+      >
+        + เพิ่มวัสดุ
+      </button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[1400px] border-collapse text-sm">
+        <thead>
+          <tr class="bg-slate-100 text-center">
+            <th rowspan="2" class="border border-slate-400 px-2 py-2">ลำดับ</th>
+            <th rowspan="2" class="border border-slate-400 px-2 py-2">รายละเอียดรายการ</th>
+            <th rowspan="2" class="border border-slate-400 px-2 py-2">หน่วย</th>
+            <th rowspan="2" class="border border-slate-400 px-2 py-2">ยอดยกมา</th>
+            <th rowspan="2" class="border border-slate-400 px-2 py-2">รับ</th>
+            <th rowspan="2" class="border border-slate-400 px-2 py-2">จ่าย</th>
+            <th rowspan="2" class="border border-slate-400 px-2 py-2">คงเหลือ</th>
+            <th colspan="2" class="border border-slate-400 px-2 py-2">คงเหลือ</th>
+            <th rowspan="2" class="border border-slate-400 px-2 py-2">ประเภทเงิน</th>
+            <th rowspan="2" class="border border-slate-400 px-2 py-2">หมายเหตุ</th>
+            <th rowspan="2" class="border border-slate-400 px-2 py-2">จัดการ</th>
+          </tr>
+
+          <tr class="bg-slate-100 text-center">
+            <th class="border border-slate-400 px-2 py-2">ราคาต่อหน่วย</th>
+            <th class="border border-slate-400 px-2 py-2">รวมเป็นเงิน</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (item of materialItems(); track item.material_item_id; let i = $index) {
+            <tr class="hover:bg-blue-50">
+              <td class="border border-slate-400 px-2 py-1 text-center">
+                {{ (Params.pageNumber - 1) * Params.pageSize + i + 1 }}
+              </td>
+
+              <td class="border border-slate-400 px-2 py-1">
+                {{ item.material_name }}
+                @if (item.specification) {
+                  <div class="text-xs text-slate-500">
+                    {{ item.specification }}
+                  </div>
+                }
+              </td>
+
+              <td class="border border-slate-400 px-2 py-1 text-center">
+                {{ item.unit_name || '-' }}
+              </td>
+
+              <td class="border border-slate-400 px-2 py-1 text-center">
+                {{ item.opening_balance ?? '-' }}
+              </td>
+
+              <td class="border border-slate-400 px-2 py-1 text-center">
+                {{ item.quantity_in ?? '-' }}
+              </td>
+
+              <td class="border border-slate-400 px-2 py-1 text-center">
+                {{ item.quantity_out ?? '-' }}
+              </td>
+
+              <td class="border border-slate-400 px-2 py-1 text-center">
+                {{ item.current_balance ?? '-' }}
+              </td>
+
+              <td class="border border-slate-400 px-2 py-1 text-right">
+                {{ item.unit_price }}
+              </td>
+
+              <td class="border border-slate-400 px-2 py-1 text-right">
+                {{ item.total_amount ?? 0 }}
+              </td>
+
+              <td class="border border-slate-400 px-2 py-1 text-center">งปม.</td>
+
+              <td class="border border-slate-400 px-2 py-1">
+                {{ item.remark || '-' }}
+              </td>
+
+              <td class="border border-slate-400 px-2 py-1 text-center">
+                <button
+                  type="button"
+                  (click)="goToEdit(item)"
+                  class="text-blue-700 hover:underline"
+                >
+                  แก้ไข
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="12" class="border border-slate-400 px-4 py-8 text-center text-slate-500">
+                ไม่พบข้อมูลวัสดุ
+              </td>
+            </tr>
+          }
+        </tbody>
+
+        <tfoot>
+          <tr class="bg-slate-100 font-bold">
+            <td colspan="8" class="border border-slate-400 px-2 py-2 text-right">
+              รวมเป็นเงินทั้งสิ้น
+            </td>
+            <td class="border border-slate-400 px-2 py-2 text-right">
+              {{ getTotalAmount() }}
+            </td>
+            <td colspan="3" class="border border-slate-400"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

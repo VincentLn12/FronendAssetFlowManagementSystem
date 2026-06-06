@@ -1,0 +1,92 @@
+<div class="mx-6 mb-6 rounded-2xl border border-purple-200 bg-purple-50 p-6">
+  <div class="mb-5 flex items-center justify-between">
+    <div>
+      <h2 class="text-lg font-bold text-purple-900">ข้อมูลรายการจัดจ้าง</h2>
+      <p class="mt-1 text-sm text-purple-700">เพิ่มรายการจ้างเหมาบริการในเอกสารนี้</p>
+    </div>
+
+    <button
+      type="button"
+      class="rounded-xl bg-purple-700 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-800"
+      (click)="addHireDetail()"
+    >
+      + เพิ่มรายการจัดจ้าง
+    </button>
+  </div>
+
+  @for (group of hireDetailForms; track $index; let i = $index) {
+    <div [formGroup]="group" class="mt-4 rounded-xl border border-purple-100 bg-white p-5">
+      <div class="mb-4 flex items-center justify-between">
+        <p class="font-semibold text-slate-700">รายการที่ {{ i + 1 }}</p>
+
+        <button
+          type="button"
+          class="text-sm font-semibold text-red-600 hover:text-red-800"
+          (click)="removeHireDetail(i)"
+        >
+          ลบ
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <div class="md:col-span-2 lg:col-span-2">
+          <app-input
+            label="รายการ ชื่อ ลักษณะ ขนาด ยี่ห้อ"
+            [control]="$any(group).controls.hire_name"
+            [required]="true"
+          />
+        </div>
+
+        <app-input
+          label="จำนวน"
+          type="number"
+          [control]="$any(group).controls.quantity"
+          [required]="true"
+        />
+
+        <app-select
+          label="หน่วยนับ"
+          [control]="$any(group).controls.unit_id"
+          [options]="units"
+          optionLabel="unit_name"
+          optionValue="unit_id"
+          placeholder="-- เลือกหน่วยนับ --"
+          [required]="true"
+        />
+
+        <app-input
+          label="หน่วยละ"
+          type="number"
+          [control]="$any(group).controls.unit_price"
+          [required]="true"
+        />
+
+        <app-input
+          label="รวมเงิน"
+          type="number"
+          [control]="$any(group).controls.total_amount"
+          [readonly]="true"
+        />
+
+        <div class="md:col-span-2">
+          <app-input
+            label="จำนวนเงินตัวอักษร"
+            [control]="$any(group).controls.total_text"
+            [readonly]="true"
+          />
+        </div>
+
+        <div class="md:col-span-2 lg:col-span-2">
+          <app-input
+            label="เหตุที่จะต้องดำเนินการ"
+            [control]="$any(group).controls.operation_reason"
+          />
+        </div>
+
+        <div class="md:col-span-2 lg:col-span-2">
+          <app-input label="หมายเหตุ" [control]="$any(group).controls.remark" />
+        </div>
+      </div>
+    </div>
+  }
+</div>

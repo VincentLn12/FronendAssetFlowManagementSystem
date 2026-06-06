@@ -103,6 +103,7 @@ export class ProjectidComponent {
       },
     );
   }
+
   onTableAction(event: { type: string; item: procurementrecordTypes }) {
     const procurementrecord = event.item;
 

@@ -1,3 +1,5 @@
+import { assetItemsCreateTypes } from '../../assetItems/interface/assetItemsTypes';
+
 export interface procurementrecordTypes {
   procurement_record_id: number;
   document_no: string;
@@ -37,7 +39,7 @@ export interface procurementrecordCreateTypes {
   inspection_date: string;
   total_amount: number;
   amount_text: string;
-  approval_date: string;
+  approval_date: string | null;
   reference_no: string;
   status: string;
   remark: string;
@@ -51,4 +53,42 @@ export interface procurementrecordCreateTypes {
   budget_source_id: number;
   staff_id: number;
   attachment_file_path: string;
+}
+
+export interface assetSubItemCreateTypes {
+  asset_sub_item_id?: number | null;
+  asset_id?: number | null;
+  item_no?: number | null;
+  sub_item_name: string;
+  asset_category_id: number | null;
+  quantity: number;
+  unit_id: number | null;
+  unit_price?: number | null;
+  total_price?: number | null;
+  useful_life_year: number;
+}
+
+export interface procurementWithAssetsCreateTypes {
+  procurement_record: procurementrecordCreateTypes;
+  asset_item: assetItemsCreateTypes;
+  asset_sub_items: assetSubItemCreateTypes[];
+}
+
+export interface hireDetailCreateTypes {
+  hire_detail_id: number;
+  procurement_record_id: number;
+  item_no: number;
+  hire_name: string;
+  quantity: number;
+  unit_id: number | null;
+  unit_price: number;
+  total_amount: number;
+  total_text: string;
+  operation_reason: string | null;
+  remark: string | null;
+}
+
+export interface procurementWithHireCreateTypes {
+  procurement_record: procurementrecordCreateTypes;
+  hire_details: hireDetailCreateTypes[];
 }

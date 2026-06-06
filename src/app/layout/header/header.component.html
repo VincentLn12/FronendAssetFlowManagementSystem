@@ -141,6 +141,36 @@
           }
         </a>
 
+        <!-- กลุ่ม 5 -->
+        @if (sidebarOpen) {
+          <p class="px-4 pt-6 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            พัสดุ / ครุภัณฑ์
+          </p>
+        }
+
+        <a
+          routerLink="/admin/MaterialItems"
+          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>inventory_2</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">รายการพัสดุ</span>
+          }
+        </a>
+        <a
+          routerLink="/admin/materialUnits"
+          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
+          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>straighten</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">หน่วยนับ</span>
+          }
+        </a>
+
         <!-- กลุ่ม 3 -->
         @if (sidebarOpen) {
           <p class="px-4 pt-6 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
@@ -301,73 +331,6 @@
           <mat-icon>savings</mat-icon>
           @if (sidebarOpen) {
             <span class="text-sm">แหล่งงบประมาณ</span>
-          }
-        </a>
-
-        <!-- กลุ่ม 5 -->
-        @if (sidebarOpen) {
-          <p class="px-4 pt-6 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-            พัสดุ / ครุภัณฑ์
-          </p>
-        }
-
-        <a
-          routerLink="/admin/inventory-types"
-          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>category</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">ประเภทหลัก</span>
-          }
-        </a>
-
-        <a
-          routerLink="/admin/inventory-categories"
-          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>widgets</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">หมวดหมู่พัสดุ/ครุภัณฑ์</span>
-          }
-        </a>
-
-        <a
-          routerLink="/admin/materialUnits"
-          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>straighten</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">หน่วยนับ</span>
-          }
-        </a>
-
-        <a
-          routerLink="/admin/inventory-items"
-          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>inventory_2</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">รายการพัสดุ/ครุภัณฑ์</span>
-          }
-        </a>
-
-        <a
-          routerLink="/admin/assets"
-          routerLinkActive="bg-blue-50 text-blue-700 font-semibold"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>devices</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">ทะเบียนครุภัณฑ์</span>
           }
         </a>
 

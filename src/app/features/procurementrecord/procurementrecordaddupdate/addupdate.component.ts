@@ -76,7 +76,7 @@ export class ProcurementsAddUpdateComponent implements OnInit {
     inspection_date: [new Date().toISOString().split('T')[0]],
     total_amount: [0, Validators.required],
     amount_text: [''],
-    approval_date: [new Date().toISOString().split('T')[0]],
+    approval_date: [new Date().toISOString().split('T')[0] as string | null],
     reference_no: [''],
     status: ['ร่าง'],
     remark: [''],

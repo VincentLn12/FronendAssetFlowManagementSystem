@@ -6,6 +6,7 @@ import { Params } from '../../../shared/models/allType';
 import {
   procurementrecordTypes,
   procurementrecordCreateTypes,
+  procurementWithAssetsCreateTypes,
 } from '../interface/procurementrecordTypes';
 
 @Injectable({
@@ -65,6 +66,12 @@ export class ProcurementrecordService {
 
   deleteProcurementrecord(id: number) {
     return this.http.delete<void>(this.baseUrl + 'Procurement_records/' + id);
+  }
+  createProcurementWithAssets(payload: procurementWithAssetsCreateTypes) {
+    return this.http.post(this.baseUrl + 'Procurement_records/create-with-assets', payload);
+  }
+  createProcurementWithHire(payload: any) {
+    return this.http.post(this.baseUrl + 'Procurement_records/create-with-hire', payload);
   }
   uploadFile(file: File) {
     const formData = new FormData();

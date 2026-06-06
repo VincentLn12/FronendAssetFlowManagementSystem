@@ -507,14 +507,14 @@ export const routes: Routes = [
             path: 'project/procurementrecord/create',
             loadComponent: () =>
               import('./features/procurementrecord/projectprocurementrecordaddupdate/addupdate.component').then(
-                (m) => m.projectProcurementsAddUpdateComponent,
+                (m) => m.ProcurementsAddUpdateComponents,
               ),
           },
           {
             path: 'project/procurementrecord/update/:id',
             loadComponent: () =>
               import('./features/procurementrecord/projectprocurementrecordaddupdate/addupdate.component').then(
-                (m) => m.projectProcurementsAddUpdateComponent,
+                (m) => m.ProcurementsAddUpdateComponents,
               ),
           },
           // ประเภทการใช้งานครุภัณฑ์
@@ -539,9 +539,7 @@ export const routes: Routes = [
                 (m) => m.AssetUsageTypeAddUpdateComponent,
               ),
           },
-          // ประวัติการใช้ครุภัณฑ์
           // ประเภทการใช้งานครุภัณฑ์
-
           {
             path: 'AssetSubItemHistory/create',
             loadComponent: () =>
@@ -561,6 +559,28 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/assetSubItemHistory/assetSubItemHistory.component').then(
                 (m) => m.AssetSubItemHistoryComponent,
+              ),
+          },
+          // รายการวัสดุ
+          {
+            path: 'MaterialItems/create',
+            loadComponent: () =>
+              import('./features/MaterialItems/materialItemsaddupdate/addupdate.component').then(
+                (m) => m.MaterialItemsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'MaterialItems/update/:id',
+            loadComponent: () =>
+              import('./features/MaterialItems/materialItemsaddupdate/addupdate.component').then(
+                (m) => m.MaterialItemsAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'MaterialItems',
+            loadComponent: () =>
+              import('./features/MaterialItems/materialItems.component').then(
+                (m) => m.MaterialItemsComponent,
               ),
           },
           {
