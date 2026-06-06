@@ -3,6 +3,13 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThaiDatePipe } from '../../app/shared/pipes/thai-date-pipe';
 
+export type TableActionType = 'detail' | 'pathTo' | 'repair' | 'withdraw' | 'history';
+
+export interface TableAction {
+  type: TableActionType;
+  item: any;
+}
+
 @Component({
   selector: 'app-data-table',
   standalone: true,
@@ -12,10 +19,11 @@ import { ThaiDatePipe } from '../../app/shared/pipes/thai-date-pipe';
 export class DataTableComponent {
   @Input() title = '';
   @Input() subtitle = '';
+
   @Input() data: any[] = [];
   @Input() columns: any[] = [];
-  @Input() isAdmin = false;
 
+  @Input() isAdmin = false;
   @Input() enableSearch = true;
 
   @Input() totalItems = 0;
@@ -23,22 +31,46 @@ export class DataTableComponent {
   @Input() currentPage = 1;
 
   @Input() idKey = 'id';
+
   @Input() sortOptions: { label: string; value: string }[] = [];
-  @Input() openFile = (url: string) => window.open(url, '_blank');
+
   @Input() fileBaseUrl = '';
+
   @Input() Namepath = 'ไป';
+
+  @Input() filterOptions: {
+    key: string;
+    label: string;
+    options: { label: string; value: any }[];
+  }[] = [];
+
+  //สีหัวตาราง
+  @Input() headerColor = 'bg-blue-900';
+  @Input() headerBorderColor = 'border-blue-900';
+  @Input() butttonColor = 'bg-blue-900 hover:bg-blue-800 ';
+  
+
+  // ใช้เปิด/ปิดปุ่ม action ในตาราง
+  @Input() showBack = false;
+  @Input() showDetail = false;
+  @Input() showPathTo = false;
+  @Input() showRepair = false;
+  @Input() showWithdraw = false;
+  @Input() showHistory = false;
 
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<any>();
-  @Output() pathTo = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
+
   @Output() search = new EventEmitter<string>();
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<string>();
-  @Output() detail = new EventEmitter<any>();
-  @Output() back = new EventEmitter<any>();
-  @Output() repair = new EventEmitter<any>();
-  @Output() withdraw = new EventEmitter<any>();
+  @Output() filterChange = new EventEmitter<{ key: string; value: any }>();
+
+  @Output() back = new EventEmitter<void>();
+
+  // ใช้อันเดียวแทน detail / pathTo / repair / withdraw
+  @Output() action = new EventEmitter<TableAction>();
 
   get totalPages() {
     return Math.ceil(this.totalItems / this.pageSize) || 1;
@@ -57,9 +89,24 @@ export class DataTableComponent {
     const value = (event.target as HTMLSelectElement).value;
     this.sortChange.emit(value);
   }
+
+  onFilter(key: string, event: Event) {
+    const value = (event.target as HTMLSelectElement).value;
+
+    this.filterChange.emit({
+      key,
+      value: value || null,
+    });
+  }
+
   goToPage(page: number) {
     if (page < 1 || page > this.totalPages) return;
+
     this.pageChange.emit(page);
+  }
+
+  emitAction(type: TableActionType, item: any) {
+    this.action.emit({ type, item });
   }
 
   getValue(item: any, key: string) {
@@ -74,24 +121,6 @@ export class DataTableComponent {
     window.open(url, '_blank');
   }
 
-  get showPathTo() {
-    return this.pathTo.observed;
-  }
-
-  get showBack() {
-    return this.back.observed;
-  }
-
-  get showRepair() {
-    return this.repair.observed;
-  }
-
-  get showDetail() {
-    return this.detail.observed;
-  }
-  get showwithdraw() {
-    return this.withdraw.observed;
-  }
   isEmptyValue(value: any): boolean {
     return (
       value === null ||

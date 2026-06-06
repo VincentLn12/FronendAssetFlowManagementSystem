@@ -29,6 +29,9 @@ export class AssetUsageTypeAddUpdateComponent implements OnInit {
   isLoading = signal(false);
   isSubmitting = signal(false);
 
+  expenseTypes = signal<any[]>([]);
+  fiscalYears = signal<any[]>([]);
+
   form = this.fb.nonNullable.group({
     usage_type_name: ['', [Validators.required]],
   });

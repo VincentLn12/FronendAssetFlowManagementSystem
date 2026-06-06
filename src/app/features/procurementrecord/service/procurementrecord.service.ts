@@ -15,7 +15,12 @@ export class ProcurementrecordService {
   private baseUrl = environment.baseUrl;
   private http = inject(HttpClient);
 
-  getProcurementrecords(paramsData: Params, project_id?: number | null) {
+  getProcurementrecords(
+    paramsData: Params,
+    project_id?: number | null,
+    expense_type_id?: number | null,
+    fiscal_year_id?: number | null,
+  ) {
     let params = new HttpParams();
 
     if (paramsData.sort) {
@@ -26,12 +31,20 @@ export class ProcurementrecordService {
       params = params.append('search', paramsData.search);
     }
 
-    if (project_id) {
-      params = params.append('ProjectId', project_id);
-    }
-
     params = params.append('pageSize', paramsData.pageSize);
     params = params.append('pageIndex', paramsData.pageNumber);
+
+    if (project_id) {
+      params = params.append('projectId', project_id);
+    }
+
+    if (expense_type_id) {
+      params = params.append('expenseTypeId', expense_type_id);
+    }
+
+    if (fiscal_year_id) {
+      params = params.append('fiscalYearId', fiscal_year_id);
+    }
 
     return this.http.get<Pagination<procurementrecordTypes>>(this.baseUrl + 'Procurement_records', {
       params,

@@ -26,23 +26,14 @@ export class AssetItemsComponent implements OnInit {
   assetItems = signal<assetItemsTypes[]>([]);
   Params = new Params();
   totalCount = signal<number>(0);
+  
+  headerColor = 'bg-slate-700';
+  headerBorderColor = 'border-slate-700';
+  butttonColor = 'bg-slate-700 hover:bg-slate-800 ';
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : null;
-    const procurementrecord = history.state?.procurementrecord;
-
-    // // ถ้าไม่มี state แปลว่าเข้าจากการพิมพ์ URL เอง
-    // if (!procurementrecord) {
-    //   this.router.navigate(['/admin/procurements']);
-    //   return;
-    // }
-
-    // // กันประเภทผิด
-    // if (procurementrecord.expense_type_name !== 'ครุภัณฑ์') {
-    //   this.router.navigate(['/admin/procurements']);
-    //   return;
-    // }
 
     if (id && Number.isFinite(id)) {
       this.procurement_record_id.set(id);
@@ -127,33 +118,27 @@ export class AssetItemsComponent implements OnInit {
     });
   }
 
-  goToAssetsubItems(mat: assetItemsTypes) {
-    this.router.navigate(['/admin/assetsubItems', mat.asset_id], {
-      state: {
-        assetItem: mat,
-        procurementrecord: history.state?.procurementrecord,
-        procurement_record_id: this.procurement_record_id(),
-      },
-    });
-  }
+  onTableAction(event: { type: string; item: assetItemsTypes }) {
+    const mat = event.item;
 
-  goToAssetRepairs(mat: assetItemsTypes) {
-    this.router.navigate(['/admin/assetRepairs', mat.asset_id], {
-      state: {
-        assetItem: mat,
-        procurementrecord: history.state?.procurementrecord,
-        procurement_record_id: this.procurement_record_id(),
-      },
-    });
-  }
-  goToAssetItemDetails(mat: assetItemsTypes) {
-    this.router.navigate(['/admin/assetItems/details', mat.asset_id], {
-      state: {
-        assetItem: mat,
-        procurementrecord: history.state?.procurementrecord,
-        procurement_record_id: this.procurement_record_id(),
-      },
-    });
+    const stateData = {
+      assetItem: mat,
+      procurementrecord: history.state?.procurementrecord,
+      procurement_record_id: this.procurement_record_id(),
+    };
+
+    if (event.type === 'pathTo') {
+      this.router.navigate(['/admin/assetsubItems', mat.asset_id], {
+        state: stateData,
+      });
+      return;
+    }
+
+    if (event.type === 'detail') {
+      this.router.navigate(['/admin/assetItems/details', mat.asset_id], {
+        state: stateData,
+      });
+    }
   }
 
   sortOptions = [

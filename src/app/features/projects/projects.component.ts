@@ -79,7 +79,11 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-  gotoPathTo(projects: projectsTypes) {
+  gotoPathTo(event: { type: string; item: projectsTypes }) {
+    const projects = event.item;
+
+    if (event.type !== 'pathTo') return;
+
     this.router.navigate(['/admin/project/procurementrecord'], {
       queryParams: {
         project_id: projects.project_id,
@@ -97,7 +101,7 @@ export class ProjectsComponent implements OnInit {
 
   columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' | 'file' }[] = [
     { label: 'รหัสโครงการ', key: 'project_code' },
-    { label: 'ชื่อโครงการ', key: 'project_name' },
+    // { label: 'ชื่อโครงการ', key: 'project_name' },
     { label: 'ปีโครงการ', key: 'fiscal_year_name' },
     { label: 'งบประมาณ', key: 'project_budget_amount', type: 'price' },
     { label: 'ผู้รับผิดชอบ', key: 'staff_name' },

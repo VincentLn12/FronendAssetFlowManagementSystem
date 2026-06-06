@@ -103,32 +103,40 @@ export class ProjectidComponent {
       },
     );
   }
-  goToDetail(procurementrecord: procurementrecordTypes) {
-    this.router.navigate(['/admin/procurements/detail', procurementrecord.procurement_record_id], {
-      state: { procurementrecord },
-    });
-  }
+  onTableAction(event: { type: string; item: procurementrecordTypes }) {
+    const procurementrecord = event.item;
 
-  gotoPathTo(procurementrecord: procurementrecordTypes) {
-    if (procurementrecord.expense_type_name === 'ครุภัณฑ์') {
-      this.router.navigate(['/admin/assetItems', procurementrecord.procurement_record_id], {
-        state: { procurementrecord },
-      });
-    } else if (procurementrecord.expense_type_name === 'วัสดุ') {
-      this.router.navigate(['/admin/assetItems', procurementrecord.procurement_record_id], {
-        state: { procurementrecord },
-      });
-    } else if (procurementrecord.expense_type_name === 'จัดจ้าง') {
-      this.router.navigate(['/admin/hireDetails', procurementrecord.procurement_record_id], {
-        state: { procurementrecord },
-      });
+    switch (event.type) {
+      case 'detail':
+        this.router.navigate(
+          ['/admin/procurements/detail', procurementrecord.procurement_record_id],
+          {
+            state: { procurementrecord },
+          },
+        );
+        break;
+
+      case 'pathTo':
+        if (
+          procurementrecord.expense_type_name === 'ครุภัณฑ์' ||
+          procurementrecord.expense_type_name === 'วัสดุ'
+        ) {
+          this.router.navigate(['/admin/assetItems', procurementrecord.procurement_record_id], {
+            state: { procurementrecord },
+          });
+        } else if (procurementrecord.expense_type_name === 'จัดจ้าง') {
+          this.router.navigate(['/admin/hireDetails', procurementrecord.procurement_record_id], {
+            state: { procurementrecord },
+          });
+        }
+        break;
+
+      case 'withdraw':
+        this.router.navigate(['/admin/AssetWithdrawal', procurementrecord.procurement_record_id], {
+          state: { procurementrecord },
+        });
+        break;
     }
-  }
-
-  goToWithdraw(procurementrecord: procurementrecordTypes) {
-    this.router.navigate(['/admin/AssetWithdrawal', procurementrecord.procurement_record_id], {
-      state: { procurementrecord },
-    });
   }
   cancel() {
     this.router.navigate(['/admin/projects']);

@@ -7,6 +7,7 @@ import { AlertService } from '../../../shared.service';
 import { assetWithdrawalTypes } from './interface/assetWithdrawalTypes';
 import { AssetWithdrawalService } from './service/assetWithdrawal.service';
 import { TableState } from '../../../shared/TableState';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-departments',
@@ -20,12 +21,17 @@ export class AssetWithdrawalComponent implements OnInit {
   private assetWithdrawalService = inject(AssetWithdrawalService);
   private alertService = inject(AlertService);
   private table = new TableState();
+  private location = inject(Location);
 
   procurement_record_id = signal<number | null>(null);
   assetWithdrawal?: Pagination<assetWithdrawalTypes>;
   assetWithdrawals = signal<assetWithdrawalTypes[]>([]);
   Params = new Params();
   totalCount = signal<number>(0);
+
+  headerColor = 'bg-slate-700';
+  headerBorderColor = 'border-slate-700';
+  butttonColor = 'bg-slate-700 hover:bg-slate-800 ';
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -122,14 +128,28 @@ export class AssetWithdrawalComponent implements OnInit {
     });
   }
 
-  goToAssetRepairs(mat: assetWithdrawalTypes) {
-    this.router.navigate(['/admin/assetRepairs', mat.procurement_withdrawal_id], {
-      state: {
-        assetItem: mat,
-        procurementrecord: history.state?.procurementrecord,
-        procurement_record_id: this.procurement_record_id(),
-      },
-    });
+  onTableAction(event: { type: string; item: assetWithdrawalTypes }) {
+    const mat = event.item;
+
+    const stateData = {
+      assetItem: mat,
+      procurementrecord: history.state?.procurementrecord,
+      procurement_record_id: this.procurement_record_id(),
+      procurement_withdrawal_id: mat.procurement_withdrawal_id,
+    };
+
+    if (event.type === 'repair') {
+      this.router.navigate(['/admin/assetRepairs', mat.procurement_withdrawal_id], {
+        state: stateData,
+      });
+      return;
+    }
+
+    if (event.type === 'history') {
+      this.router.navigate(['/admin/AssetSubItemHistory', mat.procurement_withdrawal_id], {
+        state: stateData,
+      });
+    }
   }
 
   sortOptions = [
@@ -145,13 +165,20 @@ export class AssetWithdrawalComponent implements OnInit {
       { label: 'วันที่เบิก', key: 'withdrawal_date', pipe: 'thaiDate' },
       { label: 'ผู้เบิก', key: 'staff_name' },
       { label: 'สถานที่เก็บ', key: 'storage_location' },
+      { label: 'รายระเอียด', key: 'remark' },
     ];
 
   cancel() {
     if (window.history.length > 1) {
-      window.history.back();
+      this.location.back();
     } else {
-      this.router.navigate(['/admin/procurements']);
+      this.router.navigate(['/admin/procurementrecord']);
     }
+    // this.router.navigate(['/admin/project/procurementrecord'], {
+    //   queryParams: {
+    //     project_id: history.state?.procurementrecord?.project_id,
+    //   },
+    //   state: { procurementrecord: history.state?.procurementrecord },
+    // });
   }
 }

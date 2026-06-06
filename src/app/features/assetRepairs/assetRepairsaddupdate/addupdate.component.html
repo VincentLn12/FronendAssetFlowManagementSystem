@@ -25,7 +25,7 @@
         <div class="flex items-start gap-4">
           <div
             class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white"
-            [ngClass]="isEditMode() ? 'bg-amber-500' : 'bg-blue-800'"
+            [ngClass]="isEditMode() ? 'bg-amber-500' : 'bg-slate-700'"
           >
             @if (isEditMode()) {
               <span class="text-xl">✎</span>
@@ -38,7 +38,7 @@
             <p class="mb-0.5 text-xs font-semibold uppercase tracking-widest text-amber-600">
               ระบบบริหารจัดการงานพัสดุ
             </p>
-            <h1 class="text-2xl font-bold tracking-tight text-blue-900">
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900">
               {{ title() }}
             </h1>
             <p class="mt-1 text-sm text-slate-500">
@@ -68,7 +68,7 @@
     <div class="grid gap-5 lg:grid-cols-[1fr_280px]">
       <!-- Form Card -->
       <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-        <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-3">
+        <div class="border-b-2 border-slate-700 bg-slate-700 px-6 py-3">
           <h2 class="text-base font-semibold text-white">ข้อมูล{{ name }}</h2>
           <p class="mt-0.5 text-sm text-blue-200">กรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบันทึก</p>
         </div>
@@ -134,7 +134,7 @@
 
               <button
                 type="submit"
-                class="inline-flex justify-center rounded-xl bg-blue-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50 transition"
+                class="inline-flex justify-center rounded-xl bg-slate-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 transition"
                 [disabled]="isSubmitting() || form.invalid"
               >
                 @if (isSubmitting()) {

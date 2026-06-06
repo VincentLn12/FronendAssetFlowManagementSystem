@@ -15,9 +15,14 @@
   (add)="goToCreate()"
   (edit)="goToEdit($event)"
   (delete)="deleteAssetItems($event)"
-  (pathTo)="goToAssetsubItems($event)"
   Namepath="ดูรายการย่อย"
   (back)="cancel()"
-  (detail)="goToAssetItemDetails($event)"
+  (action)="onTableAction($event)"
+  [showDetail]="true"
+  [showPathTo]="true"
+  [showBack]="true"
+  [headerColor]="headerColor"
+  [headerBorderColor]="headerBorderColor"
+  [butttonColor]="butttonColor"
 >
 </app-data-table>

@@ -21,6 +21,10 @@ export class AssetSubItemsComponent implements OnInit {
   private alertService = inject(AlertService);
   private table = new TableState();
 
+  headerColor = 'bg-slate-700';
+  headerBorderColor = 'border-slate-700';
+  butttonColor = 'bg-slate-700 hover:bg-slate-800 ';
+
   asset_id = signal<number | null>(null);
 
   assetsubItem?: Pagination<assetSubItemTypes>;
@@ -116,25 +120,11 @@ export class AssetSubItemsComponent implements OnInit {
     });
   }
   cancel() {
-    // const asset_id = this.asset_id();
-
     if (window.history.length > 1) {
       window.history.back();
     } else {
       this.router.navigate(['/admin/assetItems']);
     }
-    // if (!asset_id) {
-    //   this.router.navigate(['/admin/procurements']);
-    //   return;
-    // }
-
-    // this.router.navigate(['/admin/assetItems', asset_id], {
-    //   state: {
-    //     assetItem: history.state?.assetItem,
-    //     procurementrecord: history.state?.procurementrecord,
-    //     procurement_record_id: history.state?.procurement_record_id,
-    //   },
-    // });
   }
   sortOptions = [
     { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },

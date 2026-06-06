@@ -16,6 +16,14 @@
   (edit)="goToEdit($event)"
   (delete)="deleteAssetWithdrawal($event)"
   (back)="cancel()"
-  (repair)="goToAssetRepairs($event)"
+  [Namepath]="'ประวัติการใช้คุรุภัณฑ์'"
+  (action)="onTableAction($event)"
+  [showBack]="true"
+  (action)="onTableAction($event)"
+  [showRepair]="true"
+  [showHistory]="true"
+  [butttonColor]="butttonColor"
+  [headerColor]="headerColor"
+  [headerBorderColor]="headerBorderColor"
 >
 </app-data-table>

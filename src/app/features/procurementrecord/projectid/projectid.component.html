@@ -18,10 +18,12 @@
   (edit)="goToEdit($event)"
   (delete)="deleteProcurementrecord($event)"
   [fileBaseUrl]="baseFileUrl"
-  (detail)="goToDetail($event)"
-  (pathTo)="gotoPathTo($event)"
+  (action)="onTableAction($event)"
   [Namepath]="'ดูรายการ'"
-  (withdraw)="goToWithdraw($event)"
   (back)="cancel()"
+  [showPathTo]="true"
+  [showWithdraw]="true"
+  [showDetail]="true"
+  [showBack]="true"
 ></app-data-table>
 ิ

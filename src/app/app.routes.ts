@@ -539,7 +539,30 @@ export const routes: Routes = [
                 (m) => m.AssetUsageTypeAddUpdateComponent,
               ),
           },
+          // ประวัติการใช้ครุภัณฑ์
+          // ประเภทการใช้งานครุภัณฑ์
 
+          {
+            path: 'AssetSubItemHistory/create',
+            loadComponent: () =>
+              import('./features/assetSubItemHistory/assetSubItemHistoryaddupdate/addupdate.component').then(
+                (m) => m.AssetSubItemHistoryAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'AssetSubItemHistory/update/:id',
+            loadComponent: () =>
+              import('./features/assetSubItemHistory/assetSubItemHistoryaddupdate/addupdate.component').then(
+                (m) => m.AssetSubItemHistoryAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'AssetSubItemHistory/:id',
+            loadComponent: () =>
+              import('./features/assetSubItemHistory/assetSubItemHistory.component').then(
+                (m) => m.AssetSubItemHistoryComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,

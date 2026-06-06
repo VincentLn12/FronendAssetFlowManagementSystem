@@ -12,11 +12,12 @@
 
     <!-- Content -->
     <div class="grid gap-5">
-      <!-- Form Card -->
       <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-        <div class="border-b-2 border-slate-700 bg-slate-700 px-6 py-3">
+        <!-- Header -->
+        <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-3">
           <div class="flex justify-between items-center gap-3">
             <h2 class="text-base font-semibold text-white">ข้อมูล{{ name }}</h2>
+
             <span
               class="inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold"
               [ngClass]="
@@ -28,7 +29,10 @@
               {{ isEditMode() ? 'โหมดแก้ไข' : 'โหมดเพิ่มข้อมูล' }}
             </span>
           </div>
-          <p class="mt-0.5 text-sm text-blue-200">กรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบันทึก</p>
+
+          <p class="mt-0.5 text-sm text-blue-200">
+            กรอกข้อมูลประวัติการใช้ครุภัณฑ์ให้ครบถ้วนก่อนบันทึก
+          </p>
         </div>
 
         @if (isLoading()) {
@@ -39,55 +43,49 @@
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="grid grid-cols-2 gap-6 p-6">
+            <!-- แถวที่ 1 -->
+            <div class="grid grid-cols-1 gap-6 p-6 md:grid-cols-3">
               <app-input
-                label="รหัสรายการเเม่"
-                [control]="form.controls.asset_code_prefix"
-                placeholder="เช่น: 5800-5007"
+                label="รหัสการเบิก"
+                type="number"
+                [readonly]="true"
+                [control]="form.controls.procurement_withdrawal_id"
+                placeholder="รหัสการเบิก"
+                [required]="true"
               ></app-input>
+
+              <app-date-picker
+                label="วันที่ทำรายการ"
+                [control]="form.controls.history_date"
+                placeholder="เลือกวันที่ทำรายการ"
+              ></app-date-picker>
+
               <app-input
-                label="ชื่อรายการ"
-                [control]="form.controls.asset_name"
-                placeholder="เช่น: คอมพิวเตอร์, โต๊ะทำงาน, เครื่องปรับอากาศ"
+                label="ประเภทประวัติ"
+                [control]="form.controls.history_type"
+                placeholder="เช่น ใช้งาน / ย้ายที่ตั้ง / ส่งซ่อม / คืน / จำหน่าย"
                 [required]="true"
               ></app-input>
             </div>
 
-            <div class="grid grid-cols-2 gap-6 p-6 -mt-10">
+            <!-- แถวที่ 2 -->
+            <div class="grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-2">
               <app-select
-                label="หน่วยงานที่รับผิดชอบ"
-                [control]="form.controls.department_id"
-                [options]="departments()"
-                optionLabel="department_name"
-                optionValue="department_id"
-                placeholder="-- เลือกหน่วยงาน --"
+                label="ประเภทการใช้งานครุภัณฑ์"
+                [control]="form.controls.usage_type_id"
+                [options]="AssetUsage()"
+                optionLabel="usage_type_name"
+                optionValue="usage_type_id"
+                placeholder="-- เลือกประเภทการใช้งาน --"
                 [required]="true"
                 [searchable]="true"
               />
-              <app-select
-                label="ประเภทเงิน"
-                [control]="form.controls.fund_category_id"
-                [options]="fund_categorys()"
-                optionLabel="fund_name"
-                optionValue="fund_category_id"
-                placeholder="-- เลือกประเภทเงิน --"
-                [required]="true"
-                [searchable]="true"
-              />
-            </div>
 
-            <div class="grid grid-cols-2 gap-6 p-6 -mt-10">
-              <app-select
-                label="วิธีได้มา"
-                [control]="form.controls.acquisition_method_id"
-                [options]="aquisition_methods()"
-                optionLabel="acquisition_method_name"
-                optionValue="acquisition_method_id"
-                placeholder="-- เลือกวิธีได้มา--"
-                [required]="true"
-                [searchable]="true"
-              />
-              <app-date-picker label="วันที่รับ" [control]="form.controls.receive_date" />
+              <app-input
+                label="รายละเอียด"
+                [control]="form.controls.detail"
+                placeholder="เช่น ใช้งานประจำห้องปฏิบัติการ / ย้ายไปอาคาร 2"
+              ></app-input>
             </div>
 
             <!-- Footer -->
@@ -105,7 +103,7 @@
 
               <button
                 type="submit"
-                class="inline-flex justify-center rounded-xl bg-slate-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 transition"
+                class="inline-flex justify-center rounded-xl bg-blue-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50 transition"
                 [disabled]="isSubmitting() || form.invalid"
               >
                 @if (isSubmitting()) {

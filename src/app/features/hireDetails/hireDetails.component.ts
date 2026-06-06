@@ -35,6 +35,8 @@ export class HireDetailsComponent implements OnInit {
   isFormOpen = signal(false);
   isEditMode = signal(false);
 
+  headercolor = 'bg-green-100 text-green-800';
+
   form = signal<hireDetailCreateType>({
     hire_detail_id: 0,
     procurement_record_id: 0,
@@ -198,16 +200,6 @@ export class HireDetailsComponent implements OnInit {
     } else {
       this.router.navigate(['/admin/projects']);
     }
-    // if (!id) {
-    //   this.router.navigate(['/admin/procurements']);
-    //   return;
-    // }
-
-    // this.router.navigate(['/admin/assetItems', id], {
-    //   state: {
-    //     procurementrecord: history.state?.procurementrecord,
-    //   },
-    // });
   }
 
   confirmDelete(id: number) {
