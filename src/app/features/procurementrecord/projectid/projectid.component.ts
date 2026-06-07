@@ -130,7 +130,11 @@ export class ProjectidComponent {
           this.router.navigate(
             ['/admin/materialReceiveDetails', procurementrecord.procurement_record_id],
             {
-              state: { procurementrecord },
+              state: {
+                procurementrecord,
+                project_id: this.project_id(),
+                projectstate: this.projectstate,
+              },
             },
           );
         }

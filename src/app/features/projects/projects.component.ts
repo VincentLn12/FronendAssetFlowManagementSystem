@@ -1,5 +1,5 @@
 import { Params } from './../../shared/models/allType';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { Pagination } from '../../shared/models/pagination';
@@ -8,6 +8,7 @@ import { AlertService } from '../../../shared.service';
 import { projectsTypes } from './interface/projectsTypes';
 import { ProjectsService } from './service/projects.service';
 import { environment } from '../../../environments/environment.development';
+import { FiscalyearsService } from '../fiscalyears/service/fiscalyears.service';
 
 @Component({
   selector: 'app-departments',
@@ -17,27 +18,42 @@ import { environment } from '../../../environments/environment.development';
 })
 export class ProjectsComponent implements OnInit {
   private router = inject(Router);
-  private table = new TableState();
+  table = new TableState();
   private projectsService = inject(ProjectsService);
+  private fiscalYearService = inject(FiscalyearsService);
   private alertService = inject(AlertService);
 
   project?: Pagination<projectsTypes>;
   projects = signal<projectsTypes[]>([]);
   baseFileUrl = environment.baseFileUrl;
 
+  fiscalYears = signal<any[]>([]);
+  fiscal_year_id = signal<number | null>(null);
+
   Params = new Params();
 
   ngOnInit(): void {
+    this.loadDropdowns();
     this.getProject();
   }
 
   getProject() {
-    this.projectsService.getProjects(this.table.params).subscribe({
+    this.projectsService.getProjects(this.table.params, this.fiscal_year_id()).subscribe({
       next: (response) => {
         this.project = response;
         this.projects.set(response.data);
       },
       error: (error) => console.error(error),
+    });
+  }
+
+  loadDropdowns() {
+    const params = new Params();
+    params.pageSize = 100;
+
+    this.fiscalYearService.getFiscalyears(params).subscribe({
+      next: (res) => this.fiscalYears.set(res.data),
+      error: (err) => console.error(err),
     });
   }
 
@@ -51,6 +67,12 @@ export class ProjectsComponent implements OnInit {
 
   onSort(value: string) {
     this.table.onSort(value, () => this.getProject());
+  }
+
+  onFilterChange(event: any) {
+    this.fiscal_year_id.set(Number(event.value) || null);
+    this.table.params.pageNumber = 1;
+    this.getProject();
   }
 
   deleteProject(id: number) {
@@ -107,4 +129,14 @@ export class ProjectsComponent implements OnInit {
     { label: 'ผู้รับผิดชอบ', key: 'staff_name' },
     { label: 'ไฟล์แนบ', key: 'filePath', type: 'file' },
   ];
+  filterOptions = computed(() => [
+    {
+      key: 'fiscal_year_id',
+      label: 'ปีงบประมาณ',
+      options: this.fiscalYears().map((x) => ({
+        label: x.fiscal_year,
+        value: x.fiscal_year_id,
+      })),
+    },
+  ]);
 }

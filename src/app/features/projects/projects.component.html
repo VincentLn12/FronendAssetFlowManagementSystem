@@ -19,5 +19,7 @@
   (action)="gotoPathTo($event)"
   [Namepath]="'เอกสาร'"
   [showPathTo]="true"
+  (filterChange)="onFilterChange($event)"
+  [filterOptions]="filterOptions()"
 >
 </app-data-table>

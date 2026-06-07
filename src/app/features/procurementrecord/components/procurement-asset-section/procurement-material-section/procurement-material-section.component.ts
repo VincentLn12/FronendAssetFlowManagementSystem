@@ -19,7 +19,7 @@ export interface MaterialSectionPayload {
 @Component({
   selector: 'app-procurement-material-section',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputComponent, SelectComponent, TextareaComponent],
+  imports: [CommonModule, ReactiveFormsModule, InputComponent, SelectComponent],
   templateUrl: './procurement-material-section.component.html',
 })
 export class ProcurementMaterialSectionComponent implements OnInit {

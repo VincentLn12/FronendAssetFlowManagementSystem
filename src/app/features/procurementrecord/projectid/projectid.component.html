@@ -1,8 +1,6 @@
 <app-data-table
   title="ระบบจัดการเอกสารการจัดซื้อจัดจ้าง "
-  subtitle="จัดการข้อมูลเอกสารการจัดซื้อจัดจ้าง เลขโครงการ {{
-    projectstate?.projects!.project_code
-  }}"
+  subtitle="จัดการข้อมูลเอกสารการจัดซื้อจัดจ้าง"
   [data]="procurementrecords()"
   [columns]="columns"
   [idKey]="'procurement_record_id'"

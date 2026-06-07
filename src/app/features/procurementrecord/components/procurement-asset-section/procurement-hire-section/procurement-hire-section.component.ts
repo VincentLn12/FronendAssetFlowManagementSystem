@@ -51,7 +51,7 @@ export class ProcurementHireSectionComponent implements OnInit {
       item_no: [this.hireDetails.length + 1],
       hire_name: ['', Validators.required],
       quantity: [1, Validators.required],
-      unit_id: [null as number | null, Validators.required],
+      unit_id: [null as number | null],
       unit_price: [0, Validators.required],
       total_amount: [0],
       total_text: [''],

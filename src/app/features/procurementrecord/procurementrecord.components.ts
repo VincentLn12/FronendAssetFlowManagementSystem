@@ -126,13 +126,11 @@ export class ProcurementrecordComponent implements OnInit {
       case 'pathTo': {
         const expenseType = (procurementrecord.expense_type_name ?? '').trim();
 
-        console.log('expenseType:', expenseType, procurementrecord);
-
         if (expenseType === 'วัสดุ') {
           this.router.navigate(
             ['/admin/materialReceiveDetails', procurementrecord.procurement_record_id],
             {
-              state: { procurementrecord },
+              state: { procurementrecord, project_id: this.project_id() },
             },
           );
           return;
@@ -140,14 +138,14 @@ export class ProcurementrecordComponent implements OnInit {
 
         if (expenseType === 'ครุภัณฑ์') {
           this.router.navigate(['/admin/assetItems', procurementrecord.procurement_record_id], {
-            state: { procurementrecord },
+            state: { procurementrecord, project_id: procurementrecord.project_id },
           });
           return;
         }
 
         if (expenseType === 'จัดจ้าง') {
           this.router.navigate(['/admin/hireDetails', procurementrecord.procurement_record_id], {
-            state: { procurementrecord },
+            state: { procurementrecord, project_id: procurementrecord.project_id },
           });
           return;
         }
@@ -176,6 +174,7 @@ export class ProcurementrecordComponent implements OnInit {
     this.table.params.pageNumber = 1;
     this.getProcurementrecord();
   }
+
   filterOptions = computed(() => [
     {
       key: 'expense_type_id',
@@ -194,6 +193,7 @@ export class ProcurementrecordComponent implements OnInit {
       })),
     },
   ]);
+
   loadDropdowns() {
     const expenseParams = new Params();
     expenseParams.pageSize = 100;
@@ -217,6 +217,7 @@ export class ProcurementrecordComponent implements OnInit {
       error: (err) => console.error(err),
     });
   }
+  
   sortOptions = [
     { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },
     { label: 'ชื่อ ฮ-ก', value: 'nameDesc' },

@@ -51,7 +51,7 @@ export interface procurementrecordCreateTypes {
   vendor_id: number;
   fund_category_id: number;
   budget_source_id: number;
-  staff_id: number;
+  staff_id?: number;
   attachment_file_path: string;
 }
 
@@ -80,7 +80,7 @@ export interface hireDetailCreateTypes {
   item_no: number;
   hire_name: string;
   quantity: number;
-  unit_id: number | null;
+  unit_id?: number | null;
   unit_price: number;
   total_amount: number;
   total_text: string;

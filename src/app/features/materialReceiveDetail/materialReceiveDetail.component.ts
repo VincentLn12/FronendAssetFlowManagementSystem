@@ -29,13 +29,11 @@ export class MaterialReceiveDetailComponent implements OnInit {
   Params = new Params();
   totalCount = signal<number>(0);
 
-  headerColor = 'bg-slate-700';
-  headerBorderColor = 'border-slate-700';
-  butttonColor = 'bg-slate-700 hover:bg-slate-800 ';
-
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : null;
+
+    console.log('Project State:', history.state?.projectstate);
 
     if (id && Number.isFinite(id)) {
       this.procurement_record_id.set(id);
@@ -134,10 +132,13 @@ export class MaterialReceiveDetailComponent implements OnInit {
   }
 
   cancel() {
-    if (window.history.length > 1) {
-      this.location.back();
-    } else {
-      this.router.navigate(['/admin/procurementrecord']);
-    }
+    this.router.navigate(['/admin/project/procurementrecord'], {
+      queryParams: { project_id: history.state?.procurementrecord.project_id },
+      state: {
+        procurementrecord: history.state?.procurementrecord,
+        project_id: history.state?.project_id,
+        projectstate: history.state?.projectstate,
+      },
+    });
   }
 }

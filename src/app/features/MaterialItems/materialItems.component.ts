@@ -6,11 +6,12 @@ import { TableState } from '../../../shared/TableState';
 import { AlertService } from '../../../shared.service';
 import { materialItemsTypes } from './interface/materialItemsTypes';
 import { MaterialItemsService } from './service/materialItems.service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-departments',
   standalone: true,
-  imports: [],
+  imports: [DecimalPipe],
   templateUrl: './materialItems.component.html',
 })
 export class MaterialItemsComponent implements OnInit {

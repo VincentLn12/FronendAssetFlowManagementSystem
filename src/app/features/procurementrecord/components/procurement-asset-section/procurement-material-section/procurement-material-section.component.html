@@ -47,13 +47,13 @@
           placeholder="0"
           [required]="true"
         />
-
+      </div>
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <app-input
           label="ราคาต่อหน่วย"
           type="number"
           [control]="$any(group).controls.unit_price"
           placeholder="0.00"
-          [required]="true"
           [readonly]="true"
         />
 
@@ -64,14 +64,6 @@
           placeholder="0.00"
           [readonly]="true"
         />
-
-        <div class="md:col-span-2">
-          <app-textarea
-            label="เหตุผล"
-            [control]="$any(group).controls.operation_reason"
-            placeholder="กรอกเหตุผล (ถ้ามี)"
-          />
-        </div>
       </div>
     </div>
   }

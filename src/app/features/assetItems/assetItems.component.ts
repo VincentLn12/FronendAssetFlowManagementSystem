@@ -26,7 +26,7 @@ export class AssetItemsComponent implements OnInit {
   assetItems = signal<assetItemsTypes[]>([]);
   Params = new Params();
   totalCount = signal<number>(0);
-  
+
   headerColor = 'bg-slate-700';
   headerBorderColor = 'border-slate-700';
   butttonColor = 'bg-slate-700 hover:bg-slate-800 ';
@@ -156,10 +156,13 @@ export class AssetItemsComponent implements OnInit {
     ];
 
   cancel() {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      this.router.navigate(['/admin/procurements']);
-    }
+    this.router.navigate(['/admin/project/procurementrecord'], {
+      queryParams: { project_id: history.state?.procurementrecord.project_id },
+      state: {
+        procurementrecord: history.state?.procurementrecord,
+        project_id: history.state?.project_id,
+        projectstate: history.state?.projectstate,
+      },
+    });
   }
 }

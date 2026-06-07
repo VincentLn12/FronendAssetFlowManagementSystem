@@ -13,9 +13,9 @@ export interface projectsTypes {
 export interface ProjectAddUpdateDto {
   project_id?: number;
   project_code: string;
-  project_name: string;
+  project_name?: string;
   fiscal_year_id: number;
   project_budget_amount: number;
-  staff_id: number;
+  staff_id?: number;
   filePath: string;
 }

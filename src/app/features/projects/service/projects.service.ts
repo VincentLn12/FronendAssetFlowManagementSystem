@@ -12,7 +12,7 @@ export class ProjectsService {
   private baseUrl = environment.baseUrl;
   private http = inject(HttpClient);
 
-  getProjects(paramsData: Params) {
+  getProjects(paramsData: Params, fiscal_year_id?: number | null) {
     let params = new HttpParams();
 
     if (paramsData.sort) {
@@ -21,6 +21,9 @@ export class ProjectsService {
 
     if (paramsData.search) {
       params = params.append('search', paramsData.search);
+    }
+    if (fiscal_year_id) {
+      params = params.append('fiscalYearId', fiscal_year_id);
     }
 
     params = params.append('pageSize', paramsData.pageSize);

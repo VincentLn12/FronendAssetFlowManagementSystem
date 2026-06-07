@@ -59,7 +59,7 @@
               </td>
 
               <td class="border border-slate-400 px-2 py-1 text-center">
-                {{ item.opening_balance }}
+                {{ item.opening_balance || 0 }}
               </td>
 
               <td class="border border-slate-400 px-2 py-1 text-center">
@@ -67,7 +67,7 @@
               </td>
 
               <td class="border border-slate-400 px-2 py-1 text-center">
-                {{ item.quantity_out }}
+                {{ item.quantity_out || 0 }}
               </td>
 
               <td class="border border-slate-400 px-2 py-1 text-center">
@@ -79,7 +79,7 @@
               </td>
 
               <td class="border border-slate-400 px-2 py-1 text-right">
-                {{ item.total_amount }}
+                {{ item.total_amount | number: '1.2-2' }}
               </td>
 
               <td class="border border-slate-400 px-2 py-1 text-center">งปม.</td>
@@ -113,7 +113,7 @@
               รวมเป็นเงินทั้งสิ้น
             </td>
             <td class="border border-slate-400 px-2 py-2 text-right">
-              {{ getTotalAmount() }}
+              {{ getTotalAmount() | number: '1.2-2' }}
             </td>
             <td colspan="3" class="border border-slate-400"></td>
           </tr>

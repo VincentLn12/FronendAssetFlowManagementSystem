@@ -36,15 +36,15 @@ export class ProjectsAddUpdateComponent implements OnInit {
   staffs = signal<any[]>([]);
 
   title = computed(() => (this.isEditMode() ? `แก้ไข${this.name}` : `เพิ่ม${this.name}`));
-  isLoading = signal(false);
+  isLoading = signal(false);  
   isSubmitting = signal(false);
 
   form = this.fb.nonNullable.group({
     project_code: ['', [Validators.required]],
-    project_name: ['', [Validators.required]],
+    project_name: [''],
     fiscal_year_id: [null as number | null, Validators.required],
     project_budget_amount: [0, [Validators.required, Validators.min(0)]],
-    staff_id: [null as number | null, Validators.required],
+    staff_id: [null as number | null],
     filePath: [''],
   });
 
