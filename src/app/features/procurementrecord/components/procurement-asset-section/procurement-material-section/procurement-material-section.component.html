@@ -1,0 +1,78 @@
+<div class="mx-6 mb-6 rounded-2xl border border-green-200 bg-green-50 p-6">
+  <div class="mb-5 flex items-center justify-between">
+    <div>
+      <h2 class="text-lg font-bold text-green-900">ข้อมูลรายการพัสดุ</h2>
+      <p class="mt-1 text-sm text-green-700">เพิ่มรายการวัสดุที่รับเข้าสู่สต็อก</p>
+    </div>
+
+    <button
+      type="button"
+      class="rounded-xl bg-green-700 px-4 py-2 text-sm font-semibold text-white hover:bg-green-800"
+      (click)="addMaterialDetail()"
+    >
+      + เพิ่มรายการพัสดุ
+    </button>
+  </div>
+
+  @for (group of materialDetailForms; track $index; let i = $index) {
+    <div [formGroup]="group" class="mt-4 rounded-xl border border-green-100 bg-white p-5">
+      <div class="mb-4 flex items-center justify-between">
+        <p class="font-semibold text-slate-700">รายการที่ {{ i + 1 }}</p>
+
+        <button
+          type="button"
+          class="text-sm font-semibold text-red-600 hover:text-red-800"
+          (click)="removeMaterialDetail(i)"
+        >
+          ลบ
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <app-select
+          label="รายการวัสดุ"
+          [control]="$any(group).controls.material_item_id"
+          [options]="materialItems"
+          optionLabel="display_name"
+          optionValue="material_item_id"
+          placeholder="-- เลือกรายการวัสดุ --"
+          [required]="true"
+          [searchable]="true"
+        />
+
+        <app-input
+          label="จำนวนรับเข้า"
+          type="number"
+          [control]="$any(group).controls.quantity"
+          placeholder="0"
+          [required]="true"
+        />
+
+        <app-input
+          label="ราคาต่อหน่วย"
+          type="number"
+          [control]="$any(group).controls.unit_price"
+          placeholder="0.00"
+          [required]="true"
+          [readonly]="true"
+        />
+
+        <app-input
+          label="รวมเงิน"
+          type="number"
+          [control]="$any(group).controls.total_amount"
+          placeholder="0.00"
+          [readonly]="true"
+        />
+
+        <div class="md:col-span-2">
+          <app-textarea
+            label="เหตุผล"
+            [control]="$any(group).controls.operation_reason"
+            placeholder="กรอกเหตุผล (ถ้ามี)"
+          />
+        </div>
+      </div>
+    </div>
+  }
+</div>

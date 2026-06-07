@@ -1,4 +1,3 @@
-import { expenseTypes } from './../expenseTypes/interface/expenseTypes';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
@@ -11,7 +10,6 @@ import { ProcurementrecordService } from './service/procurementrecord.service';
 import { environment } from '../../../environments/environment.development';
 import { ExpensetypesService } from '../expenseTypes/service/expenseTypes.service';
 import { FiscalyearsService } from '../fiscalyears/service/fiscalyears.service';
-import { CdkAriaLive } from '../../../../node_modules/@angular/cdk/types/_a11y-module-chunk';
 
 @Component({
   selector: 'app-departments',
@@ -45,7 +43,6 @@ export class ProcurementrecordComponent implements OnInit {
     this.loadDropdowns();
     this.route.queryParamMap.subscribe((params) => {
       const projectId = Number(params.get('project_id'));
-      const projectName = params.get('project_name') ?? '';
 
       if (projectId && Number.isFinite(projectId)) {
         this.project_id.set(projectId);
@@ -126,23 +123,38 @@ export class ProcurementrecordComponent implements OnInit {
           },
         );
         break;
+      case 'pathTo': {
+        const expenseType = (procurementrecord.expense_type_name ?? '').trim();
 
-      case 'pathTo':
-        if (
-          procurementrecord.expense_type_name === 'ครุภัณฑ์' ||
-          procurementrecord.expense_type_name === 'วัสดุ'
-        ) {
+        console.log('expenseType:', expenseType, procurementrecord);
+
+        if (expenseType === 'วัสดุ') {
+          this.router.navigate(
+            ['/admin/materialReceiveDetails', procurementrecord.procurement_record_id],
+            {
+              state: { procurementrecord },
+            },
+          );
+          return;
+        }
+
+        if (expenseType === 'ครุภัณฑ์') {
           this.router.navigate(['/admin/assetItems', procurementrecord.procurement_record_id], {
             state: { procurementrecord },
           });
+          return;
         }
 
-        if (procurementrecord.expense_type_name === 'จัดจ้าง') {
+        if (expenseType === 'จัดจ้าง') {
           this.router.navigate(['/admin/hireDetails', procurementrecord.procurement_record_id], {
             state: { procurementrecord },
           });
+          return;
         }
+
+        console.warn('ไม่พบประเภทค่าใช้จ่าย:', expenseType);
         break;
+      }
 
       case 'withdraw':
         this.router.navigate(['/admin/AssetWithdrawal', procurementrecord.procurement_record_id], {

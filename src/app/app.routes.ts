@@ -507,14 +507,14 @@ export const routes: Routes = [
             path: 'project/procurementrecord/create',
             loadComponent: () =>
               import('./features/procurementrecord/projectprocurementrecordaddupdate/addupdate.component').then(
-                (m) => m.ProcurementsAddUpdateComponents,
+                (m) => m.ProcurementsAddUpdateComponent,
               ),
           },
           {
             path: 'project/procurementrecord/update/:id',
             loadComponent: () =>
               import('./features/procurementrecord/projectprocurementrecordaddupdate/addupdate.component').then(
-                (m) => m.ProcurementsAddUpdateComponents,
+                (m) => m.ProcurementsAddUpdateComponent,
               ),
           },
           // ประเภทการใช้งานครุภัณฑ์
@@ -581,6 +581,28 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/MaterialItems/materialItems.component').then(
                 (m) => m.MaterialItemsComponent,
+              ),
+          },
+          // รายละเอียดการรับวัสดุ
+          {
+            path: 'materialReceiveDetails/create',
+            loadComponent: () =>
+              import('./features/materialReceiveDetail/materialReceiveDetailaddupdate/addupdate.component').then(
+                (m) => m.MaterialReceiveDetailAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'materialReceiveDetails/update/:id',
+            loadComponent: () =>
+              import('./features/materialReceiveDetail/materialReceiveDetailaddupdate/addupdate.component').then(
+                (m) => m.MaterialReceiveDetailAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'materialReceiveDetails/:id',
+            loadComponent: () =>
+              import('./features/materialReceiveDetail/materialReceiveDetail.component').then(
+                (m) => m.MaterialReceiveDetailComponent,
               ),
           },
           {

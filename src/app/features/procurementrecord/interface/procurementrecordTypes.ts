@@ -92,3 +92,19 @@ export interface procurementWithHireCreateTypes {
   procurement_record: procurementrecordCreateTypes;
   hire_details: hireDetailCreateTypes[];
 }
+
+export interface materialReceiveDetailCreateTypes {
+  receive_detail_id: number;
+  procurement_record_id: number;
+  item_no: number;
+  material_item_id: number | null;
+  quantity: number;
+  unit_price: number;
+  total_amount: number;
+  operation_reason: string | null;
+}
+
+export interface procurementWithMaterialsCreateTypes {
+  procurement_record: procurementrecordCreateTypes;
+  material_receive_details: materialReceiveDetailCreateTypes[];
+}

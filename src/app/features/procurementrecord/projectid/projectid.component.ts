@@ -118,10 +118,7 @@ export class ProjectidComponent {
         break;
 
       case 'pathTo':
-        if (
-          procurementrecord.expense_type_name === 'ครุภัณฑ์' ||
-          procurementrecord.expense_type_name === 'วัสดุ'
-        ) {
+        if (procurementrecord.expense_type_name === 'ครุภัณฑ์') {
           this.router.navigate(['/admin/assetItems', procurementrecord.procurement_record_id], {
             state: { procurementrecord },
           });
@@ -129,6 +126,13 @@ export class ProjectidComponent {
           this.router.navigate(['/admin/hireDetails', procurementrecord.procurement_record_id], {
             state: { procurementrecord },
           });
+        } else if (procurementrecord.expense_type_name === 'วัสดุ') {
+          this.router.navigate(
+            ['/admin/materialReceiveDetails', procurementrecord.procurement_record_id],
+            {
+              state: { procurementrecord },
+            },
+          );
         }
         break;
 

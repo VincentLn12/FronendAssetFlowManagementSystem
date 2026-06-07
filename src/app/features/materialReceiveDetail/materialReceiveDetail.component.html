@@ -1,0 +1,104 @@
+<div class="min-h-screen bg-slate-100 px-4 py-4 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-[1920px] rounded-xl bg-white p-6 shadow-sm">
+    <button
+      type="button"
+      (click)="cancel()"
+      class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-blue-800"
+    >
+      ← กลับ
+    </button>
+
+    <div class="mb-6 text-center">
+      <h1 class="text-lg font-bold text-slate-900">รายละเอียดของวัสดุ/ครุภัณฑ์ ที่จะขอ ซื้อ</h1>
+      <p class="mt-1 text-sm text-slate-700">
+        ตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและบริหารพัสดุภาครัฐ พ.ศ.
+      </p>
+    </div>
+
+    <div class="mb-3 flex justify-end">
+      <button
+        type="button"
+        (click)="goToCreate()"
+        class="rounded-lg bg-blue-800 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-900"
+      >
+        + เพิ่มรายการ
+      </button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[1100px] border-collapse text-sm">
+        <thead>
+          <tr class="bg-slate-100 text-center">
+            <th class="border border-slate-500 px-2 py-2">ลำดับที่</th>
+            <th class="border border-slate-500 px-2 py-2">รหัสวัสดุ</th>
+
+            <th class="border border-slate-500 px-2 py-2">จำนวน</th>
+            <th class="border border-slate-500 px-2 py-2">หน่วยละ</th>
+            <th class="border border-slate-500 px-2 py-2">รวมเงิน</th>
+            <th class="border border-slate-500 px-2 py-2">เหตุที่จะต้องดำเนินการ</th>
+            <th class="border border-slate-500 px-2 py-2 print:hidden">จัดการ</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (item of MaterialReceiveDetails(); track item.receive_detail_id; let i = $index) {
+            <tr>
+              <td class="border border-slate-500 px-2 py-2 text-center">
+                {{ item.item_no || i + 1 }}
+              </td>
+
+              <td class="border border-slate-500 px-2 py-2">
+                {{ item.material_name }}
+              </td>
+
+              <td class="border border-slate-500 px-2 py-2 text-center">
+                {{ item.quantity }}
+              </td>
+
+              <td class="border border-slate-500 px-2 py-2 text-right">
+                {{ item.unit_price }}
+              </td>
+
+              <td class="border border-slate-500 px-2 py-2 text-right">
+                {{ item.total_amount }}
+              </td>
+              <td class="border border-slate-500 px-2 py-2">
+                {{ item.operation_reason || '-' }}
+              </td>
+
+              <td class="border border-slate-500 px-2 py-2 text-center print:hidden">
+                <button
+                  type="button"
+                  (click)="goToEdit(item)"
+                  class="text-blue-700 hover:underline"
+                >
+                  แก้ไข
+                </button>
+                <span class="mx-1 text-slate-300">|</span>
+                <button
+                  type="button"
+                  (click)="deleteMaterialReceiveDetail(item.receive_detail_id)"
+                  class="text-red-600 hover:underline"
+                >
+                  ลบ
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+
+        <tfoot>
+          <tr class="font-bold">
+            <td colspan="5" class="border border-slate-500 px-2 py-2 text-right">รวมจำนวนเงิน</td>
+
+            <td class="border border-slate-500 px-2 py-2 text-right">
+              {{ getTotalAmount() }}
+            </td>
+
+            <td class="border border-slate-500 print:hidden"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

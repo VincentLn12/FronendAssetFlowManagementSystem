@@ -1,0 +1,133 @@
+<div class="min-h-screen bg-slate-50 px-4 py-4 sm:px-6 lg:px-8 font-sans">
+  <div class="mx-auto max-w-[1920px]">
+    <!-- Back button -->
+    <button
+      type="button"
+      (click)="cancel()"
+      class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-blue-800 transition"
+    >
+      <span class="text-lg leading-none">←</span>
+      กลับไปหน้ารายการ
+    </button>
+
+    <!-- Header -->
+    <div class="mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-4">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-widest text-blue-200">
+              ระบบบริหารจัดการงานพัสดุ
+            </p>
+            <h1 class="mt-1 text-xl font-bold text-white">
+              {{ title() }}
+            </h1>
+            <p class="mt-1 text-sm text-blue-200">กรอกข้อมูลรายละเอียดการรับวัสดุเข้าสู่สต็อก</p>
+          </div>
+
+          <span
+            class="inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold"
+            [ngClass]="
+              isEditMode()
+                ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-300'
+                : 'bg-blue-50 text-blue-800 ring-1 ring-blue-300'
+            "
+          >
+            {{ isEditMode() ? 'โหมดแก้ไข' : 'โหมดเพิ่มข้อมูล' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+      <div class="border-b border-slate-200 px-6 py-3">
+        <h2 class="text-base font-semibold text-blue-900">ข้อมูล{{ name }}</h2>
+        <p class="mt-0.5 text-sm text-slate-500">ช่องที่มีเครื่องหมาย * จำเป็นต้องกรอก</p>
+      </div>
+
+      @if (isLoading()) {
+        <div class="space-y-4 p-6">
+          <div class="h-4 w-40 animate-pulse rounded bg-slate-200"></div>
+          <div class="h-11 w-full animate-pulse rounded-lg bg-slate-200"></div>
+          <div class="h-11 w-full animate-pulse rounded-lg bg-slate-200"></div>
+        </div>
+      } @else {
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="grid gap-6 p-6 md:grid-cols-2">
+            <app-select
+              label="รายการวัสดุ"
+              [control]="form.controls.material_item_id"
+              [options]="materialitems()"
+              optionLabel="display_name"
+              optionValue="material_item_id"
+              placeholder="-- เลือกรายการวัสดุ --"
+              [required]="true"
+              [searchable]="true"
+            />
+
+            <app-input
+              label="จำนวนรับเข้า"
+              type="number"
+              [control]="form.controls.quantity"
+              placeholder="0"
+              [required]="true"
+            />
+
+            <app-input
+              label="ราคาต่อหน่วย"
+              type="number"
+              [control]="form.controls.unit_price"
+              placeholder="0.00"
+              [required]="true"
+              [readonly]="true"
+            />
+
+            <app-input
+              label="รวมเงิน"
+              type="number"
+              [control]="form.controls.total_amount"
+              placeholder="0.00"
+              [readonly]="true"
+            />
+
+            <div class="md:col-span-2">
+              <app-textarea
+                label="เหตุผล"
+                [control]="form.controls.operation_reason"
+                placeholder="กรอกเหตุผล (ถ้ามี)"
+              />
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div
+            class="flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4 sm:flex-row sm:items-center sm:justify-end"
+          >
+            <button
+              type="button"
+              (click)="cancel()"
+              class="inline-flex justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 transition"
+              [disabled]="isSubmitting()"
+            >
+              ยกเลิก
+            </button>
+
+            <button
+              type="submit"
+              class="inline-flex justify-center rounded-xl bg-blue-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50 transition"
+              [disabled]="isSubmitting() || form.invalid"
+            >
+              @if (isSubmitting()) {
+                กำลังบันทึก...
+              } @else if (isEditMode()) {
+                บันทึกการแก้ไข
+              } @else {
+                บันทึกข้อมูล
+              }
+            </button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+</div>

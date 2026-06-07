@@ -7,6 +7,7 @@ import {
   procurementrecordTypes,
   procurementrecordCreateTypes,
   procurementWithAssetsCreateTypes,
+  procurementWithMaterialsCreateTypes,
 } from '../interface/procurementrecordTypes';
 
 @Injectable({
@@ -72,6 +73,9 @@ export class ProcurementrecordService {
   }
   createProcurementWithHire(payload: any) {
     return this.http.post(this.baseUrl + 'Procurement_records/create-with-hire', payload);
+  }
+  createProcurementWithMaterials(payload: procurementWithMaterialsCreateTypes) {
+    return this.http.post(this.baseUrl + 'Procurement_records/create-with-materials', payload);
   }
   uploadFile(file: File) {
     const formData = new FormData();

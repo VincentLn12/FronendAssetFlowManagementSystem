@@ -1,6 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { Pagination } from '../../shared/models/pagination';
 import { Params } from '../../shared/models/allType';
 import { TableState } from '../../../shared/TableState';
@@ -11,7 +10,7 @@ import { MaterialItemsService } from './service/materialItems.service';
 @Component({
   selector: 'app-departments',
   standalone: true,
-  imports: [DataTableComponent],
+  imports: [],
   templateUrl: './materialItems.component.html',
 })
 export class MaterialItemsComponent implements OnInit {
