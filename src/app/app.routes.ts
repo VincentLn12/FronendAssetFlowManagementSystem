@@ -612,6 +612,28 @@ export const routes: Routes = [
                 (m) => m.MaterialStockCardComponent,
               ),
           },
+          // พัสดุ
+          {
+            path: 'MaterialWithdrawal/create',
+            loadComponent: () =>
+              import('./features/materialWithdrawal/materialWithdrawaladdupdate/addupdate.component').then(
+                (m) => m.MaterialWithdrawalAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'MaterialWithdrawal/update/:id',
+            loadComponent: () =>
+              import('./features/materialWithdrawal/materialWithdrawaladdupdate/addupdate.component').then(
+                (m) => m.MaterialWithdrawalAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'MaterialWithdrawal/:id',
+            loadComponent: () =>
+              import('./features/materialWithdrawal/materialWithdrawal.component').then(
+                (m) => m.MaterialWithdrawalComponent,
+              ),
+          },
           {
             path: '**',
             component: NotFoundComponent,

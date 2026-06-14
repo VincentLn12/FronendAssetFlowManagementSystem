@@ -141,9 +141,23 @@ export class ProjectidComponent {
         break;
 
       case 'withdraw':
-        this.router.navigate(['/admin/AssetWithdrawal', procurementrecord.procurement_record_id], {
-          state: { procurementrecord },
-        });
+        if (procurementrecord.expense_type_name === 'ครุภัณฑ์') {
+          this.router.navigate(
+            ['/admin/AssetWithdrawal', procurementrecord.procurement_record_id],
+            {
+              state: { procurementrecord },
+            },
+          );
+        } else if (procurementrecord.expense_type_name === 'วัสดุ') {
+          this.router.navigate(
+            ['/admin/MaterialWithdrawal', procurementrecord.procurement_record_id],
+            {
+              state: { procurementrecord },
+            },
+          );
+        } else {
+          this.alertService.error('ประเภทนี้ไม่มีระบบเบิก', 'test');
+        }
         break;
     }
   }
