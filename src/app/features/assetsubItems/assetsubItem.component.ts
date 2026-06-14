@@ -21,9 +21,9 @@ export class AssetSubItemsComponent implements OnInit {
   private alertService = inject(AlertService);
   private table = new TableState();
 
-  headerColor = 'bg-slate-700';
-  headerBorderColor = 'border-slate-700';
-  butttonColor = 'bg-slate-700 hover:bg-slate-800 ';
+  headerColor = 'bg-amber-700';
+  headerBorderColor = 'border-amber-700';
+  butttonColor = 'bg-amber-700 hover:bg-amber-800 ';
 
   asset_id = signal<number | null>(null);
 

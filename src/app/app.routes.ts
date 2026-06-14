@@ -606,6 +606,13 @@ export const routes: Routes = [
               ),
           },
           {
+            path: 'MaterialStockCard/:id',
+            loadComponent: () =>
+              import('./features/materialReceiveDetail/transections/MaterialStockCardComponent.component').then(
+                (m) => m.MaterialStockCardComponent,
+              ),
+          },
+          {
             path: '**',
             component: NotFoundComponent,
           },

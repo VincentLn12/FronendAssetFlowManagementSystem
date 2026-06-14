@@ -426,8 +426,7 @@ export class ProcurementsAddUpdateComponent implements OnInit {
   ): procurementWithAssetsCreateTypes {
     return {
       procurement_record: procurementPayload,
-      asset_item: asset.asset_item,
-      asset_sub_items: asset.asset_sub_items,
+      asset_items: asset.asset_items,
     };
   }
 

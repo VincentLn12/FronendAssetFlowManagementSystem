@@ -1,34 +1,62 @@
-<div class="mx-4 mb-4 rounded-xl border border-purple-200 bg-purple-50 p-4">
-  <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-    <div>
-      <h2 class="text-base font-bold text-purple-900">รายการจัดจ้าง</h2>
-      <p class="mt-0.5 text-sm text-purple-700">เพิ่มรายละเอียดงานจ้างในเอกสารนี้</p>
-    </div>
-
-    <button
-      type="button"
-      class="rounded-lg bg-purple-700 px-4 py-2 text-sm font-semibold text-white hover:bg-purple-800"
-      (click)="addHireDetail()"
+<div class="px-6 pb-6 pt-2">
+  <!-- Empty state -->
+  @if (hireDetailForms.length === 0) {
+    <div
+      class="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 py-12 text-center"
     >
-      + เพิ่มรายการ
-    </button>
-  </div>
+      <svg
+        class="mb-3 h-10 w-10 text-slate-300"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+        />
+      </svg>
+      <p class="text-sm font-medium text-slate-500">ยังไม่มีรายการงานจ้าง</p>
+      <p class="mt-1 text-xs text-slate-400">กด "เพิ่มรายการจัดจ้าง" เพื่อเริ่มต้นบันทึกข้อมูล</p>
+    </div>
+  }
 
   @for (group of hireDetailForms; track $index; let i = $index) {
-    <div [formGroup]="group" class="mb-3 rounded-xl border border-purple-100 bg-white p-4">
-      <div class="mb-3 flex items-center justify-between border-b border-slate-100 pb-2">
-        <p class="font-semibold text-slate-700">รายการที่ {{ i + 1 }}</p>
+    <div
+      [formGroup]="group"
+      class="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
+    >
+      <!-- Header -->
+      <div class="flex items-center gap-3 border-b border-slate-200 bg-purple-700 px-5 py-3">
+        <span
+          class="flex h-6 w-6 items-center justify-center rounded-full bg-purple-400/20 text-xs font-bold text-violet-200"
+        >
+          {{ i + 1 }}
+        </span>
+        <p class="flex-1 text-sm font-semibold text-white">รายการงานจ้างที่ {{ i + 1 }}</p>
 
         <button
           type="button"
-          class="text-sm font-semibold text-red-600 hover:text-red-800"
+          class="flex items-center gap-1 rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-300 transition hover:bg-red-500/20"
           (click)="removeHireDetail(i)"
         >
-          ลบ
+          <svg
+            class="h-3.5 w-3.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          ลบรายการนี้
         </button>
       </div>
 
-      <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+      <!-- Fields -->
+      <div class="grid grid-cols-1 gap-x-4 gap-y-3 p-5 md:grid-cols-2 xl:grid-cols-4">
+        <!-- รายละเอียดงานจ้าง: span 2 -->
         <div class="md:col-span-2">
           <app-input
             label="รายละเอียดงานจ้าง"
@@ -38,11 +66,12 @@
           />
         </div>
 
+        <app-input label="จำนวน" type="number" [control]="$any(group).controls.quantity" />
+
         <app-input
-          label="จำนวน"
+          label="ราคาต่อหน่วย (บาท)"
           type="number"
-          [control]="$any(group).controls.quantity"
-          [required]="true"
+          [control]="$any(group).controls.unit_price"
         />
 
         <app-select
@@ -51,24 +80,22 @@
           [options]="units"
           optionLabel="unit_name"
           optionValue="unit_id"
-          placeholder="เลือกหน่วยนับ"
+          placeholder="-- เลือกหน่วยนับ --"
         />
 
-        <app-input
-          label="ราคาต่อหน่วย"
-          type="number"
-          [control]="$any(group).controls.unit_price"
-          [required]="true"
-        />
+        <!-- รวมเงิน: readonly highlighted -->
+        <div class="relative">
+          <app-input
+            label="รวมเงิน (บาท)"
+            type="number"
+            [control]="$any(group).controls.total_amount"
+            [readonly]="true"
+          />
+          <span class="absolute right-3 top-7 text-xs text-slate-400">คำนวณอัตโนมัติ</span>
+        </div>
 
-        <app-input
-          label="รวมเงิน"
-          type="number"
-          [control]="$any(group).controls.total_amount"
-          [readonly]="true"
-        />
-
-        <div class="md:col-span-2 xl:col-span-2">
+        <!-- จำนวนเงินตัวอักษร: span 2 -->
+        <div class="md:col-span-2">
           <app-input
             label="จำนวนเงินตัวอักษร"
             [control]="$any(group).controls.total_text"
@@ -78,4 +105,16 @@
       </div>
     </div>
   }
+
+  <!-- Add button -->
+  <button
+    type="button"
+    class="flex items-center gap-2 rounded-xl bg-purple-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-purple-700 active:scale-95"
+    (click)="addHireDetail()"
+  >
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+    เพิ่มรายการจัดจ้าง
+  </button>
 </div>

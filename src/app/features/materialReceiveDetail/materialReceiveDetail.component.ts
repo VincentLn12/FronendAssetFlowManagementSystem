@@ -6,13 +6,13 @@ import { Params } from '../../shared/models/allType';
 import { AlertService } from '../../../shared.service';
 import { materialReceiveDetailTypes } from './interface/materialReceiveDetailTypes';
 import { TableState } from '../../../shared/TableState';
-import { Location } from '@angular/common';
+import { DecimalPipe, Location } from '@angular/common';
 import { MaterialReceiveDetailService } from './service/materialReceiveDetail.service';
 
 @Component({
   selector: 'app-material-receive-detail',
   standalone: true,
-  imports: [],
+  imports: [DecimalPipe],
   templateUrl: './materialReceiveDetail.component.html',
 })
 export class MaterialReceiveDetailComponent implements OnInit {

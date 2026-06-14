@@ -4,7 +4,7 @@
     <button
       type="button"
       (click)="cancel()"
-      class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-blue-800 transition"
+      class="mb-4 inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-green-800 transition"
     >
       <span class="text-lg leading-none">←</span>
       กลับไปหน้ารายการ
@@ -12,16 +12,16 @@
 
     <!-- Header -->
     <div class="mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-4">
+      <div class="border-b-2 border-green-900 bg-green-900 px-6 py-4">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-widest text-blue-200">
+            <p class="text-xs font-semibold uppercase tracking-widest text-green-200">
               ระบบบริหารจัดการงานพัสดุ
             </p>
             <h1 class="mt-1 text-xl font-bold text-white">
               {{ title() }}
             </h1>
-            <p class="mt-1 text-sm text-blue-200">กรอกข้อมูลรายละเอียดการรับวัสดุเข้าสู่สต็อก</p>
+            <p class="mt-1 text-sm text-green-200">กรอกข้อมูลรายละเอียดการรับวัสดุเข้าสู่สต็อก</p>
           </div>
 
           <span
@@ -29,7 +29,7 @@
             [ngClass]="
               isEditMode()
                 ? 'bg-amber-50 text-amber-700 ring-1 ring-amber-300'
-                : 'bg-blue-50 text-blue-800 ring-1 ring-blue-300'
+                : 'bg-green-50 text-green-800 ring-1 ring-green-300'
             "
           >
             {{ isEditMode() ? 'โหมดแก้ไข' : 'โหมดเพิ่มข้อมูล' }}
@@ -41,7 +41,7 @@
     <!-- Form Card -->
     <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
       <div class="border-b border-slate-200 px-6 py-3">
-        <h2 class="text-base font-semibold text-blue-900">ข้อมูล{{ name }}</h2>
+        <h2 class="text-base font-semibold text-green-900">ข้อมูล{{ name }}</h2>
         <p class="mt-0.5 text-sm text-slate-500">ช่องที่มีเครื่องหมาย * จำเป็นต้องกรอก</p>
       </div>
 
@@ -53,7 +53,7 @@
         </div>
       } @else {
         <form [formGroup]="form" (ngSubmit)="submit()">
-          <div class="grid gap-6 p-6 md:grid-cols-2">
+          <div class="grid gap-6 gap-y-2 p-6 md:grid-cols-2">
             <app-select
               label="รายการวัสดุ"
               [control]="form.controls.material_item_id"
@@ -114,7 +114,7 @@
 
             <button
               type="submit"
-              class="inline-flex justify-center rounded-xl bg-blue-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50 transition"
+              class="inline-flex justify-center rounded-xl bg-green-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-900 disabled:cursor-not-allowed disabled:opacity-50 transition"
               [disabled]="isSubmitting() || form.invalid"
             >
               @if (isSubmitting()) {

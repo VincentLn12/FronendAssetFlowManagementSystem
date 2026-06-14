@@ -71,10 +71,17 @@ export class MaterialItemsComponent implements OnInit {
   }
 
   goToEdit(mat: materialItemsTypes) {
-    this.router.navigate(['/admin/MaterialItems/update', mat.unit_id], {
+    this.router.navigate(['/admin/MaterialItems/update', mat.material_item_id], {
       state: { mat },
     });
   }
+
+  goTOStockCard(id: number) {
+    this.router.navigate(['/admin/MaterialStockCard', id], {
+      state: { materialItems: this.materialItems().find((item) => item.material_item_id === id) },
+    });
+  }
+
   getTotalAmount() {
     return this.materialItems().reduce((sum, item) => {
       return sum + Number(item.total_amount ?? 0);

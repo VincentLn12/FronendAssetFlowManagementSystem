@@ -27,9 +27,9 @@ export class AssetItemsComponent implements OnInit {
   Params = new Params();
   totalCount = signal<number>(0);
 
-  headerColor = 'bg-slate-700';
-  headerBorderColor = 'border-slate-700';
-  butttonColor = 'bg-slate-700 hover:bg-slate-800 ';
+  headerColor = 'bg-amber-700';
+  headerBorderColor = 'border-amber-700';
+  butttonColor = 'bg-amber-700 hover:bg-amber-800 ';
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');

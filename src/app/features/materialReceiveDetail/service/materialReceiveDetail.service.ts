@@ -3,7 +3,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Pagination } from '../../../shared/models/pagination';
 import { Params } from '../../../shared/models/allType';
-import { materialReceiveDetailTypes } from '../interface/materialReceiveDetailTypes';
+import {
+  materialReceiveDetailTypes,
+  MaterialStockCardTypes,
+} from '../interface/materialReceiveDetailTypes';
 
 @Injectable({
   providedIn: 'root',
@@ -51,6 +54,12 @@ export class MaterialReceiveDetailService {
     return this.http.get<Pagination<materialReceiveDetailTypes>>(
       this.baseUrl + 'MaterialReceiveDetail/by-procurement-record/' + procurement_record_id,
       { params },
+    );
+  }
+
+  getStockCard(material_item_id: number) {
+    return this.http.get<MaterialStockCardTypes[]>(
+      this.baseUrl + `MaterialReceiveDetail/stock-card/${material_item_id}`,
     );
   }
 

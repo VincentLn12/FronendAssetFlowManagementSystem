@@ -37,6 +37,7 @@ export class ProcurementMaterialSectionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.addMaterialDetail();
     this.emitPayload();
   }
 

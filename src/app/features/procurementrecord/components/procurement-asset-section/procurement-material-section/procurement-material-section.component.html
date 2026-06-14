@@ -1,34 +1,61 @@
-<div class="mx-6 mb-6 rounded-2xl border border-green-200 bg-green-50 p-6">
-  <div class="mb-5 flex items-center justify-between">
-    <div>
-      <h2 class="text-lg font-bold text-green-900">ข้อมูลรายการพัสดุ</h2>
-      <p class="mt-1 text-sm text-green-700">เพิ่มรายการวัสดุที่รับเข้าสู่สต็อก</p>
-    </div>
-
-    <button
-      type="button"
-      class="rounded-xl bg-green-700 px-4 py-2 text-sm font-semibold text-white hover:bg-green-800"
-      (click)="addMaterialDetail()"
+<div class="px-6 pb-6 pt-2">
+  <!-- Empty state -->
+  @if (materialDetailForms.length === 0) {
+    <div
+      class="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 py-12 text-center"
     >
-      + เพิ่มรายการพัสดุ
-    </button>
-  </div>
+      <svg
+        class="mb-3 h-10 w-10 text-slate-300"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 2.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
+        />
+      </svg>
+      <p class="text-sm font-medium text-slate-500">ยังไม่มีรายการวัสดุ</p>
+      <p class="mt-1 text-xs text-slate-400">กด "เพิ่มรายการวัสดุ" เพื่อเริ่มต้นบันทึกข้อมูล</p>
+    </div>
+  }
 
   @for (group of materialDetailForms; track $index; let i = $index) {
-    <div [formGroup]="group" class="mt-4 rounded-xl border border-green-100 bg-white p-5">
-      <div class="mb-4 flex items-center justify-between">
-        <p class="font-semibold text-slate-700">รายการที่ {{ i + 1 }}</p>
+    <div
+      [formGroup]="group"
+      class="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
+    >
+      <!-- Header -->
+      <div class="flex items-center gap-3 border-b border-slate-200 bg-green-700 px-5 py-3">
+        <span
+          class="flex h-6 w-6 items-center justify-center rounded-full bg-green-400/20 text-xs font-bold text-emerald-200"
+        >
+          {{ i + 1 }}
+        </span>
+        <p class="flex-1 text-sm font-semibold text-white">รายการวัสดุที่ {{ i + 1 }}</p>
 
         <button
           type="button"
-          class="text-sm font-semibold text-red-600 hover:text-red-800"
+          class="flex items-center gap-1 rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-300 transition hover:bg-red-500/20"
           (click)="removeMaterialDetail(i)"
         >
-          ลบ
+          <svg
+            class="h-3.5 w-3.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          ลบรายการนี้
         </button>
       </div>
 
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <!-- Fields -->
+      <div class="grid grid-cols-1 gap-x-4 gap-y-3 p-5 md:grid-cols-2">
         <app-select
           label="รายการวัสดุ"
           [control]="$any(group).controls.material_item_id"
@@ -47,24 +74,41 @@
           placeholder="0"
           [required]="true"
         />
-      </div>
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <app-input
-          label="ราคาต่อหน่วย"
-          type="number"
-          [control]="$any(group).controls.unit_price"
-          placeholder="0.00"
-          [readonly]="true"
-        />
 
-        <app-input
-          label="รวมเงิน"
-          type="number"
-          [control]="$any(group).controls.total_amount"
-          placeholder="0.00"
-          [readonly]="true"
-        />
+        <div class="relative">
+          <app-input
+            label="ราคาต่อหน่วย (บาท)"
+            type="number"
+            [control]="$any(group).controls.unit_price"
+            placeholder="0.00"
+            [readonly]="true"
+          />
+          <span class="absolute right-3 top-7 text-xs text-slate-400">ดึงจากรายการวัสดุ</span>
+        </div>
+
+        <div class="relative">
+          <app-input
+            label="รวมเงิน (บาท)"
+            type="number"
+            [control]="$any(group).controls.total_amount"
+            placeholder="0.00"
+            [readonly]="true"
+          />
+          <span class="absolute right-3 top-7 text-xs text-slate-400">คำนวณอัตโนมัติ</span>
+        </div>
       </div>
     </div>
   }
+
+  <!-- Add button -->
+  <button
+    type="button"
+    class="flex items-center gap-2 rounded-xl bg-green-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-green-800 active:scale-95"
+    (click)="addMaterialDetail()"
+  >
+    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+    เพิ่มรายการวัสดุ
+  </button>
 </div>

@@ -54,7 +54,6 @@ export interface procurementrecordCreateTypes {
   staff_id?: number;
   attachment_file_path: string;
 }
-
 export interface assetSubItemCreateTypes {
   asset_sub_item_id?: number | null;
   asset_id?: number | null;
@@ -68,10 +67,14 @@ export interface assetSubItemCreateTypes {
   useful_life_year: number;
 }
 
-export interface procurementWithAssetsCreateTypes {
-  procurement_record: procurementrecordCreateTypes;
+export interface assetItemWithSubItemsCreateTypes {
   asset_item: assetItemsCreateTypes;
   asset_sub_items: assetSubItemCreateTypes[];
+}
+
+export interface procurementWithAssetsCreateTypes {
+  procurement_record: procurementrecordCreateTypes;
+  asset_items: assetItemWithSubItemsCreateTypes[];
 }
 
 export interface hireDetailCreateTypes {

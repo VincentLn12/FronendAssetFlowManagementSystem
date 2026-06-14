@@ -41,6 +41,7 @@ export class ProcurementHireSectionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.addHireDetail();
     this.emitPayload();
   }
 
@@ -50,7 +51,7 @@ export class ProcurementHireSectionComponent implements OnInit {
       procurement_record_id: [0],
       item_no: [this.hireDetails.length + 1],
       hire_name: ['', Validators.required],
-      quantity: [1, Validators.required],
+      quantity: [0, Validators.required],
       unit_id: [null as number | null],
       unit_price: [0, Validators.required],
       total_amount: [0],
