@@ -8,6 +8,7 @@ export interface projectsTypes {
   staff_id: number;
   staff_name: string;
   filePath: string;
+  created_at: string;
 }
 
 export interface ProjectAddUpdateDto {
@@ -18,4 +19,5 @@ export interface ProjectAddUpdateDto {
   project_budget_amount: number;
   staff_id?: number;
   filePath: string;
+  created_at?: string;
 }

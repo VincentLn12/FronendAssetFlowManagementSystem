@@ -1,119 +1,251 @@
-<div class="min-h-screen bg-slate-100 px-3 py-4 sm:px-5 lg:px-6">
-  <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
-    <!-- Header -->
-    <div class="border-b border-slate-200 px-5 py-4">
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p class="text-xs font-semibold uppercase tracking-widest text-blue-700">
-            Material Register
+<div class="page-wrapper">
+  <!-- ===== CARD ===== -->
+  <div class="main-card">
+    <!-- ===== HEADER ===== -->
+    <div class="page-header">
+      <div class="header-inner">
+        <!-- Left: Title block -->
+        <div class="header-title-block">
+          <div class="header-badge">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="badge-icon"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 1a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 1ZM5.05 3.05a.75.75 0 0 1 1.06 0l1.062 1.06A.75.75 0 1 1 6.11 5.173L5.05 4.11a.75.75 0 0 1 0-1.06Zm9.9 0a.75.75 0 0 1 0 1.06l-1.06 1.062a.75.75 0 0 1-1.062-1.061l1.061-1.061a.75.75 0 0 1 1.06 0ZM3 9.25a.75.75 0 0 0 0 1.5h1.5a.75.75 0 0 0 0-1.5H3ZM15.5 9.25a.75.75 0 0 0 0 1.5H17a.75.75 0 0 0 0-1.5h-1.5ZM5.05 14.888a.75.75 0 0 0 1.06-1.06L5.05 12.764a.75.75 0 1 0-1.06 1.06l1.06 1.064Zm8.839-1.06a.75.75 0 0 0-1.06 1.06l1.06 1.064a.75.75 0 1 0 1.06-1.06l-1.06-1.064ZM10 15.5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.75.75 0 0 1 .75-.75ZM10 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <span>ระบบบริหารจัดการวัสดุ</span>
+          </div>
+
+          <h1 class="header-title">
+            รายงานวัสดุคงเหลือ
+            <span class="header-title-year">
+              ประจำปีงบประมาณ พ.ศ.
+              {{ fiscalYears().find((year) => year.fiscal_year_id === fiscalYearId())?.fiscal_year || 'ทั้งหมด' }}
+            </span>
+          </h1>
+
+          <p class="header-subtitle">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="subtitle-icon"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยราชภัฏกาญจนบุรี
           </p>
-          <h1 class="mt-1 text-2xl font-bold text-blue-900">รายการวัสดุ</h1>
-          <p class="mt-1 text-sm text-slate-500">ทะเบียนคุมวัสดุและยอดคงเหลือในคลัง</p>
         </div>
 
-        <button
-          type="button"
-          (click)="goToCreate()"
-          class="inline-flex items-center justify-center rounded-xl bg-blue-800 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-900"
-        >
-          + เพิ่มวัสดุ
-        </button>
+        <!-- Right: Action buttons -->
+        <div class="header-actions">
+          <button type="button" (click)="goToIssueMany()" class="btn btn-outline-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="btn-icon"
+            >
+              <path
+                d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"
+              />
+            </svg>
+            เบิกจ่ายวัสดุ
+          </button>
+
+          <button type="button" (click)="goToCreate()" class="btn btn-solid-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="btn-icon"
+            >
+              <path
+                d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"
+              />
+            </svg>
+            เพิ่มวัสดุ
+          </button>
+        </div>
       </div>
     </div>
+    <!-- /HEADER -->
 
-    <div class="overflow-x-auto p-5">
-      <table class="w-full min-w-[1450px] border-collapse text-sm">
+    <!-- ===== FILTER BAR ===== -->
+    <div class="filter-bar">
+      <div class="filter-inner">
+        <!-- Tag -->
+        <div class="filter-tags">
+          <span class="filter-label">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="filter-label-icon"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 9 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L3.659 6.22A2.25 2.25 0 0 1 3 4.629V2.34a.75.75 0 0 1 .628-.74Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            ตัวกรอง:
+          </span>
+          <span class="filter-chip">
+            ปีงบประมาณ:
+            {{ fiscalYears().find((year) => year.fiscal_year_id === fiscalYearId())?.fiscal_year || 'ทั้งหมด' }}
+          </span>
+        </div>
+
+        <!-- Controls -->
+        <div class="filter-controls">
+          <div class="select-wrapper">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="select-icon"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <select
+              [ngModel]="fiscalYearId()"
+              (ngModelChange)="onFiscalYearChange($event)"
+              class="custom-select-input"
+            >
+              <option [ngValue]="null">ทุกปีงบประมาณ</option>
+              @for (year of fiscalYears(); track year.fiscal_year_id) {
+                <option [ngValue]="year.fiscal_year_id">{{ year.fiscal_year }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="search-wrapper">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="search-icon"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            <input
+              type="text"
+              [(ngModel)]="searchValue"
+              (ngModelChange)="onSearch($event)"
+              placeholder="ค้นหารหัส, ชื่อ, รายละเอียดวัสดุ..."
+              class="custom-search-input"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /FILTER BAR -->
+
+    <!-- ===== TABLE ===== -->
+    <div class="table-scroll-wrapper">
+      <table class="data-table">
+        <!-- THEAD -->
         <thead>
-          <tr class="bg-blue-900 text-center text-white">
-            <th rowspan="2" class="w-16 border border-blue-800 px-2 py-3">ลำดับ</th>
-            <th rowspan="2" class="border border-blue-800 px-3 py-3 text-left">รายละเอียดรายการ</th>
-            <th rowspan="2" class="w-24 border border-blue-800 px-2 py-3">หน่วย</th>
-            <th rowspan="2" class="w-24 border border-blue-800 px-2 py-3">ยอดยกมา</th>
-            <th rowspan="2" class="w-24 border border-blue-800 px-2 py-3">รับ</th>
-            <th rowspan="2" class="w-24 border border-blue-800 px-2 py-3">จ่าย</th>
-            <th rowspan="2" class="w-24 border border-blue-800 px-2 py-3">คงเหลือ</th>
-            <th colspan="2" class="border border-blue-800 px-2 py-3">มูลค่าคงเหลือ</th>
-            <th rowspan="2" class="w-28 border border-blue-800 px-2 py-3">ประเภทเงิน</th>
-            <th rowspan="2" class="border border-blue-800 px-3 py-3">หมายเหตุ</th>
-            <th rowspan="2" class="w-36 border border-blue-800 px-2 py-3">จัดการ</th>
+          <tr class="thead-row-1">
+            <th rowspan="2" class="th-col th-center w-14">ลำดับ</th>
+            <th rowspan="2" class="th-col th-left">รายละเอียดรายการ</th>
+            <th rowspan="2" class="th-col th-center w-20">หน่วย</th>
+            <th rowspan="2" class="th-col th-center w-24">ยอดยกมา</th>
+            <th rowspan="2" class="th-col th-center w-20">รับ</th>
+            <th rowspan="2" class="th-col th-center w-20">จ่าย</th>
+            <th rowspan="2" class="th-col th-center w-24 th-highlight">คงเหลือ</th>
+            <th colspan="2" class="th-col th-center">มูลค่าคงเหลือ</th>
+            <!-- <th rowspan="2" class="th-col th-center w-28">ประเภทเงิน</th> -->
+            <!-- <th rowspan="2" class="th-col th-left">หมายเหตุ</th> -->
+            <th rowspan="2" class="th-col th-center w-44">จัดการ</th>
           </tr>
-
-          <tr class="bg-blue-800 text-center text-white">
-            <th class="w-32 border border-blue-700 px-2 py-2">ราคาต่อหน่วย</th>
-            <th class="w-36 border border-blue-700 px-2 py-2">รวมเป็นเงิน</th>
+          <tr class="thead-row-2">
+            <th class="th-col th-center w-32">ราคาต่อหน่วย</th>
+            <th class="th-col th-center w-36">รวมเป็นเงิน</th>
           </tr>
         </thead>
 
+        <!-- TBODY -->
         <tbody>
           @for (item of materialItems(); track item.material_item_id; let i = $index) {
-            <tr class="hover:bg-blue-50">
-              <td class="border border-slate-300 px-2 py-2 text-center">
+            <tr class="tbody-row">
+              <!-- ลำดับ -->
+              <td class="td-col td-center td-muted">
                 {{ (Params.pageNumber - 1) * Params.pageSize + i + 1 }}
               </td>
 
-              <td class="border border-slate-300 px-3 py-2">
-                <div class="font-medium text-slate-800">
-                  {{ item.material_name || '-' }}
-                </div>
-
+              <!-- รายละเอียด -->
+              <td class="td-col td-left">
+                <div class="item-name">{{ item.material_name || '-' }}</div>
                 @if (item.specification) {
-                  <div class="mt-0.5 text-xs text-slate-500">
-                    {{ item.specification }}
-                  </div>
+                  <div class="item-spec">{{ item.specification }}</div>
                 }
               </td>
 
-              <td class="border border-slate-300 px-2 py-2 text-center">
-                {{ item.unit_name || '-' }}
-              </td>
+              <!-- หน่วย -->
+              <td class="td-col td-center td-muted">{{ item.unit_name || '-' }}</td>
 
-              <td class="border border-slate-300 px-2 py-2 text-center">
-                {{ item.opening_balance || 0 }}
-              </td>
+              <!-- ยอดยกมา -->
+              <td class="td-col td-center td-muted">{{ item.opening_balance || 0 }}</td>
 
-              <td
-                class="border border-slate-300 px-2 py-2 text-center font-semibold text-green-700"
-              >
-                {{ item.quantity_in || 0 }}
-              </td>
+              <!-- รับ -->
+              <td class="td-col td-center td-in">{{ item.quantity_in || 0 }}</td>
 
-              <td class="border border-slate-300 px-2 py-2 text-center font-semibold text-red-700">
-                {{ item.quantity_out || 0 }}
-              </td>
+              <!-- จ่าย -->
+              <td class="td-col td-center td-out">{{ item.quantity_out || 0 }}</td>
 
-              <td class="border border-slate-300 px-2 py-2 text-center font-bold text-blue-900">
-                {{ item.current_balance || 0 }}
-              </td>
+              <!-- คงเหลือ -->
+              <td class="td-col td-center td-balance">{{ item.current_balance || 0 }}</td>
 
-              <td class="border border-slate-300 px-2 py-2 text-right">
-                {{ item.unit_price | number: '1.2-2' }}
-              </td>
+              <!-- ราคาต่อหน่วย -->
+              <td class="td-col td-right td-muted">{{ item.unit_price | number: '1.2-2' }}</td>
 
-              <td class="border border-slate-300 px-2 py-2 text-right font-semibold">
+              <!-- รวมเป็นเงิน -->
+              <td class="td-col td-right td-amount">
                 {{ item.total_amount || 0 | number: '1.2-2' }}
               </td>
 
-              <td class="border border-slate-300 px-2 py-2 text-center">งปม.</td>
+              <!-- ประเภทเงิน -->
+              <!-- <td class="td-col td-center">
+                <span class="badge-budget">งปม.</span>
+              </td> -->
 
-              <td class="border border-slate-300 px-3 py-2">
-                {{ item.remark || '-' }}
-              </td>
+              <!-- หมายเหตุ -->
+              <!-- <td class="td-col td-left td-remark">{{ item.remark || '-' }}</td> -->
 
-              <td class="border border-slate-300 px-2 py-2 text-center">
-                <div class="flex items-center justify-center gap-2">
+              <!-- จัดการ -->
+              <td class="td-col td-center">
+                <div class="action-group">
                   <button
                     type="button"
                     (click)="goTOStockCard(item.material_item_id)"
-                    class="rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 hover:bg-blue-100"
+                    class="act-btn act-detail"
                   >
                     รายละเอียด
                   </button>
-
-                  <button
-                    type="button"
-                    (click)="goToEdit(item)"
-                    class="rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 hover:bg-amber-100"
-                  >
+                  <button type="button" (click)="goToIssue(item)" class="act-btn act-issue">
+                    เบิกจ่าย
+                  </button>
+                  <button type="button" (click)="goToEdit(item)" class="act-btn act-edit">
                     แก้ไข
                   </button>
                 </div>
@@ -121,30 +253,39 @@
             </tr>
           } @empty {
             <tr>
-              <td
-                colspan="12"
-                class="border border-slate-300 px-4 py-10 text-center text-slate-500"
-              >
-                ไม่พบข้อมูลวัสดุ
+              <td colspan="12" class="empty-state">
+                <div class="empty-inner">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="empty-icon"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.625 1.5H9a3.75 3.75 0 0 1 3.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 0 1 3.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 0 1-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875Zm5.845 17.03a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V12a.75.75 0 0 0-1.5 0v4.19l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <p class="empty-text">ไม่พบข้อมูลวัสดุ</p>
+                  <p class="empty-hint">ลองเปลี่ยนตัวกรองหรือค้นหาด้วยคำอื่น</p>
+                </div>
               </td>
             </tr>
           }
         </tbody>
 
+        <!-- TFOOT -->
         <tfoot>
-          <tr class="bg-slate-100 font-bold">
-            <td colspan="8" class="border border-slate-300 px-3 py-3 text-right">
-              รวมเป็นเงินทั้งสิ้น
-            </td>
-
-            <td class="border border-slate-300 px-3 py-3 text-right text-blue-900">
-              {{ getTotalAmount() | number: '1.2-2' }}
-            </td>
-
-            <td colspan="3" class="border border-slate-300"></td>
+          <tr class="tfoot-row">
+            <td colspan="8" class="tfoot-label">รวมเป็นเงินทั้งสิ้น</td>
+            <td class="tfoot-total">{{ getTotalAmount() | number: '1.2-2' }}</td>
+            <td colspan="3" class="tfoot-empty"></td>
           </tr>
         </tfoot>
       </table>
     </div>
+    <!-- /TABLE -->
   </div>
+  <!-- /CARD -->
 </div>

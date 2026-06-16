@@ -635,6 +635,34 @@ export const routes: Routes = [
               ),
           },
           {
+            path: 'MaterialIssueDetail/create',
+            loadComponent: () =>
+              import('./features/materialIssueDetail/materialIssueDetailaddupdate/addupdate.component').then(
+                (m) => m.MaterialIssueDetailAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'MaterialIssueDetail/create/:material_item_id',
+            loadComponent: () =>
+              import('./features/materialIssueDetail/materialIssueDetailaddupdate/addupdate.component').then(
+                (m) => m.MaterialIssueDetailAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'MaterialIssueDetail/update/:id',
+            loadComponent: () =>
+              import('./features/materialIssueDetail/materialIssueDetailaddupdate/addupdate.component').then(
+                (m) => m.MaterialIssueDetailAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'MaterialIssueDetail/:id',
+            loadComponent: () =>
+              import('./features/materialIssueDetail/materialIssueDetail.component').then(
+                (m) => m.MaterialIssueDetailComponent,
+              ),
+          },
+          {
             path: '**',
             component: NotFoundComponent,
           },

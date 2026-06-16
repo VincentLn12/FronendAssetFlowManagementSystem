@@ -6,6 +6,689 @@
 @import "flatpickr/dist/flatpickr.min.css";
 
 
+/* ===================================================================
+   Material Items Page — University Staff UI
+   =================================================================== */
+
+/* ── Page wrapper ──────────────────────────────────────────── */
+.page-wrapper {
+  min-height: 100vh;
+  background: #f0f4f8;
+  padding: 1.25rem 1rem;
+
+  @media (min-width: 640px)  { padding: 1.5rem 1.25rem; }
+  @media (min-width: 1024px) { padding: 2rem 1.75rem; }
+}
+
+/* ── Main card ─────────────────────────────────────────────── */
+.main-card {
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgb(0 0 0 / .07), 0 4px 16px rgb(0 0 0 / .06);
+  border: 1px solid #e2e8f0;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.page-header {
+  background: linear-gradient(135deg, #1b5e3b 0%, #2d7a55 60%, #3a9468 100%);
+  padding: 1.5rem 1.75rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+}
+
+.header-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.header-title-block { color: #fff; }
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: rgb(255 255 255 / .15);
+  border: 1px solid rgb(255 255 255 / .25);
+  border-radius: 999px;
+  padding: .25rem .85rem;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #d1fae5;
+  margin-bottom: .65rem;
+  width: fit-content;
+
+  .badge-icon { width: .9rem; height: .9rem; }
+}
+
+.header-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #ffffff;
+  margin: 0 0 .35rem;
+
+  @media (min-width: 640px) { font-size: 1.9rem; }
+}
+
+.header-title-year {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #a7f3d0;
+
+  @media (min-width: 640px) {
+    display: inline;
+    font-size: inherit;
+  }
+}
+
+.header-subtitle {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .875rem;
+  color: #a7f3d0;
+  margin: 0;
+
+  .subtitle-icon { width: .95rem; height: .95rem; flex-shrink: 0; }
+}
+
+/* ── Header action buttons ─────────────────────────────────── */
+.header-actions {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+
+  @media (min-width: 480px) { flex-direction: row; }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .55rem 1.1rem;
+  border-radius: 9px;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .18s ease;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+
+  .btn-icon { width: 1rem; height: 1rem; }
+}
+
+.btn-outline-white {
+  background: rgb(255 255 255 / .1);
+  border-color: rgb(255 255 255 / .45);
+  color: #fff;
+
+  &:hover {
+    background: rgb(255 255 255 / .22);
+    border-color: rgb(255 255 255 / .7);
+  }
+}
+
+.btn-solid-white {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #1b5e3b;
+
+  &:hover { background: #e6f7ef; }
+}
+
+/* ── Filter bar ────────────────────────────────────────────── */
+.filter-bar {
+  background: #f8fdf9;
+  border-bottom: 1px solid #d1fae5;
+  padding: .9rem 1.75rem;
+}
+
+.filter-inner {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.filter-tags {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .82rem;
+  font-weight: 600;
+  color: #374151;
+
+  .filter-label-icon { width: .85rem; height: .85rem; color: #059669; }
+}
+
+.filter-chip {
+  font-size: .8rem;
+  font-weight: 500;
+  color: #065f46;
+  background: #d1fae5;
+  border: 1px solid #a7f3d0;
+  border-radius: 999px;
+  padding: .2rem .75rem;
+}
+
+.filter-controls {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  width: 100%;
+
+  @media (min-width: 540px) { flex-direction: row; }
+  @media (min-width: 1024px) { max-width: 640px; }
+}
+
+/* Shared input style */
+.select-wrapper,
+.search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.select-icon,
+.search-icon {
+  position: absolute;
+  left: .8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: #6b7280;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.custom-select-input,
+.custom-search-input {
+  width: 100%;
+  height: 2.6rem;
+  padding: 0 .9rem 0 2.25rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 9px;
+  background: #ffffff;
+  font-size: .875rem;
+  color: #1f2937;
+  outline: none;
+  transition: border-color .18s, box-shadow .18s;
+  appearance: none;
+
+  &:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgb(5 150 105 / .12);
+  }
+
+  &::placeholder { color: #9ca3af; }
+}
+
+/* ── Table scroll container ────────────────────────────────── */
+.table-scroll-wrapper {
+  overflow-x: auto;
+  padding: 1.25rem 1.5rem;
+}
+
+/* ── Data table ────────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  min-width: 1480px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .875rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* thead */
+.thead-row-1 {
+  background: #1b5e3b;
+  color: #ffffff;
+}
+
+.thead-row-2 {
+  background: #2d7a55;
+  color: #d1fae5;
+}
+
+.th-col {
+  padding: .7rem .65rem;
+  border: 1px solid rgb(255 255 255 / .15);
+  font-weight: 600;
+  font-size: .8rem;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+.th-center { text-align: center; }
+.th-left   { text-align: left; }
+
+.th-highlight {
+  background: rgb(255 255 255 / .12);
+}
+
+/* tbody */
+.tbody-row {
+  background: #ffffff;
+  transition: background .12s;
+
+  &:nth-child(even) { background: #f8fdf9; }
+
+  &:hover {
+    background: #ecfdf5 !important;
+  }
+}
+
+.td-col {
+  padding: .65rem .65rem;
+  border: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+.td-center { text-align: center; }
+.td-left   { text-align: left; }
+.td-right  { text-align: right; }
+
+.td-muted  { color: #4b5563; }
+
+.td-in {
+  color: #065f46;
+  font-weight: 600;
+  text-align: center;
+}
+
+.td-out {
+  color: #991b1b;
+  font-weight: 600;
+  text-align: center;
+}
+
+.td-balance {
+  background: #ecfdf5;
+  color: #064e3b;
+  font-weight: 700;
+  text-align: center;
+}
+
+.td-amount {
+  color: #1f2937;
+  font-weight: 600;
+  text-align: right;
+}
+
+.td-remark { color: #6b7280; font-size: .8rem; }
+
+/* Item name & spec */
+.item-name {
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.4;
+}
+
+.item-spec {
+  margin-top: .2rem;
+  font-size: .75rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* Budget badge */
+.badge-budget {
+  display: inline-flex;
+  align-items: center;
+  padding: .2rem .65rem;
+  border-radius: 999px;
+  font-size: .73rem;
+  font-weight: 700;
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+/* Action buttons */
+.action-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+}
+
+.act-btn {
+  padding: .3rem .65rem;
+  border-radius: 6px;
+  font-size: .75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .14s;
+  border: 1.5px solid;
+  white-space: nowrap;
+}
+
+.act-detail {
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+  color: #065f46;
+
+  &:hover { background: #d1fae5; border-color: #34d399; }
+}
+
+.act-issue {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1e40af;
+
+  &:hover { background: #dbeafe; border-color: #60a5fa; }
+}
+
+.act-edit {
+  background: #fefce8;
+  border-color: #fde047;
+  color: #713f12;
+
+  &:hover { background: #fef9c3; border-color: #facc15; }
+}
+
+/* Empty state */
+.empty-state {
+  padding: 3.5rem 1rem;
+  text-align: center;
+  background: #fafafa;
+  border: 1px solid #e5e7eb;
+}
+
+.empty-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+}
+
+.empty-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #d1d5db;
+}
+
+.empty-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.empty-hint {
+  font-size: .83rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* tfoot */
+.tfoot-row {
+  background: #f0fdf4;
+  font-weight: 700;
+}
+
+.tfoot-label {
+  padding: .8rem 1rem;
+  text-align: right;
+  color: #064e3b;
+  border: 1px solid #d1fae5;
+  border-top: 2px solid #6ee7b7;
+}
+
+.tfoot-total {
+  padding: .8rem 1rem;
+  text-align: right;
+  color: #14532d;
+  font-size: 1rem;
+  border: 1px solid #d1fae5;
+  border-top: 2px solid #6ee7b7;
+}
+
+.tfoot-empty {
+  border: 1px solid #d1fae5;
+  border-top: 2px solid #6ee7b7;
+}
+
+/* ===================================================================
+   END Material Items Page
+   =================================================================== */
+
+/* ===================================================================
+   Stock Card Page — University Staff UI
+   =================================================================== */
+
+/* ── Back button ────────────────────────────────────────────── */
+.sc-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .85rem;
+  font-weight: 600;
+  color: rgb(255 255 255 / .75);
+  background: rgb(255 255 255 / .1);
+  border: 1.5px solid rgb(255 255 255 / .3);
+  border-radius: 8px;
+  padding: .35rem .85rem;
+  cursor: pointer;
+  transition: all .18s;
+
+  &:hover {
+    color: #ffffff;
+    background: rgb(255 255 255 / .2);
+    border-color: rgb(255 255 255 / .55);
+  }
+
+  .sc-back-icon { width: 1rem; height: 1rem; }
+}
+
+/* ── Org cards in header ───────────────────────────────────── */
+.sc-org-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .65rem;
+  min-width: 0;
+
+  @media (min-width: 1024px) { min-width: 340px; }
+}
+
+.sc-org-card {
+  background: rgb(255 255 255 / .12);
+  border: 1px solid rgb(255 255 255 / .22);
+  border-radius: 10px;
+  padding: .65rem .9rem;
+}
+
+.sc-org-label {
+  font-size: .72rem;
+  font-weight: 500;
+  color: #a7f3d0;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.sc-org-value {
+  margin-top: .25rem;
+  font-size: .875rem;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.35;
+}
+
+/* ── Material info bar ─────────────────────────────────────── */
+.sc-info-bar {
+  background: #f8fdf9;
+  border-bottom: 1px solid #d1fae5;
+  padding: 1rem 1.75rem;
+}
+
+.sc-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .75rem;
+
+  @media (min-width: 768px)  { grid-template-columns: repeat(4, 1fr); }
+}
+
+.sc-info-card {
+  background: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: .7rem .9rem;
+  transition: border-color .15s;
+
+  &:hover { border-color: #6ee7b7; }
+}
+
+.sc-info-card--highlight {
+  border-color: #a7f3d0;
+  background: #ecfdf5;
+}
+
+.sc-info-label {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .72rem;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+
+  .sc-info-icon { width: .8rem; height: .8rem; color: #059669; }
+}
+
+.sc-info-value {
+  margin-top: .3rem;
+  font-size: .9rem;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.4;
+}
+
+.sc-info-value--code {
+  color: #065f46;
+  font-family: 'Courier New', monospace;
+  font-size: .95rem;
+}
+
+/* ── Opening balance row ──────────────────────────────────── */
+.sc-opening-row {
+  background: #fefce8;
+}
+
+.sc-opening-label {
+  font-weight: 600;
+  color: #713f12;
+  font-style: italic;
+}
+
+/* ── Transaction type badges ──────────────────────────────── */
+.sc-tx-type {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .78rem;
+  font-weight: 700;
+  padding: .15rem .6rem;
+  border-radius: 999px;
+  margin-bottom: .2rem;
+
+  .sc-tx-icon { width: .75rem; height: .75rem; }
+}
+
+.sc-tx-in {
+  background: #dcfce7;
+  color: #14532d;
+}
+
+.sc-tx-out {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+.sc-tx-adj {
+  background: #e0e7ff;
+  color: #1e1b4b;
+}
+
+/* ── Document link ────────────────────────────────────────── */
+.sc-doc-link {
+  display: inline-block;
+  font-size: .82rem;
+  font-weight: 600;
+  color: #065f46;
+  text-decoration: underline;
+  text-decoration-color: #6ee7b7;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: color .15s;
+
+  &:hover { color: #022c22; }
+}
+
+/* ── Staff name ───────────────────────────────────────────── */
+.sc-staff-name {
+  font-size: .82rem;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+/* ── Footnote ────────────────────────────────────────────── */
+.sc-footnote {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  background: #f8fdf9;
+  border-top: 1px solid #d1fae5;
+  padding: .8rem 1.75rem;
+  font-size: .8rem;
+  color: #4b7563;
+
+  .sc-footnote-icon { width: .9rem; height: .9rem; color: #059669; flex-shrink: 0; }
+}
+
+/* ===================================================================
+   END Stock Card Page
+   =================================================================== */
+
 /* ===== Global Font ===== */
 html,
 body {

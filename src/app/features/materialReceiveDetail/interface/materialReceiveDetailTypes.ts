@@ -21,4 +21,6 @@ export interface MaterialStockCardTypes {
   balance_qty: number;
   unit_price: number;
   total_amount: number;
+  procurement_record_id?: number | null;
+  staff_name?: string;
 }

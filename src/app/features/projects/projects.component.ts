@@ -121,13 +121,45 @@ export class ProjectsComponent implements OnInit {
     { label: 'เก่าสุด', value: 'oldest' },
   ];
 
-  columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' | 'file' }[] = [
-    { label: 'รหัสโครงการ', key: 'project_code' },
-    // { label: 'ชื่อโครงการ', key: 'project_name' },
-    { label: 'ปีโครงการ', key: 'fiscal_year_name' },
-    { label: 'งบประมาณ', key: 'project_budget_amount', type: 'price' },
-    { label: 'ผู้รับผิดชอบ', key: 'staff_name' },
-    { label: 'ไฟล์แนบ', key: 'filePath', type: 'file' },
+  columns: {
+    label: string;
+    key: string;
+    type?: 'text' | 'price' | 'badge' | 'file';
+    pipe?: 'thaiDate';
+    sortAsc?: string;
+    sortDesc?: string;
+  }[] = [
+    {
+      label: 'วันที่สร้าง',
+      key: 'created_at',
+      pipe: 'thaiDate',
+      sortDesc: 'latest',
+      sortAsc: 'oldest',
+    },
+    {
+      label: 'รหัสโครงการ',
+      key: 'project_code',
+      sortAsc: 'nameAsc',
+      sortDesc: 'nameDesc',
+    },
+    {
+      label: 'ปีโครงการ',
+      key: 'fiscal_year_name',
+    },
+    {
+      label: 'งบประมาณ',
+      key: 'project_budget_amount',
+      type: 'price',
+    },
+    {
+      label: 'ผู้รับผิดชอบ',
+      key: 'staff_name',
+    },
+    {
+      label: 'ไฟล์แนบ',
+      key: 'filePath',
+      type: 'file',
+    },
   ];
   filterOptions = computed(() => [
     {

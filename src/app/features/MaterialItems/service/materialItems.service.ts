@@ -5,6 +5,10 @@ import { Pagination } from '../../../shared/models/pagination';
 import { Params } from '../../../shared/models/allType';
 import { materialItemsTypes } from '../interface/materialItemsTypes';
 
+export type MaterialItemQueryParams = Params & {
+  fiscalYearId?: number | null;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -12,7 +16,7 @@ export class MaterialItemsService {
   private baseUrl = environment.baseUrl;
   private http = inject(HttpClient);
 
-  getMaterialItems(paramsData: Params) {
+  getMaterialItems(paramsData: MaterialItemQueryParams) {
     let params = new HttpParams();
 
     if (paramsData.sort) {
@@ -23,12 +27,14 @@ export class MaterialItemsService {
       params = params.append('search', paramsData.search);
     }
 
-    params = params.append('pageSize', paramsData.pageSize);
-    params = params.append('pageIndex', paramsData.pageNumber);
+    if (paramsData.fiscalYearId !== null && paramsData.fiscalYearId !== undefined) {
+      params = params.append('FiscalYearId', paramsData.fiscalYearId.toString());
+    }
 
-    return this.http.get<Pagination<materialItemsTypes>>(this.baseUrl + 'MaterialItem', {
-      params,
-    });
+    params = params.append('pageSize', paramsData.pageSize.toString());
+    params = params.append('pageIndex', paramsData.pageNumber.toString());
+
+    return this.http.get<Pagination<materialItemsTypes>>(this.baseUrl + 'MaterialItem', { params });
   }
 
   getMaterialItem(id: number) {

@@ -168,8 +168,21 @@
               @for (col of visibleColumns(); track col.key) {
                 <th
                   class="px-6 py-3 text-left text-xs font-bold uppercase tracking-wide text-white xl:px-8 xl:py-4 xl:text-sm"
+                  [class.cursor-pointer]="col.sortAsc || col.sortDesc"
+                  [class.select-none]="col.sortAsc || col.sortDesc"
+                  (click)="onHeaderSort(col)"
                 >
-                  {{ col.label }}
+                  <span class="inline-flex items-center gap-1">
+                    {{ col.label }}
+
+                    @if (activeSortKey === col.key) {
+                      <span class="text-[10px]">
+                        {{ sortDirection === 'asc' ? '▲' : '▼' }}
+                      </span>
+                    } @else if (col.sortAsc || col.sortDesc) {
+                      <span class="text-[10px] opacity-60">↕</span>
+                    }
+                  </span>
                 </th>
               }
 

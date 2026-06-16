@@ -95,7 +95,9 @@
                 [required]="true"
               ></app-input>
             </div>
-            <div class="gap-6 p-6 pt-0">
+            <div class="grid grid-cols-2 gap-6 p-6 -mt-10">
+              <app-date-picker label="วันที่สร้าง" [control]="form.controls.created_at" />
+
               <app-input
                 label="งบประมาณโครงการ *"
                 [control]="form.controls.project_budget_amount"
@@ -104,7 +106,7 @@
                 type="number"
               ></app-input>
             </div>
-            <div class="grid grid-cols-2 gap-6 p-6 pt-0">
+            <div class="grid grid-cols-2 gap-6 p-6 pt-0 -mt-5">
               <app-select
                 label="ปีงบประมาณ"
                 [control]="form.controls.fiscal_year_id"

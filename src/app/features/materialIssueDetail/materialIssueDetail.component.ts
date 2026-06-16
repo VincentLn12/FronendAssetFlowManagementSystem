@@ -1,30 +1,29 @@
-import { Component, OnInit, inject, signal, Pipe } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { Pagination } from '../../shared/models/pagination';
 import { Params } from '../../shared/models/allType';
 import { AlertService } from '../../../shared.service';
-import { materialReceiveDetailTypes } from './interface/materialReceiveDetailTypes';
 import { TableState } from '../../../shared/TableState';
-import { DecimalPipe, Location } from '@angular/common';
-import { MaterialReceiveDetailService } from './service/materialReceiveDetail.service';
+import { MaterialIssueDetailTypes } from './interface/materialIssueDetailTypes';
+import { MaterialIssueDetailService } from './service/materialIssueDetailDetail.service';
 
 @Component({
-  selector: 'app-material-receive-detail',
+  selector: 'app-material-issue-detail',
   standalone: true,
   imports: [DecimalPipe],
-  templateUrl: './materialReceiveDetail.component.html',
+  templateUrl: './materialIssueDetail.component.html',
 })
-export class MaterialReceiveDetailComponent implements OnInit {
+export class MaterialIssueDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private materialReceiveDetailService = inject(MaterialReceiveDetailService);
+  private materialIssueDetailService = inject(MaterialIssueDetailService);
   private alertService = inject(AlertService);
   private table = new TableState();
 
   procurement_record_id = signal<number | null>(null);
-  MaterialReceiveDetail?: Pagination<materialReceiveDetailTypes>;
-  MaterialReceiveDetails = signal<materialReceiveDetailTypes[]>([]);
+  materialIssueDetail?: Pagination<MaterialIssueDetailTypes>;
+  materialIssueDetails = signal<MaterialIssueDetailTypes[]>([]);
   Params = new Params();
   totalCount = signal<number>(0);
   procurementrecord = history.state?.procurementrecord;
@@ -35,16 +34,17 @@ export class MaterialReceiveDetailComponent implements OnInit {
 
     if (id && Number.isFinite(id)) {
       this.procurement_record_id.set(id);
-      this.LoadgetMaterialReceiveDetail(id);
+      this.loadMaterialIssueDetail(id);
     }
   }
 
-  LoadgetMaterialReceiveDetail(id: number) {
-    this.materialReceiveDetailService
-      .getMaterialReceiveDetailbyProcuremens(this.table.params, id)
+  loadMaterialIssueDetail(id: number) {
+    this.materialIssueDetailService
+      .getMaterialIssueDetailByProcurements(this.table.params, id)
       .subscribe({
         next: (response) => {
-          this.MaterialReceiveDetails.set(response.data);
+          this.materialIssueDetail = response;
+          this.materialIssueDetails.set(response.data);
           this.totalCount.set(response.count);
         },
         error: (error) => console.error(error),
@@ -53,46 +53,41 @@ export class MaterialReceiveDetailComponent implements OnInit {
 
   onSearch(value: string) {
     const id = this.procurement_record_id();
-
     if (!id) return;
 
-    this.table.onSearch(value, () => this.LoadgetMaterialReceiveDetail(id));
+    this.table.onSearch(value, () => this.loadMaterialIssueDetail(id));
   }
 
   onPageChange(page: number) {
     const id = this.procurement_record_id();
-
     if (!id) return;
 
-    this.table.onPageChange(page, () => this.LoadgetMaterialReceiveDetail(id));
+    this.table.onPageChange(page, () => this.loadMaterialIssueDetail(id));
   }
 
   onSort(value: string) {
     const id = this.procurement_record_id();
-
     if (!id) return;
 
-    this.table.onSort(value, () => this.LoadgetMaterialReceiveDetail(id));
+    this.table.onSort(value, () => this.loadMaterialIssueDetail(id));
   }
 
-  deleteMaterialReceiveDetail(id: number) {
+  deleteMaterialIssueDetail(id: number) {
     this.alertService.confirm('ยืนยันการลบ', 'คุณต้องการลบหรือไม่?').then((result) => {
       if (result.isConfirmed) {
         this.confirmDelete(id);
-        this.alertService.successNo('ลบเรียบร้อยแล้ว');
       }
     });
   }
 
   confirmDelete(id: number) {
     const procurementId = this.procurement_record_id();
-
     if (!procurementId) return;
 
-    this.materialReceiveDetailService.deleteMaterialReceiveDetail(id).subscribe({
+    this.materialIssueDetailService.deleteMaterialIssueDetail(id).subscribe({
       next: () => {
         this.alertService.successNo('ลบรายการเรียบร้อยแล้ว');
-        this.LoadgetMaterialReceiveDetail(procurementId);
+        this.loadMaterialIssueDetail(procurementId);
       },
       error: (error) => console.error(error),
     });
@@ -100,38 +95,34 @@ export class MaterialReceiveDetailComponent implements OnInit {
 
   goToCreate() {
     const procurementId = this.procurement_record_id();
-    const procurementrecord = history.state?.procurementrecord;
-
     if (!procurementId) return;
 
-    this.router.navigate(['/admin/materialReceiveDetails/create'], {
+    this.router.navigate(['/admin/MaterialIssueDetail/create'], {
       queryParams: {
         procurement_record_id: procurementId,
       },
       state: {
-        procurementrecord,
+        procurementrecord: history.state?.procurementrecord,
       },
     });
   }
 
-  goToEdit(mat: materialReceiveDetailTypes) {
-    this.router.navigate(['/admin/materialReceiveDetails/update', mat.receive_detail_id], {
+  goToEdit(item: MaterialIssueDetailTypes) {
+    this.router.navigate(['/admin/MaterialIssueDetail/update', item.issue_detail_id], {
       state: {
-        MaterialReceiveDetail: mat,
+        materialIssueDetail: item,
         procurementrecord: history.state?.procurementrecord,
       },
     });
   }
 
   getTotalAmount() {
-    return this.MaterialReceiveDetails().reduce((sum, item) => {
-      return sum + Number(item.total_amount || 0);
-    }, 0);
+    return this.materialIssueDetails().reduce((sum, item) => sum + Number(item.total_amount || 0), 0);
   }
 
   cancel() {
     this.router.navigate(['/admin/project/procurementrecord'], {
-      queryParams: { project_id: history.state?.procurementrecord.project_id },
+      queryParams: { project_id: history.state?.procurementrecord?.project_id },
       state: {
         procurementrecord: history.state?.procurementrecord,
         project_id: history.state?.project_id,
