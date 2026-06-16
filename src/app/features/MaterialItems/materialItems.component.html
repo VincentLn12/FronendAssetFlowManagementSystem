@@ -23,11 +23,15 @@
           </div>
 
           <h1 class="header-title">
-            รายงานวัสดุคงเหลือ
-            <span class="header-title-year">
-              ประจำปีงบประมาณ พ.ศ.
-              {{ fiscalYears().find((year) => year.fiscal_year_id === fiscalYearId())?.fiscal_year || 'ทั้งหมด' }}
-            </span>
+            @if (fiscalYearId()) {
+              รายงานวัสดุคงเหลือ
+              <span class="header-title-year">
+                ประจำปีงบประมาณ พ.ศ.
+                {{ fiscalYears().find((year) => year.fiscal_year_id === fiscalYearId())?.fiscal_year }}
+              </span>
+            } @else {
+              รายงานวัสดุคงเหลือทั้งหมด
+            }
           </h1>
 
           <p class="header-subtitle">
@@ -174,8 +178,6 @@
             <th rowspan="2" class="th-col th-center w-20">จ่าย</th>
             <th rowspan="2" class="th-col th-center w-24 th-highlight">คงเหลือ</th>
             <th colspan="2" class="th-col th-center">มูลค่าคงเหลือ</th>
-            <!-- <th rowspan="2" class="th-col th-center w-28">ประเภทเงิน</th> -->
-            <!-- <th rowspan="2" class="th-col th-left">หมายเหตุ</th> -->
             <th rowspan="2" class="th-col th-center w-44">จัดการ</th>
           </tr>
           <tr class="thead-row-2">
@@ -223,14 +225,6 @@
               <td class="td-col td-right td-amount">
                 {{ item.total_amount || 0 | number: '1.2-2' }}
               </td>
-
-              <!-- ประเภทเงิน -->
-              <!-- <td class="td-col td-center">
-                <span class="badge-budget">งปม.</span>
-              </td> -->
-
-              <!-- หมายเหตุ -->
-              <!-- <td class="td-col td-left td-remark">{{ item.remark || '-' }}</td> -->
 
               <!-- จัดการ -->
               <td class="td-col td-center">

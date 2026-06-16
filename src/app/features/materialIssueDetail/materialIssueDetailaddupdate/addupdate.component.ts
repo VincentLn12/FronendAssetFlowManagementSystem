@@ -17,7 +17,13 @@ import { DatePickerComponent } from '../../../shared/date-picker/date-picker.com
 @Component({
   selector: 'app-material-issue-detail-addupdate',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputComponent, SelectComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    InputComponent,
+    SelectComponent,
+    DatePickerComponent,
+  ],
   templateUrl: './addupdate.component.html',
 })
 export class MaterialIssueDetailAddUpdateComponent implements OnInit {
@@ -50,7 +56,7 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
     procurement_record_id: [null as number | null, Validators.required],
     material_item_id: [null as number | null, Validators.required],
     staff_id: [this.procurementrecord?.staff_id ?? null, Validators.required],
-    issue_date: [''],
+    issue_date: [this.toDateInputValue(new Date()), Validators.required],
     quantity: [0, Validators.required],
     unit_price: [0, Validators.required],
     total_amount: [0],
@@ -63,6 +69,16 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
     issue_date: [''],
     items: this.fb.array<FormGroup>([]),
   });
+
+  private toDateInputValue(date: Date | string | null | undefined): string {
+    if (!date) return '';
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) return '';
+
+    return d.toISOString().slice(0, 10);
+  }
 
   get itemForms() {
     return this.items.controls;
@@ -248,7 +264,7 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
       procurement_record_id: item.procurement_record_id ?? null,
       material_item_id: item.material_item_id ?? null,
       staff_id: item.staff_id ?? null,
-      issue_date: item.issue_date ?? '',
+      issue_date: this.toDateInputValue(item.issue_date),
       quantity: item.quantity ?? 0,
       unit_price: item.unit_price ?? 0,
       total_amount: item.total_amount ?? 0,
@@ -277,7 +293,7 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
       procurement_record_id: raw.procurement_record_id ?? null,
       material_item_id: raw.material_item_id!,
       staff_id: raw.staff_id!,
-      issue_date: raw.issue_date ?? null,
+      issue_date: raw.issue_date || null,
       quantity: Number(raw.quantity ?? 0),
       unit_price: Number(raw.unit_price ?? 0),
       total_amount: Number(raw.quantity ?? 0) * Number(raw.unit_price ?? 0),
@@ -299,8 +315,13 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
             },
           });
         },
-        error: () => {
-          this.snackbar.error('แก้ไขข้อมูลไม่สำเร็จ');
+        error: (err) => {
+          const message =
+            typeof err.error === 'string'
+              ? err.error
+              : err.error?.message || 'แก้ไขข้อมูลไม่สำเร็จ';
+
+          this.snackbar.error(message);
         },
       });
   }
@@ -318,7 +339,7 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
         procurement_record_id: raw.procurement_record_id ?? null,
         material_item_id: item.material_item_id,
         staff_id: raw.staff_id!,
-        issue_date: raw.issue_date ?? null,
+        issue_date: raw.issue_date || new Date().toISOString().slice(0, 10),
         quantity: Number(item.quantity ?? 0),
         unit_price: Number(item.unit_price ?? 0),
         total_amount: Number(item.quantity ?? 0) * Number(item.unit_price ?? 0),
@@ -347,8 +368,13 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
             },
           });
         },
-        error: () => {
-          this.snackbar.error('เพิ่มข้อมูลไม่สำเร็จ');
+        error: (err) => {
+          const message =
+            typeof err.error === 'string'
+              ? err.error
+              : err.error?.message || 'แก้ไขข้อมูลไม่สำเร็จ';
+
+          this.snackbar.error(message);
         },
       });
   }

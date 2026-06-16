@@ -608,7 +608,7 @@ export const routes: Routes = [
           {
             path: 'MaterialStockCard/:id',
             loadComponent: () =>
-              import('./features/materialReceiveDetail/transections/MaterialStockCardComponent.component').then(
+              import('./features/materialStockCard/MaterialStockCardComponent.component').then(
                 (m) => m.MaterialStockCardComponent,
               ),
           },

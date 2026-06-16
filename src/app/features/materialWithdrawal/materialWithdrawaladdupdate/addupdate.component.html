@@ -14,7 +14,7 @@
     <div class="grid gap-5">
       <!-- Form Card -->
       <div class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-        <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-3">
+        <div class="border-b-2 border-green-900 bg-green-900 px-6 py-3">
           <div class="flex justify-between items-center gap-3">
             <h2 class="text-base font-semibold text-white">ข้อมูล{{ name }}</h2>
             <span
@@ -28,7 +28,7 @@
               {{ isEditMode() ? 'โหมดแก้ไข' : 'โหมดเพิ่มข้อมูล' }}
             </span>
           </div>
-          <p class="mt-0.5 text-sm text-blue-200">กรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบันทึก</p>
+          <p class="mt-0.5 text-sm text-white">กรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบันทึก</p>
         </div>
 
         @if (isLoading()) {
@@ -39,7 +39,7 @@
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="submit()">
-            <div class="grid grid-cols-3 gap-6 p-6">
+            <div class="grid grid-cols-2 gap-6 p-6">
               <app-input
                 label="อ้างอิงเอกสารจัดซื้อเลขที่"
                 [control]="form.controls.material_receive_id"
@@ -92,7 +92,7 @@
 
               <button
                 type="submit"
-                class="inline-flex justify-center rounded-xl bg-blue-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50 transition"
+                class="inline-flex justify-center rounded-xl bg-green-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50 transition"
                 [disabled]="isSubmitting() || form.invalid"
               >
                 @if (isSubmitting()) {

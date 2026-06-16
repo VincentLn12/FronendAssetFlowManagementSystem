@@ -37,13 +37,12 @@ export class MaterialItemsComponent implements OnInit {
 
     this.route.queryParamMap.subscribe((params) => {
       const fiscalYearIdParam = params.get('fiscalYearId') ?? params.get('fiscal_year_id');
+
       const fiscalYearId = fiscalYearIdParam ? Number(fiscalYearIdParam) : null;
 
-      if (fiscalYearId && Number.isFinite(fiscalYearId)) {
-        this.fiscalYearId.set(fiscalYearId);
-      } else {
-        this.fiscalYearId.set((history.state?.fiscalYearId as number | null) ?? null);
-      }
+      this.fiscalYearId.set(
+        fiscalYearId && Number.isFinite(fiscalYearId) && fiscalYearId > 0 ? fiscalYearId : null,
+      );
 
       this.getMaterialItems();
     });
@@ -68,8 +67,10 @@ export class MaterialItemsComponent implements OnInit {
       })
       .subscribe({
         next: (response) => {
+          console.log('MaterialItems response:', response);
+
           this.materialItem = response;
-          this.materialItems.set(response.data);
+          this.materialItems.set(response.data ?? []);
         },
         error: (error) => console.error(error),
       });
@@ -88,9 +89,16 @@ export class MaterialItemsComponent implements OnInit {
   }
 
   onFiscalYearChange(value: string | number | null) {
-    this.fiscalYearId.set(value ? Number(value) : null);
+    const fiscalYearId = value ? Number(value) : null;
+
+    this.fiscalYearId.set(fiscalYearId && fiscalYearId > 0 ? fiscalYearId : null);
+
     this.table.params.pageNumber = 1;
-    this.getMaterialItems();
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: fiscalYearId && fiscalYearId > 0 ? { fiscal_year_id: fiscalYearId } : {},
+    });
   }
 
   deleteMaterialItems(id: number) {
@@ -123,8 +131,15 @@ export class MaterialItemsComponent implements OnInit {
   }
 
   goTOStockCard(id: number) {
+    const materialItem = this.materialItems().find((item) => item.material_item_id === id);
+
+    const fiscalYearId = this.fiscalYearId();
+
     this.router.navigate(['/admin/MaterialStockCard', id], {
-      state: { materialItems: this.materialItems().find((item) => item.material_item_id === id) },
+      queryParams: fiscalYearId && fiscalYearId > 0 ? { fiscal_year_id: fiscalYearId } : {},
+      state: {
+        materialItems: materialItem,
+      },
     });
   }
 

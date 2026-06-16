@@ -78,13 +78,7 @@
               [required]="true"
               [searchable]="true"
             />
-
-            <app-input
-              label="วันที่จ่าย"
-              type="date"
-              [control]="form.controls.issue_date"
-              placeholder=""
-            />
+            <app-date-picker label="วันที่เบิกจ่าย" [control]="form.controls.issue_date" />
 
             <app-input
               label="จำนวนจ่าย"
@@ -123,12 +117,8 @@
       } @else {
         <form [formGroup]="createForm" (ngSubmit)="submit()">
           <div class="grid gap-6 border-b border-slate-200 p-6 md:grid-cols-2">
-            <app-input
-              label="วันที่เบิก"
-              type="date"
-              [control]="createForm.controls.issue_date"
-              placeholder=""
-            />
+            <app-date-picker label="วันที่เบิกจ่าย" [control]="form.controls.issue_date" />
+
             <app-select
               label="ผู้เบิก"
               [control]="createForm.controls.staff_id"

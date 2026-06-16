@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MaterialStockCardTypes } from '../interface/materialReceiveDetailTypes';
-import { MaterialReceiveDetailService } from '../service/materialReceiveDetail.service';
-import { ThaiDatePipe } from '../../../shared/pipes/thai-date-pipe';
-import { materialItemsTypes } from '../../MaterialItems/interface/materialItemsTypes';
+import { MaterialStockCardTypes } from './interface/materialStockCardTypes';
+import { ThaiDatePipe } from '../../shared/pipes/thai-date-pipe';
+import { materialItemsTypes } from '../MaterialItems/interface/materialItemsTypes';
+import { MaterialStockCardService } from './service/materialStockCard.service';
 
 @Component({
   selector: 'app-material-stock-card',
@@ -15,15 +15,24 @@ import { materialItemsTypes } from '../../MaterialItems/interface/materialItemsT
 export class MaterialStockCardComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private service = inject(MaterialReceiveDetailService);
+  private service = inject(MaterialStockCardService);
 
   material_item_id = signal<number | null>(null);
+  fiscalYearId = signal<number | null>(history.state?.fiscalYearId ?? null);
+
   stockCards = signal<MaterialStockCardTypes[]>([]);
   materialItems = (history.state.materialItems as materialItemsTypes | undefined) ?? undefined;
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : null;
+
+    const fiscalYearIdParam = this.route.snapshot.queryParamMap.get('fiscal_year_id');
+
+    const fiscalYearId = fiscalYearIdParam ? Number(fiscalYearIdParam) : null;
+
+    this.fiscalYearId.set(fiscalYearId && Number.isFinite(fiscalYearId) ? fiscalYearId : null);
+
     if (id && Number.isFinite(id)) {
       this.material_item_id.set(id);
       this.loadStockCard(id);
@@ -31,7 +40,7 @@ export class MaterialStockCardComponent implements OnInit {
   }
 
   loadStockCard(id: number) {
-    this.service.getStockCard(id).subscribe({
+    this.service.getStockCard(id, this.fiscalYearId()).subscribe({
       next: (res) => this.stockCards.set(res),
       error: (err) => console.error(err),
     });

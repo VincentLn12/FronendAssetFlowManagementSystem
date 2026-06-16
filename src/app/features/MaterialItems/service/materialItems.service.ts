@@ -27,7 +27,7 @@ export class MaterialItemsService {
       params = params.append('search', paramsData.search);
     }
 
-    if (paramsData.fiscalYearId !== null && paramsData.fiscalYearId !== undefined) {
+    if (paramsData.fiscalYearId && paramsData.fiscalYearId > 0) {
       params = params.append('FiscalYearId', paramsData.fiscalYearId.toString());
     }
 
