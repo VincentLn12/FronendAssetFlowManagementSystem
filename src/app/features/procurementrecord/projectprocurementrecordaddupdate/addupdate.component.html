@@ -181,14 +181,14 @@
                 [acquisitionMethods]="aquisition_methods()"
                 [assetCategories]="asset_category()"
                 [units]="unit()"
-                (payloadChange)="assetPayload.set($event)"
+                (payloadChange)="onAssetPayloadChange($event)"
                 (validityChange)="isAssetSectionValid.set($event)"
               />
             }
             @if (isHireType() && !this.isEditMode()) {
               <app-procurement-hire-section
                 [units]="unit()"
-                (payloadChange)="hirePayload.set($event)"
+                (payloadChange)="onHirePayloadChange($event)"
                 (validityChange)="isHireSectionValid.set($event)"
               />
             }
@@ -196,7 +196,7 @@
             @if (isMaterialType() && !isEditMode()) {
               <app-procurement-material-section
                 [materialItems]="material_items()"
-                (payloadChange)="materialPayload.set($event)"
+                (payloadChange)="onMaterialPayloadChange($event)"
                 (validityChange)="isMaterialSectionValid.set($event)"
               />
             }
@@ -235,3 +235,17 @@
     </div>
   </div>
 </div>
+
+<app-procurement-save-confirmation-modal
+  [isOpen]="isConfirmModalOpen()"
+  [isSubmitting]="isSubmitting()"
+  [modeLabel]="confirmationModeLabel()"
+  [documentNo]="form.controls.document_no.value || ''"
+  [expenseTypeName]="selectedExpenseTypeName()"
+  [vendorName]="selectedVendorName()"
+  [totalAmount]="confirmationTotalAmount()"
+  [amountText]="form.controls.amount_text.value || ''"
+  [sections]="confirmationSections()"
+  (close)="closeConfirmModal()"
+  (confirm)="confirmSave()"
+/>

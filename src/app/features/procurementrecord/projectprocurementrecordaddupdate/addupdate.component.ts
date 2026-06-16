@@ -47,6 +47,10 @@ import {
   MaterialSectionPayload,
   ProcurementMaterialSectionComponent,
 } from '../components/procurement-asset-section/procurement-material-section/procurement-material-section.component';
+import {
+  ProcurementSaveConfirmationModalComponent,
+  ProcurementSaveSummarySection,
+} from '../components/procurement-save-confirmation-modal/procurement-save-confirmation-modal.component';
 
 @Component({
   selector: 'app-addupdate',
@@ -60,6 +64,7 @@ import {
     ProcurementAssetSectionComponent,
     ProcurementHireSectionComponent,
     ProcurementMaterialSectionComponent,
+    ProcurementSaveConfirmationModalComponent,
   ],
   templateUrl: './addupdate.component.html',
 })
@@ -99,6 +104,7 @@ export class ProcurementsAddUpdateComponent implements OnInit {
   isSubmitting = signal(false);
 
   selectedFile: File | null = null;
+  isConfirmModalOpen = signal(false);
 
   name = 'เอกสารการจัดซื้อจัดจ้าง';
 
@@ -194,6 +200,45 @@ export class ProcurementsAddUpdateComponent implements OnInit {
 
     return type === 'วัสดุ' || type === 'พัสดุ';
   });
+
+  confirmationSections = computed<ProcurementSaveSummarySection[]>(() => {
+    if (this.isAssetType()) {
+      return this.buildAssetSummarySections();
+    }
+
+    if (this.isHireType()) {
+      return this.buildHireSummarySections();
+    }
+
+    if (this.isMaterialType()) {
+      return this.buildMaterialSummarySections();
+    }
+
+    return [
+      {
+        title: 'ข้อมูลการบันทึก',
+        items: [
+          {
+            title: this.form.controls.remark.value || 'ไม่มีรายละเอียดรายการเพิ่มเติม',
+            totalPrice: Number(this.form.controls.total_amount.value || 0),
+          },
+        ],
+      },
+    ];
+  });
+
+  confirmationModeLabel = computed(() =>
+    this.isEditMode() ? 'ยืนยันบันทึกการแก้ไข' : 'ยืนยันบันทึกข้อมูล',
+  );
+
+  selectedVendorName = computed(
+    () =>
+      this.vendors().find(
+        (x) => Number(x.vendor_id) === Number(this.form.controls.vendor_id.value),
+      )?.vendor_name ?? '',
+  );
+
+  confirmationTotalAmount = computed(() => Number(this.form.controls.total_amount.value || 0));
 
   // =========================
   // Lifecycle
@@ -430,6 +475,21 @@ export class ProcurementsAddUpdateComponent implements OnInit {
     };
   }
 
+  onAssetPayloadChange(payload: AssetSectionPayload) {
+    this.assetPayload.set(payload);
+    this.syncTotalAmountFromSections();
+  }
+
+  onHirePayloadChange(payload: HireSectionPayload) {
+    this.hirePayload.set(payload);
+    this.syncTotalAmountFromSections();
+  }
+
+  onMaterialPayloadChange(payload: MaterialSectionPayload) {
+    this.materialPayload.set(payload);
+    this.syncTotalAmountFromSections();
+  }
+
   // =========================
   // Submit
   // =========================
@@ -440,6 +500,17 @@ export class ProcurementsAddUpdateComponent implements OnInit {
     }
 
     if (!this.validateChildSections()) return;
+
+    this.isConfirmModalOpen.set(true);
+  }
+
+  closeConfirmModal() {
+    if (this.isSubmitting()) return;
+    this.isConfirmModalOpen.set(false);
+  }
+
+  confirmSave() {
+    if (this.isSubmitting()) return;
 
     this.isSubmitting.set(true);
 
@@ -494,6 +565,7 @@ export class ProcurementsAddUpdateComponent implements OnInit {
 
     request$.pipe(finalize(() => this.isSubmitting.set(false))).subscribe({
       next: () => {
+        this.isConfirmModalOpen.set(false);
         this.snackbar.success(this.isEditMode() ? 'แก้ไขข้อมูลสำเร็จ' : 'เพิ่มข้อมูลสำเร็จ');
         this.goBackToProcurementList();
       },
@@ -573,6 +645,124 @@ export class ProcurementsAddUpdateComponent implements OnInit {
         projects: this.projectstate,
       },
     });
+  }
+
+  private buildAssetSummarySections(): ProcurementSaveSummarySection[] {
+    const assetPayload = this.assetPayload();
+
+    if (!assetPayload?.asset_items?.length) {
+      return [];
+    }
+
+    return assetPayload.asset_items.map((asset, index) => ({
+      title: `ครุภัณฑ์รายการที่ ${index + 1}: ${asset.asset_item.asset_name || '-'}`,
+      items: asset.asset_sub_items.map((subItem) => ({
+        title: subItem.sub_item_name || '-',
+        subtitle: this.findOptionName(
+          this.asset_category(),
+          'asset_category_id',
+          subItem.asset_category_id,
+          'asset_category_name',
+        ),
+        quantity: subItem.quantity,
+        unitLabel: this.findOptionName(this.unit(), 'unit_id', subItem.unit_id, 'unit_name'),
+        unitPrice: subItem.unit_price,
+        totalPrice: subItem.total_price,
+        note: `อายุการใช้งาน ${subItem.useful_life_year} ปี`,
+      })),
+    }));
+  }
+
+  private buildHireSummarySections(): ProcurementSaveSummarySection[] {
+    const hirePayload = this.hirePayload();
+
+    if (!hirePayload?.hire_details?.length) {
+      return [];
+    }
+
+    return [
+      {
+        title: 'รายการจัดจ้าง',
+        items: hirePayload.hire_details.map((detail) => ({
+          title: detail.hire_name || '-',
+          subtitle: detail.operation_reason || undefined,
+          quantity: detail.quantity,
+          unitLabel: this.findOptionName(this.unit(), 'unit_id', detail.unit_id, 'unit_name'),
+          unitPrice: detail.unit_price,
+          totalPrice: detail.total_amount,
+          note: detail.remark || undefined,
+        })),
+      },
+    ];
+  }
+
+  private buildMaterialSummarySections(): ProcurementSaveSummarySection[] {
+    const materialPayload = this.materialPayload();
+
+    if (!materialPayload?.material_receive_details?.length) {
+      return [];
+    }
+
+    return [
+      {
+        title: 'รายการวัสดุ',
+        items: materialPayload.material_receive_details.map((detail) => {
+          const material = this.material_items().find(
+            (x) => Number(x.material_item_id) === Number(detail.material_item_id),
+          );
+
+          return {
+            title: material?.material_name || material?.display_name || '-',
+            subtitle: material?.material_code ? `รหัส ${material.material_code}` : undefined,
+            quantity: detail.quantity,
+            unitPrice: detail.unit_price,
+            totalPrice: detail.total_amount,
+            note: detail.operation_reason || undefined,
+          };
+        }),
+      },
+    ];
+  }
+
+  private findOptionName(
+    options: any[],
+    valueKey: string,
+    value: number | null | undefined,
+    labelKey: string,
+  ): string | undefined {
+    return options.find((option) => Number(option[valueKey]) === Number(value))?.[labelKey];
+  }
+
+  private syncTotalAmountFromSections() {
+    if (this.isEditMode()) return;
+
+    let totalAmount = Number(this.form.controls.total_amount.value || 0);
+
+    if (this.isMaterialType()) {
+      totalAmount = this.materialPayload()
+        ?.material_receive_details.reduce((sum, item) => sum + Number(item.total_amount || 0), 0) ?? 0;
+    } else if (this.isHireType()) {
+      totalAmount =
+        this.hirePayload()?.hire_details.reduce((sum, item) => sum + Number(item.total_amount || 0), 0) ?? 0;
+    } else if (this.isAssetType()) {
+      totalAmount =
+        this.assetPayload()?.asset_items.reduce(
+          (assetSum, asset) =>
+            assetSum +
+            asset.asset_sub_items.reduce(
+              (subSum, subItem) => subSum + Number(subItem.total_price || 0),
+              0,
+            ),
+          0,
+        ) ?? 0;
+    }
+
+    this.form.patchValue(
+      {
+        total_amount: totalAmount,
+      },
+      { emitEvent: true },
+    );
   }
 
   // =========================

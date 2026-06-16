@@ -1,0 +1,118 @@
+@if (isOpen) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 py-6"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-3xl bg-white shadow-2xl">
+      <div class="border-b border-slate-200 px-6 py-4">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 class="text-lg font-semibold text-slate-900">ตรวจสอบรายการก่อนบันทึก</h3>
+            <p class="mt-1 text-sm text-slate-500">
+              กรุณาตรวจสอบข้อมูลเอกสาร รายการ และยอดรวมก่อนยืนยัน
+            </p>
+          </div>
+
+          <button
+            type="button"
+            (click)="close.emit()"
+            class="rounded-full p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+            [disabled]="isSubmitting"
+            aria-label="ปิด"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <div class="max-h-[calc(90vh-148px)] space-y-5 overflow-y-auto px-6 py-5">
+        @for (section of sections; track section.title) {
+          <section class="rounded-2xl border border-slate-200">
+            <div class="border-b border-slate-200 bg-slate-50 px-4 py-3">
+              <h4 class="text-sm font-semibold text-slate-800">{{ section.title }}</h4>
+            </div>
+
+            <div class="divide-y divide-slate-200">
+              @for (item of section.items; track $index) {
+                <div
+                  class="grid gap-3 px-4 py-4 md:grid-cols-[minmax(0,1fr)_auto_auto_auto] md:items-start"
+                >
+                  <div class="min-w-0">
+                    <p class="truncate text-sm font-semibold text-slate-900">{{ item.title }}</p>
+                    @if (item.subtitle) {
+                      <p class="mt-1 text-sm text-slate-500">{{ item.subtitle }}</p>
+                    }
+                    @if (item.note) {
+                      <p class="mt-1 text-xs text-slate-500">{{ item.note }}</p>
+                    }
+                  </div>
+
+                  <div class="text-sm text-slate-700 md:text-right">
+                    @if (item.quantity !== undefined) {
+                      <p class="font-medium">
+                        {{ item.quantity | number: '1.0-2' }}
+                        {{ item.unitLabel || '' }}
+                      </p>
+                    }
+                  </div>
+
+                  <div class="text-sm text-slate-700 md:text-right">
+                    @if (item.unitPrice !== undefined) {
+                      <p>{{ item.unitPrice | number: '1.2-2' }} บาท/หน่วย</p>
+                    }
+                  </div>
+
+                  <div class="text-sm font-semibold text-slate-900 md:text-right">
+                    @if (item.totalPrice !== undefined) {
+                      <p>{{ item.totalPrice | number: '1.2-2' }} บาท</p>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+
+            @if (section.items.length > 1) {
+              <div
+                class="grid gap-3 border-t border-slate-200 bg-slate-50 px-4 py-3 md:grid-cols-[minmax(0,1fr)_auto_auto_auto] md:items-center"
+              >
+                <div class="text-sm font-semibold text-slate-900">ยอดรวมทั้งหมด</div>
+                <div></div>
+                <div></div>
+                <div class="text-sm font-bold text-slate-900 md:text-right">
+                  {{ getSectionTotal(section) | number: '1.2-2' }} บาท
+                </div>
+              </div>
+            }
+          </section>
+        }
+      </div>
+
+      <div
+        class="flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4 sm:flex-row sm:justify-end"
+      >
+        <button
+          type="button"
+          (click)="close.emit()"
+          class="inline-flex justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+          [disabled]="isSubmitting"
+        >
+          กลับไปแก้ไข
+        </button>
+
+        <button
+          type="button"
+          (click)="confirm.emit()"
+          class="inline-flex justify-center rounded-xl bg-blue-800 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50"
+          [disabled]="isSubmitting"
+        >
+          @if (isSubmitting) {
+            กำลังบันทึก...
+          } @else {
+            {{ modeLabel }}
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}
