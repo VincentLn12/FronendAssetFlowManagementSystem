@@ -26,7 +26,7 @@
       [clearable]="!readonly && clearable"
       [readonly]="readonly"
       [formControl]="control"
-      [notFoundText]="'ไม่พบข้อมูล'"
+      [notFoundText]="notFoundText"
       (open)="onOpenSelect()"
     >
       <ng-template ng-header-tmp>
@@ -41,6 +41,22 @@
             autofocus
           />
         }
+      </ng-template>
+
+      <ng-template ng-notfound-tmp>
+        <div class="px-3 py-3 text-sm text-slate-500">
+          <p>{{ notFoundText }}</p>
+
+          @if (showNotFoundAction && searchText.trim()) {
+            <button
+              type="button"
+              class="mt-2 inline-flex items-center rounded-lg bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100"
+              (click)="triggerNotFoundAction()"
+            >
+              {{ notFoundActionLabel || ('+ เพิ่ม \"' + searchText.trim() + '\"') }}
+            </button>
+          }
+        </div>
       </ng-template>
     </ng-select>
   </div>

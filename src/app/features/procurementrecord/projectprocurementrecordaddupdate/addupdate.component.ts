@@ -24,6 +24,7 @@ import { OperationsTypeService } from '../../operationTypes/service/operationTyp
 import { ExpensetypesService } from '../../expenseTypes/service/expenseTypes.service';
 import { DepartmentService } from '../../departments/service/department.service';
 import { VendorsService } from '../../vendors/service/vendors.service';
+import { vendorsTypes } from '../../vendors/interface/vendorsTypes';
 import { FundcategorysService } from '../../fundcategorys/service/fundcategorys.service';
 import { BudgetsourceService } from '../../budgetsource/service/budgetSource.service';
 import { ProjectsService } from '../../projects/service/projects.service';
@@ -51,6 +52,7 @@ import {
   ProcurementSaveConfirmationModalComponent,
   ProcurementSaveSummarySection,
 } from '../components/procurement-save-confirmation-modal/procurement-save-confirmation-modal.component';
+import { ProcurementVendorQuickCreateModalComponent } from '../components/procurement-vendor-quick-create-modal/procurement-vendor-quick-create-modal.component';
 
 @Component({
   selector: 'app-addupdate',
@@ -65,6 +67,7 @@ import {
     ProcurementHireSectionComponent,
     ProcurementMaterialSectionComponent,
     ProcurementSaveConfirmationModalComponent,
+    ProcurementVendorQuickCreateModalComponent,
   ],
   templateUrl: './addupdate.component.html',
 })
@@ -105,6 +108,9 @@ export class ProcurementsAddUpdateComponent implements OnInit {
 
   selectedFile: File | null = null;
   isConfirmModalOpen = signal(false);
+  isVendorModalOpen = signal(false);
+  isCreatingVendor = signal(false);
+  pendingVendorName = signal('');
 
   name = 'เอกสารการจัดซื้อจัดจ้าง';
 
@@ -420,6 +426,40 @@ export class ProcurementsAddUpdateComponent implements OnInit {
     }
 
     this.selectedFile = input.files[0];
+  }
+
+  openVendorQuickCreate(name: string) {
+    this.pendingVendorName.set(name.trim());
+    this.isVendorModalOpen.set(true);
+  }
+
+  closeVendorQuickCreate() {
+    if (this.isCreatingVendor()) return;
+
+    this.isVendorModalOpen.set(false);
+    this.pendingVendorName.set('');
+  }
+
+  createVendorQuick(vendorName: string) {
+    const normalizedName = vendorName.trim();
+
+    if (!normalizedName) return;
+
+    this.isCreatingVendor.set(true);
+
+    this.vendorsService
+      .createVendors({
+        vendor_name: normalizedName,
+      })
+      .pipe(finalize(() => this.isCreatingVendor.set(false)))
+      .subscribe({
+        next: () => {
+          this.afterVendorCreated(normalizedName);
+        },
+        error: () => {
+          this.snackbar.error('เพิ่มบริษัท/ร้านไม่สำเร็จ');
+        },
+      });
   }
 
   // =========================
@@ -763,6 +803,58 @@ export class ProcurementsAddUpdateComponent implements OnInit {
       },
       { emitEvent: true },
     );
+  }
+
+  private afterVendorCreated(vendorName: string) {
+    this.vendorsService
+      .getVendors({
+        sort: '',
+        search: vendorName,
+        pageSize: 100,
+        pageNumber: 1,
+      })
+      .subscribe({
+        next: (response) => {
+          const vendors = response.data ?? [];
+          const createdVendor =
+            vendors.find((x) => x.vendor_name?.trim() === vendorName) ??
+            vendors.find((x) => x.vendor_name?.trim().toLowerCase() === vendorName.toLowerCase()) ??
+            null;
+
+          this.mergeVendorOptions(vendors);
+
+          if (createdVendor) {
+            this.form.patchValue({
+              vendor_id: createdVendor.vendor_id,
+            });
+          }
+
+          this.isVendorModalOpen.set(false);
+          this.pendingVendorName.set('');
+          this.snackbar.success('เพิ่มบริษัท/ร้านสำเร็จ');
+        },
+        error: () => {
+          this.snackbar.error('เพิ่มบริษัท/ร้านสำเร็จ แต่โหลดรายการกลับมาไม่สำเร็จ');
+          this.isVendorModalOpen.set(false);
+          this.pendingVendorName.set('');
+        },
+      });
+  }
+
+  private mergeVendorOptions(newVendors: vendorsTypes[]) {
+    const merged = [...this.vendors()];
+
+    newVendors.forEach((vendor) => {
+      const index = merged.findIndex((item) => Number(item.vendor_id) === Number(vendor.vendor_id));
+
+      if (index >= 0) {
+        merged[index] = vendor;
+      } else {
+        merged.unshift(vendor);
+      }
+    });
+
+    this.vendors.set(merged);
   }
 
   // =========================

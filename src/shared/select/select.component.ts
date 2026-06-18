@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select';
+import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
 import { InputErrorComponent } from '../input-error/input-error.component';
 import { CommonModule } from '@angular/common';
 
@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './select.component.html',
 })
 export class SelectComponent {
+  @ViewChild(NgSelectComponent) ngSelect?: NgSelectComponent;
+
   @Input() label!: string;
   @Input() control!: FormControl;
   @Input() options: any[] = [];
@@ -21,6 +23,11 @@ export class SelectComponent {
   @Input() searchable = true;
   @Input() clearable = true;
   @Input() readonly = false;
+  @Input() notFoundText = 'ไม่พบข้อมูล';
+  @Input() notFoundActionLabel = '';
+  @Input() showNotFoundAction = false;
+
+  @Output() notFoundAction = new EventEmitter<string>();
 
   searchText = '';
   filteredOptions: any[] = [];
@@ -50,5 +57,14 @@ export class SelectComponent {
       const label = String(item[this.optionLabel] ?? '').toLowerCase();
       return label.includes(text);
     });
+  }
+
+  triggerNotFoundAction() {
+    const text = this.searchText.trim();
+
+    if (!text) return;
+
+    this.ngSelect?.close();
+    this.notFoundAction.emit(text);
   }
 }

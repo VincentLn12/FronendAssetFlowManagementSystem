@@ -3,7 +3,7 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThaiDatePipe } from '../../app/shared/pipes/thai-date-pipe';
 
-export type TableActionType = 'detail' | 'pathTo' | 'repair' | 'withdraw' | 'history';
+export type TableActionType = 'detail' | 'pathTo' | 'repair' | 'withdraw' | 'history' | 'copy';
 
 export interface TableAction {
   type: TableActionType;
@@ -64,6 +64,7 @@ export class DataTableComponent {
   @Input() showRepair = false;
   @Input() showWithdraw = false;
   @Input() showHistory = false;
+  @Input() showCopy = false;
 
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<any>();

@@ -33,10 +33,19 @@
               <h4 class="text-sm font-semibold text-slate-800">{{ section.title }}</h4>
             </div>
 
+            <div
+              class="hidden border-b border-slate-200 bg-slate-50/80 px-4 py-2 text-xs font-semibold tracking-wide text-slate-500 md:grid md:grid-cols-[minmax(0,1fr)_120px_140px_140px] md:items-center md:gap-4"
+            >
+              <div>รายการ</div>
+              <div class="md:text-right">จำนวน</div>
+              <div class="md:text-right">ราคา/หน่วย</div>
+              <div class="md:text-right">ราคารวม</div>
+            </div>
+
             <div class="divide-y divide-slate-200">
               @for (item of section.items; track $index) {
                 <div
-                  class="grid gap-3 px-4 py-4 md:grid-cols-[minmax(0,1fr)_auto_auto_auto] md:items-start"
+                  class="grid gap-3 px-4 py-4 md:grid-cols-[minmax(0,1fr)_120px_140px_140px] md:items-start md:gap-4"
                 >
                   <div class="min-w-0">
                     <p class="truncate text-sm font-semibold text-slate-900">{{ item.title }}</p>
@@ -74,7 +83,7 @@
 
             @if (section.items.length > 1) {
               <div
-                class="grid gap-3 border-t border-slate-200 bg-slate-50 px-4 py-3 md:grid-cols-[minmax(0,1fr)_auto_auto_auto] md:items-center"
+                class="grid gap-3 border-t border-slate-200 bg-slate-50 px-4 py-3 md:grid-cols-[minmax(0,1fr)_120px_140px_140px] md:items-center md:gap-4"
               >
                 <div class="text-sm font-semibold text-slate-900">ยอดรวมทั้งหมด</div>
                 <div></div>

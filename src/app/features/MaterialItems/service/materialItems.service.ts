@@ -52,4 +52,7 @@ export class MaterialItemsService {
   deleteMaterialItems(id: number) {
     return this.http.delete<void>(this.baseUrl + 'MaterialItem/' + id);
   }
+  copyMaterialItems(id: number) {
+    return this.http.post<materialItemsTypes>(this.baseUrl + 'MaterialItem/' + id + '/copy', {});
+  }
 }

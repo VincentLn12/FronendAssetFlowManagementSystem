@@ -304,6 +304,15 @@
                           แจ้งซ่อม
                         </button>
                       }
+                      @if (showCopy) {
+                        <button
+                          type="button"
+                          (click)="emitAction('copy', item)"
+                          class="rounded bg-sky-600 px-3 py-1 text-xs font-semibold text-white hover:bg-sky-700"
+                        >
+                          คัดลอก
+                        </button>
+                      }
 
                       @if (isAdmin) {
                         <button

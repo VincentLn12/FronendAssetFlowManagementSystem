@@ -7,13 +7,13 @@ import { TableState } from '../../../shared/TableState';
 import { AlertService } from '../../../shared.service';
 import { materialItemsTypes } from './interface/materialItemsTypes';
 import { MaterialItemsService } from './service/materialItems.service';
-import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DataTableComponent, TableAction } from '../../../shared/data-table/data-table.component';
 
 @Component({
   selector: 'app-departments',
   standalone: true,
-  imports: [DecimalPipe, FormsModule],
+  imports: [FormsModule, DataTableComponent],
   templateUrl: './materialItems.component.html',
 })
 export class MaterialItemsComponent implements OnInit {
@@ -67,13 +67,28 @@ export class MaterialItemsComponent implements OnInit {
       })
       .subscribe({
         next: (response) => {
-          console.log('MaterialItems response:', response);
-
           this.materialItem = response;
           this.materialItems.set(response.data ?? []);
         },
         error: (error) => console.error(error),
       });
+  }
+
+  copyMaterialItem(id: number) {
+    this.alertService.confirm('คัดลอกข้อมูล', 'คุณต้องการคัดลอกวัสดุนี้หรือไม่?').then((result) => {
+      if (!result.isConfirmed) return;
+
+      this.materialItemsService.copyMaterialItems(id).subscribe({
+        next: () => {
+          this.getMaterialItems();
+          this.alertService.successNo('คัดลอกวัสดุสำเร็จ');
+        },
+        error: (err) => {
+          console.error(err);
+          this.alertService.error('คัดลอกวัสดุไม่สำเร็จ', '');
+        },
+      });
+    });
   }
 
   onSearch(value: string) {
@@ -88,17 +103,10 @@ export class MaterialItemsComponent implements OnInit {
     this.table.onSort(value, () => this.getMaterialItems());
   }
 
-  onFiscalYearChange(value: string | number | null) {
-    const fiscalYearId = value ? Number(value) : null;
-
-    this.fiscalYearId.set(fiscalYearId && fiscalYearId > 0 ? fiscalYearId : null);
-
-    this.table.params.pageNumber = 1;
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: fiscalYearId && fiscalYearId > 0 ? { fiscal_year_id: fiscalYearId } : {},
-    });
+  onTableAction(event: TableAction) {
+    if (event.type === 'copy') {
+      this.copyMaterialItem(event.item.material_item_id);
+    }
   }
 
   deleteMaterialItems(id: number) {
@@ -109,6 +117,7 @@ export class MaterialItemsComponent implements OnInit {
       }
     });
   }
+
   confirmDelete(id: number) {
     this.materialItemsService.deleteMaterialItems(id).subscribe({
       next: () => this.getMaterialItems(),
@@ -130,56 +139,21 @@ export class MaterialItemsComponent implements OnInit {
     });
   }
 
-  goTOStockCard(id: number) {
-    const materialItem = this.materialItems().find((item) => item.material_item_id === id);
+  headerColor = 'bg-green-800';
+  headerBorderColor = 'border-green-800';
+  butttonColor = 'bg-green-800 hover:bg-green-900 ';
 
-    const fiscalYearId = this.fiscalYearId();
+  sortOptions = [
+    { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },
+    { label: 'ชื่อ ฮ-ก', value: 'nameDesc' },
+    { label: 'ใหม่ล่าสุด', value: 'latest' },
+    { label: 'เก่าสุด', value: 'oldest' },
+  ];
 
-    this.router.navigate(['/admin/MaterialStockCard', id], {
-      queryParams: fiscalYearId && fiscalYearId > 0 ? { fiscal_year_id: fiscalYearId } : {},
-      state: {
-        materialItems: materialItem,
-      },
-    });
-  }
-
-  goToIssue(item: materialItemsTypes) {
-    this.router.navigate(['/admin/MaterialIssueDetail/create', item.material_item_id], {
-      state: {
-        materialItem: item,
-        fromMaterialItems: true,
-      },
-    });
-  }
-
-  goToIssueMany() {
-    this.router.navigate(['/admin/MaterialIssueDetail/create'], {
-      state: {
-        fromMaterialItems: true,
-      },
-    });
-  }
-
-  getCurrentFiscalYearLabel() {
-    return (
-      this.fiscalYears().find((year) => year.fiscal_year_id === this.fiscalYearId())?.fiscal_year ??
-      'ทุกปีงบประมาณ'
-    );
-  }
-
-  getVisibleItemCount() {
-    return this.materialItems().length;
-  }
-
-  getTotalBalance() {
-    return this.materialItems().reduce((sum, item) => {
-      return sum + Number(item.current_balance ?? 0);
-    }, 0);
-  }
-
-  getTotalAmount() {
-    return this.materialItems().reduce((sum, item) => {
-      return sum + Number(item.total_amount ?? 0);
-    }, 0);
-  }
+  columns: { label: string; key: string; type?: 'text' | 'price' | 'badge' }[] = [
+    { label: 'รหัสวัสดุ', key: 'material_code' },
+    { label: 'ชื่อวัสดุ', key: 'material_name' },
+    { label: 'ราคา', key: 'unit_price' },
+    { label: 'หน่วยนับ', key: 'unit_name' },
+  ];
 }

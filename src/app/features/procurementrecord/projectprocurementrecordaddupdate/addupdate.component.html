@@ -111,6 +111,9 @@
                 optionValue="vendor_id"
                 placeholder="-- เลือกบริษัท/ร้าน --"
                 [required]="true"
+                [showNotFoundAction]="true"
+                [notFoundActionLabel]="'+ เพิ่มบริษัทนี้'"
+                (notFoundAction)="openVendorQuickCreate($event)"
               />
               <app-select
                 label="หมวดเงิน"
@@ -248,4 +251,12 @@
   [sections]="confirmationSections()"
   (close)="closeConfirmModal()"
   (confirm)="confirmSave()"
+/>
+
+<app-procurement-vendor-quick-create-modal
+  [isOpen]="isVendorModalOpen()"
+  [isSubmitting]="isCreatingVendor()"
+  [initialVendorName]="pendingVendorName()"
+  (close)="closeVendorQuickCreate()"
+  (save)="createVendorQuick($event)"
 />
