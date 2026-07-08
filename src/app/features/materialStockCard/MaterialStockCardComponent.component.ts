@@ -19,7 +19,7 @@ export class MaterialStockCardComponent implements OnInit {
 
   material_item_id = signal<number | null>(null);
   fiscalYearId = signal<number | null>(history.state?.fiscalYearId ?? null);
-
+  departmentId = signal<number | null>(null);
   stockCards = signal<MaterialStockCardTypes[]>([]);
   materialItems = (history.state.materialItems as materialItemsTypes | undefined) ?? undefined;
 
@@ -29,9 +29,14 @@ export class MaterialStockCardComponent implements OnInit {
 
     const fiscalYearIdParam = this.route.snapshot.queryParamMap.get('fiscal_year_id');
 
+    const departmentIdParam = this.route.snapshot.queryParamMap.get('department_id');
+
     const fiscalYearId = fiscalYearIdParam ? Number(fiscalYearIdParam) : null;
+    const departmentId = departmentIdParam ? Number(departmentIdParam) : null;
 
     this.fiscalYearId.set(fiscalYearId && Number.isFinite(fiscalYearId) ? fiscalYearId : null);
+
+    this.departmentId.set(departmentId && Number.isFinite(departmentId) ? departmentId : null);
 
     if (id && Number.isFinite(id)) {
       this.material_item_id.set(id);
@@ -40,7 +45,7 @@ export class MaterialStockCardComponent implements OnInit {
   }
 
   loadStockCard(id: number) {
-    this.service.getStockCard(id, this.fiscalYearId()).subscribe({
+    this.service.getStockCard(id, this.fiscalYearId(), this.departmentId()).subscribe({
       next: (res) => this.stockCards.set(res),
       error: (err) => console.error(err),
     });
@@ -135,6 +140,15 @@ export class MaterialStockCardComponent implements OnInit {
   }
 
   cancel() {
+    const departmentId = this.departmentId();
+
+    if (departmentId) {
+      this.router.navigate(['/admin/MaterialItem/by-department', departmentId], {
+        queryParams: this.fiscalYearId() ? { fiscal_year_id: this.fiscalYearId() } : {},
+      });
+      return;
+    }
+
     this.router.navigate(['/admin/MaterialItems']);
   }
 }

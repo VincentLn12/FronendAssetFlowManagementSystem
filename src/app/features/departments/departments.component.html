@@ -15,5 +15,8 @@
   (add)="goToCreate()"
   (edit)="goToEdit($event)"
   (delete)="deleteDepartment($event)"
+  [Namepath]="'พัสดุ'"
+  [showPathTo]="true"
+  (action)="gotoPathTo($event)"
 >
 </app-data-table>

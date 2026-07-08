@@ -37,6 +37,27 @@ export class MaterialItemsService {
     return this.http.get<Pagination<materialItemsTypes>>(this.baseUrl + 'MaterialItem', { params });
   }
 
+  getMaterialItemsByDepartment(
+    departmentId: number,
+    fiscalYearId?: number | null,
+    search?: string,
+  ) {
+    let params = new HttpParams();
+
+    if (fiscalYearId && fiscalYearId > 0) {
+      params = params.set('fiscal_year_id', fiscalYearId);
+    }
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    return this.http.get<materialItemsTypes[]>(
+      this.baseUrl + 'MaterialItem/by-department/' + departmentId,
+      { params },
+    );
+  }
+  
   getMaterialItem(id: number) {
     return this.http.get<materialItemsTypes>(this.baseUrl + 'MaterialItem/' + id);
   }

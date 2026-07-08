@@ -583,6 +583,13 @@ export const routes: Routes = [
                 (m) => m.MaterialItemsComponent,
               ),
           },
+          {
+            path: 'MaterialItem/by-department/:departmentId',
+            loadComponent: () =>
+              import('./features/MaterialItems/by-department/by-department.component').then(
+                (m) => m.MaterialItemsByDepartmentComponent,
+              ),
+          },
           // รายละเอียดการรับวัสดุ
           {
             path: 'materialReceiveDetails/create',
@@ -642,7 +649,21 @@ export const routes: Routes = [
               ),
           },
           {
+            path: 'MaterialIssueDetail/create/department/:departmentId',
+            loadComponent: () =>
+              import('./features/materialIssueDetail/materialIssueDetailaddupdate/addupdate.component').then(
+                (m) => m.MaterialIssueDetailAddUpdateComponent,
+              ),
+          },
+          {
             path: 'MaterialIssueDetail/create/:material_item_id',
+            loadComponent: () =>
+              import('./features/materialIssueDetail/materialIssueDetailaddupdate/addupdate.component').then(
+                (m) => m.MaterialIssueDetailAddUpdateComponent,
+              ),
+          },
+          {
+            path: 'MaterialIssueDetail/create/department/:departmentId/:material_item_id',
             loadComponent: () =>
               import('./features/materialIssueDetail/materialIssueDetailaddupdate/addupdate.component').then(
                 (m) => m.MaterialIssueDetailAddUpdateComponent,

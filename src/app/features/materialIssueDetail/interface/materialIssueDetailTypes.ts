@@ -1,6 +1,7 @@
 export interface MaterialIssueDetailTypes {
   issue_detail_id: number;
   procurement_record_id?: number | null;
+  department_id?: number | null;
   material_item_id: number;
   item_no?: number | null;
   material_name?: string | null;

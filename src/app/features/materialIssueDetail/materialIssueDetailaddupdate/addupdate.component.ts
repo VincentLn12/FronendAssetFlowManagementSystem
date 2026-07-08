@@ -13,6 +13,8 @@ import { SelectComponent, TextareaComponent } from '../../../../shared';
 import { MaterialItemsService } from '../../MaterialItems/service/materialItems.service';
 import { materialItemsTypes } from '../../MaterialItems/interface/materialItemsTypes';
 import { DatePickerComponent } from '../../../shared/date-picker/date-picker.component';
+import { staffsType } from '../../staffs/interface/staffsType';
+import { ProcurementrecordService } from '../../procurementrecord/service/procurementrecord.service';
 
 @Component({
   selector: 'app-material-issue-detail-addupdate',
@@ -34,7 +36,7 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
   private snackbar = inject(SnackbarService);
   private staffsService = inject(StaffsService);
   private materialItemsService = inject(MaterialItemsService);
-  private fiscalyearsService = inject(FiscalyearsService);
+  private procurementrecordService = inject(ProcurementrecordService);
 
   issue_detail_id = signal<number | null>(null);
   isEditMode = computed(() => this.issue_detail_id() !== null);
@@ -48,6 +50,7 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
   procurementrecord = history.state?.procurementrecord;
   materialItem = history.state?.materialItem as materialItemsTypes | undefined;
   fromMaterialItems = history.state?.fromMaterialItems === true;
+  departmentIdFromState = history.state?.department_id as number | undefined;
   materialitems = signal<any[]>([]);
   staffs = signal<any[]>([]);
 
@@ -89,12 +92,15 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadDropdowns();
-
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? Number(idParam) : null;
+    const procurementRecordIdParam = this.route.snapshot.queryParamMap.get('procurement_record_id');
+    const procurementRecordId = procurementRecordIdParam ? Number(procurementRecordIdParam) : null;
+    const departmentIdParam = this.route.snapshot.paramMap.get('departmentId');
+    const departmentId = departmentIdParam ? Number(departmentIdParam) : null;
 
     if (id && Number.isFinite(id)) {
+      this.loadDropdowns();
       this.issue_detail_id.set(id);
       this.loadMaterialIssueDetail(id);
       return;
@@ -106,6 +112,25 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
     }
 
     this.applyCreateRouteParams();
+
+    if (procurementRecordId && Number.isFinite(procurementRecordId)) {
+      this.loadProcurementRecordAndDropdowns(procurementRecordId);
+      return;
+    }
+
+    if (departmentId && Number.isFinite(departmentId) && !this.procurementrecord?.department_id) {
+      this.procurementrecord = {
+        ...this.procurementrecord,
+        department_id: departmentId,
+      };
+    } else if (this.departmentIdFromState && !this.procurementrecord?.department_id) {
+      this.procurementrecord = {
+        ...this.procurementrecord,
+        department_id: this.departmentIdFromState,
+      };
+    }
+
+    this.loadDropdowns();
     if (this.items.length === 0) {
       this.addItem(this.materialItem?.material_item_id ?? null);
     }
@@ -233,7 +258,7 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
         }));
 
         this.materialitems.set(items);
-        this.staffs.set(res.staff.data);
+        this.staffs.set(this.filterEligibleStaffs(res.staff.data));
 
         if (!this.isEditMode() && this.items.length > 0) {
           this.items.controls.forEach((group) => {
@@ -258,6 +283,35 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
     });
   }
 
+  private loadProcurementRecordAndDropdowns(procurementRecordId: number) {
+    this.procurementrecordService.getProcurementrecord(procurementRecordId).subscribe({
+      next: (record) => {
+        this.procurementrecord = record;
+        this.createForm.patchValue({
+          procurement_record_id: record.procurement_record_id,
+        });
+        this.loadDropdowns();
+
+        if (this.items.length === 0) {
+          this.addItem(this.materialItem?.material_item_id ?? null);
+        }
+      },
+      error: () => {
+        this.loadDropdowns();
+
+        if (this.items.length === 0) {
+          this.addItem(this.materialItem?.material_item_id ?? null);
+        }
+      },
+    });
+  }
+
+  private filterEligibleStaffs(staffs: staffsType[]) {
+    const departmentId = this.procurementrecord?.department_id;
+
+    return staffs.filter((staff) => (departmentId ? staff.department_id === departmentId : true));
+  }
+
   private patchForm(item: MaterialIssueDetailTypes) {
     this.form.patchValue({
       issue_detail_id: item.issue_detail_id ?? 0,
@@ -269,6 +323,40 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
       unit_price: item.unit_price ?? 0,
       total_amount: item.total_amount ?? 0,
       remark: item.remark ?? '',
+    });
+  }
+
+  private getActiveDepartmentId(): number | null {
+    const routeDepartmentId = this.route.snapshot.paramMap.get('departmentId');
+    const departmentIdFromRoute = routeDepartmentId ? Number(routeDepartmentId) : null;
+
+    if (departmentIdFromRoute && Number.isFinite(departmentIdFromRoute)) {
+      return departmentIdFromRoute;
+    }
+
+    const procurementDepartmentId = this.procurementrecord?.department_id;
+    if (procurementDepartmentId && Number.isFinite(procurementDepartmentId)) {
+      return procurementDepartmentId;
+    }
+
+    if (this.departmentIdFromState && Number.isFinite(this.departmentIdFromState)) {
+      return this.departmentIdFromState;
+    }
+
+    return null;
+  }
+
+  private navigateBackToDepartment() {
+    const departmentId = this.getActiveDepartmentId();
+    if (!departmentId) {
+      this.router.navigate(['/admin/MaterialItems']);
+      return;
+    }
+
+    this.router.navigate(['/admin/MaterialItem/by-department', departmentId], {
+      state: {
+        depart: history.state?.depart,
+      },
     });
   }
 
@@ -288,9 +376,11 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
     }
 
     const raw = this.form.getRawValue();
+    const departmentId = this.getActiveDepartmentId();
     const payload: Partial<MaterialIssueDetailTypes> = {
       issue_detail_id: this.issue_detail_id() ?? 0,
       procurement_record_id: raw.procurement_record_id ?? null,
+      department_id: departmentId,
       material_item_id: raw.material_item_id!,
       staff_id: raw.staff_id!,
       issue_date: raw.issue_date || null,
@@ -334,9 +424,11 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
     }
 
     const raw = this.createForm.getRawValue();
+    const departmentId = this.getActiveDepartmentId();
     const payload = {
       items: (raw.items ?? []).map((item: any) => ({
         procurement_record_id: raw.procurement_record_id ?? null,
+        department_id: departmentId,
         material_item_id: item.material_item_id,
         staff_id: raw.staff_id!,
         issue_date: raw.issue_date || new Date().toISOString().slice(0, 10),
@@ -358,7 +450,7 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
 
           const procurementRecordId = this.createForm.controls.procurement_record_id.value;
           if (this.fromMaterialItems) {
-            this.router.navigate(['/admin/MaterialItems']);
+            this.navigateBackToDepartment();
             return;
           }
 
@@ -381,7 +473,7 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
 
   cancel() {
     if (!this.isEditMode() && this.fromMaterialItems) {
-      this.router.navigate(['/admin/MaterialItems']);
+      this.navigateBackToDepartment();
       return;
     }
 
@@ -392,6 +484,7 @@ export class MaterialIssueDetailAddUpdateComponent implements OnInit {
     this.router.navigate(['/admin/MaterialIssueDetail', procurementRecordId], {
       state: {
         procurementrecord: history.state?.procurementrecord,
+        depart: history.state?.depart,
       },
     });
   }

@@ -54,7 +54,7 @@
           }
         </a>
 
-        <a
+        <!-- <a
           routerLink="/admin/procurements"
           routerLinkActive="!bg-slate-100 !text-slate-900 font-semibold ring-1 ring-slate-200"
           class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
@@ -64,7 +64,38 @@
           @if (sidebarOpen) {
             <span class="text-sm">เอกสารจัดซื้อ/จัดจ้าง</span>
           }
+        </a> -->
+        <a
+          routerLink="/admin/departments"
+          routerLinkActive="!bg-slate-100 !text-slate-900 font-semibold ring-1 ring-slate-200"
+          class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>apartment</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">สาขาวิชา</span>
+          }
         </a>
+
+        <!-- <a
+          routerLink="/admin/assetItems"
+          routerLinkActive="!bg-slate-100 !text-slate-900 font-semibold ring-1 ring-slate-200"
+          class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>inventory</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">ครุภัณฑ์หลักทั้งหมด</span>
+          }
+        </a> -->
+
+        @if (sidebarOpen) {
+          <div
+            class="mt-5 rounded-lg bg-slate-700 px-4 py-2.5 text-[11px] font-bold tracking-[0.08em] text-white"
+          >
+            ครุภัณฑ์ / พัสดุ
+          </div>
+        }
         <a
           routerLink="/admin/MaterialItems"
           routerLinkActive="!bg-slate-100 !text-slate-900 font-semibold ring-1 ring-slate-200"
@@ -76,26 +107,6 @@
             <span class="text-sm">รายการพัสดุ</span>
           }
         </a>
-        <a
-          routerLink="/admin/assetItems"
-          routerLinkActive="!bg-slate-100 !text-slate-900 font-semibold ring-1 ring-slate-200"
-          class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>inventory</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">ครุภัณฑ์หลักทั้งหมด</span>
-          }
-        </a>
-
-        @if (sidebarOpen) {
-          <div
-            class="mt-5 rounded-lg bg-slate-700 px-4 py-2.5 text-[11px] font-bold tracking-[0.08em] text-white"
-          >
-            ครุภัณฑ์ / พัสดุ
-          </div>
-        }
-
         <a
           routerLink="/admin/assetCategorie"
           routerLinkActive="!bg-slate-100 !text-slate-900 font-semibold ring-1 ring-slate-200"
@@ -238,18 +249,6 @@
             ผู้ใช้งาน / หน่วยงาน
           </div>
         }
-
-        <a
-          routerLink="/admin/departments"
-          routerLinkActive="!bg-slate-100 !text-slate-900 font-semibold ring-1 ring-slate-200"
-          class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
-          [ngClass]="{ 'justify-center': !sidebarOpen }"
-        >
-          <mat-icon>apartment</mat-icon>
-          @if (sidebarOpen) {
-            <span class="text-sm">หน่วยงาน/สาขาวิชา</span>
-          }
-        </a>
 
         <a
           routerLink="/admin/prefixes"

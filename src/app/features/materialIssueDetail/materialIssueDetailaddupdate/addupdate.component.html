@@ -78,7 +78,10 @@
               [required]="true"
               [searchable]="true"
             />
-            <app-date-picker label="วันที่เบิกจ่าย" [control]="form.controls.issue_date" />
+            <app-date-picker
+              label="วันที่เบิกจ่าย"
+              [control]="createForm.controls.issue_date"
+            />
 
             <app-input
               label="จำนวนจ่าย"

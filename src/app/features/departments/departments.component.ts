@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataTableComponent } from '../../../shared/data-table/data-table.component';
+import { DataTableComponent, TableAction } from '../../../shared/data-table/data-table.component';
 import { DepartmentService } from './service/department.service';
 import { DepartmentType } from './interface/departmentType';
 import { Pagination } from '../../shared/models/pagination';
@@ -72,6 +72,16 @@ export class DepartmentsComponent implements OnInit {
 
   goToEdit(depart: DepartmentType) {
     this.router.navigate(['/admin/departments/update', depart.department_id], {
+      state: { depart },
+    });
+  }
+
+  gotoPathTo(event: TableAction) {
+    if (event.type !== 'pathTo') return;
+
+    const depart = event.item as DepartmentType;
+
+    this.router.navigate(['/admin/MaterialItem/by-department', depart.department_id], {
       state: { depart },
     });
   }
