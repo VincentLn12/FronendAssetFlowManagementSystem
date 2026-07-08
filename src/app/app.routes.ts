@@ -17,6 +17,13 @@ export const routes: Routes = [
     component: HeaderComponent,
     children: [
       { path: '', component: HomeComponent },
+      {
+        path: 'portal',
+        loadComponent: () =>
+          import('./features/public-portal/public-portal.component').then(
+            (m) => m.PublicPortalComponent,
+          ),
+      },
       { path: 'test-error', component: TestErrorComponent },
       { path: 'server-error', component: ServerErrorComponent },
       { path: '', component: ServerErrorComponent },
