@@ -1,0 +1,229 @@
+<div class="min-h-screen bg-[#f4f7f4] px-4 py-8 sm:px-6 xl:px-10 2xl:px-12">
+  <div class="mx-auto max-w-[1920px] space-y-6">
+    <a
+      [routerLink]="['/portal/staffs', staffId, 'projects', projectId, 'procurements']"
+      [state]="{ project, staff }"
+      class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 transition hover:text-[#2c7a4b]"
+    >
+      ← กลับหน้าเอกสาร
+    </a>
+
+    <header class="rounded-3xl border border-[#d8e4da] bg-white shadow-sm">
+      <div class="border-b border-[#e3ebe4] px-6 py-4">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#2c7a4b]">Step 4</p>
+        <h1 class="mt-1 text-2xl font-black text-slate-900">{{ title() }}</h1>
+        <p class="mt-2 text-sm text-slate-500">
+          {{ staff?.full_name || 'บุคลากร #' + staffId }} •
+          {{ procurement?.document_no || 'เอกสาร #' + procurementId }}
+        </p>
+      </div>
+
+      @if (detail()) {
+        <div
+          class="grid gap-4 bg-[#f8fbf8] px-6 py-4 md:grid-cols-2 2xl:grid-cols-5 xl:px-8 xl:py-5"
+        >
+          <div class="rounded-2xl border border-[#dbe7dc] bg-white p-4">
+            <p class="text-xs font-bold uppercase tracking-wide text-slate-400">ประเภท</p>
+            <p class="mt-2 text-base font-black text-slate-900">{{ detail()!.category }}</p>
+          </div>
+          <div class="rounded-2xl border border-[#dbe7dc] bg-white p-4">
+            <p class="text-xs font-bold uppercase tracking-wide text-slate-400">เลขเอกสาร</p>
+            <p class="mt-2 text-base font-black text-slate-900">{{ detail()!.document_no }}</p>
+          </div>
+          <div class="rounded-2xl border border-[#dbe7dc] bg-white p-4">
+            <p class="text-xs font-bold uppercase tracking-wide text-slate-400">วันที่เอกสาร</p>
+            <p class="mt-2 text-base font-black text-slate-900">
+              {{ detail()!.document_date | date: 'dd/MM/yyyy' }}
+            </p>
+          </div>
+          <div class="rounded-2xl border border-[#dbe7dc] bg-white p-4">
+            <p class="text-xs font-bold uppercase tracking-wide text-slate-400">สถานะ</p>
+            <p class="mt-2 text-base font-black text-slate-900">{{ detail()!.status || '-' }}</p>
+          </div>
+          <div class="rounded-2xl border border-[#dbe7dc] bg-white p-4">
+            <p class="text-xs font-bold uppercase tracking-wide text-slate-400">มูลค่าเอกสาร</p>
+            <p class="mt-2 text-base font-black text-[#2c7a4b]">
+              {{ detail()!.total_amount | number: '1.2-2' }}
+            </p>
+          </div>
+        </div>
+      }
+    </header>
+
+    @if (loading()) {
+      <div
+        class="rounded-2xl border border-[#dbe8de] bg-[#f6fbf7] p-8 text-center text-sm font-bold text-[#2c7a4b]"
+      >
+        กำลังโหลดรายละเอียด...
+      </div>
+    } @else if (detail()) {
+      <section class="space-y-4">
+        @if (detail()!.category === 'วัสดุ') {
+          @for (material of groupedMaterials(); track material.material_name) {
+            <div class="overflow-hidden rounded-3xl border border-[#d8e4da] bg-white shadow-sm">
+              <div class="border-b border-[#e6eee7] bg-[#f6faf6] px-5 py-4">
+                <div class="flex flex-col gap-2 xl:flex-row xl:items-center xl:justify-between">
+                  <div>
+                    <p class="text-lg font-black text-slate-900">{{ material.material_name }}</p>
+                    <p class="mt-1 text-sm text-slate-500">
+                      รับเข้ารวม {{ material.total_quantity | number: '1.0-2' }}
+                    </p>
+                  </div>
+                  <span
+                    class="rounded-full bg-white px-3 py-1 text-xs font-bold text-slate-600 ring-1 ring-[#dbe5dc]"
+                  >
+                    {{ material.items.length }} รายการย่อย
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-4">
+                <div class="overflow-hidden rounded-2xl border border-[#e1e9e2]">
+                  <div
+                    class="hidden grid-cols-[100px_minmax(260px,1fr)_140px_160px_180px_minmax(220px,1fr)] bg-[#eef5ef] px-4 py-3 text-xs font-black uppercase tracking-wide text-slate-600 xl:grid xl:px-5 xl:py-4"
+                  >
+                    <div>ลำดับ</div>
+                    <div>รายการ</div>
+                    <div class="text-right">จำนวน</div>
+                    <div class="text-right">ราคา</div>
+                    <div class="text-right">รวมเงิน</div>
+                    <div>เหตุผล / รายละเอียด</div>
+                  </div>
+                  @for (item of material.items; track item.receive_detail_id) {
+                    <div
+                      class="grid gap-2 border-t border-[#edf2ed] px-4 py-4 first:border-t-0 xl:grid-cols-[100px_minmax(260px,1fr)_140px_160px_180px_minmax(220px,1fr)] xl:items-center xl:px-5 xl:py-5"
+                    >
+                      <div class="text-sm font-bold text-slate-700">
+                        {{ item.item_no }}
+                      </div>
+                      <div class="text-sm font-bold text-slate-700">
+                        {{ item.material_name }}
+                      </div>
+                      <div class="text-sm font-bold text-slate-700 md:text-right">
+                        {{ item.quantity | number: '1.0-2' }}
+                      </div>
+                      <div class="text-sm font-bold text-slate-700 md:text-right">
+                        {{ item.unit_price | number: '1.2-2' }}
+                      </div>
+                      <div class="text-sm font-bold text-slate-700 md:text-right">
+                        {{ item.total_amount | number: '1.2-2' }}
+                      </div>
+                      <div class="text-sm text-slate-500">{{ item.operation_reason || '-' }}</div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        }
+
+        @if (detail()!.category === 'ครุภัณฑ์') {
+          @for (
+            asset of groupedAssets();
+            track asset.withdrawal_document_no + '-' + asset.asset_name
+          ) {
+            <div class="overflow-hidden rounded-3xl border border-[#d8e4da] bg-white shadow-sm">
+              <div class="border-b border-[#e6eee7] bg-[#f6f9fc] px-5 py-4">
+                <div class="flex flex-col gap-2 xl:flex-row xl:items-center xl:justify-between">
+                  <div>
+                    <p class="text-lg font-black text-slate-900">{{ asset.asset_name }}</p>
+                    <p class="mt-1 text-sm text-slate-500">
+                      ใบเบิก {{ asset.withdrawal_document_no }} •
+                      {{ asset.withdrawal_date | date: 'dd/MM/yyyy' }}
+                    </p>
+                    <p class="mt-1 text-sm text-slate-500">
+                      สถานที่เก็บ {{ asset.storage_location || '-' }} • วัตถุประสงค์
+                      {{ asset.purpose || '-' }}
+                    </p>
+                  </div>
+                  <span
+                    class="rounded-full bg-white px-3 py-1 text-xs font-bold text-slate-600 ring-1 ring-[#dbe5dc]"
+                  >
+                    {{ asset.subItems.length }} รายการย่อย
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-4">
+                <div class="overflow-hidden rounded-2xl border border-[#e1e9e2]">
+                  <div
+                    class="hidden grid-cols-[minmax(260px,1fr)_140px_180px_180px] bg-[#eef3f8] px-4 py-3 text-xs font-black uppercase tracking-wide text-slate-600 xl:grid xl:px-5 xl:py-4"
+                  >
+                    <div>รายการย่อย</div>
+                    <div class="text-right">จำนวน</div>
+                    <div class="text-right">หน่วยละ</div>
+                    <div class="text-right">รวมเงิน</div>
+                  </div>
+                  @for (
+                    subItem of asset.subItems;
+                    track subItem.procurement_withdrawal_id + '-' + subItem.sub_item_name
+                  ) {
+                    <div
+                      class="grid gap-2 border-t border-[#edf2ed] px-4 py-4 first:border-t-0 xl:grid-cols-[minmax(260px,1fr)_140px_180px_180px] xl:items-center xl:px-5 xl:py-5"
+                    >
+                      <div class="text-sm font-bold text-slate-700">
+                        {{ subItem.sub_item_name }}
+                      </div>
+                      <div class="text-sm font-bold text-slate-700 md:text-right">
+                        {{ subItem.quantity ?? 0 | number: '1.0-2' }}
+                      </div>
+                      <div class="text-sm font-bold text-slate-700 md:text-right">
+                        {{ subItem.unit_price | number: '1.2-2' }}
+                      </div>
+                      <div class="text-sm font-bold text-slate-700 md:text-right">
+                        {{ subItem.total_price | number: '1.2-2' }}
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        }
+
+        @if (detail()!.category !== 'วัสดุ' && detail()!.category !== 'ครุภัณฑ์') {
+          <div class="overflow-hidden rounded-3xl border border-[#d8e4da] bg-white shadow-sm">
+            <div class="border-b border-[#e6eee7] bg-[#fbfaf3] px-5 py-4">
+              <p class="text-lg font-black text-slate-900">รายการจัดจ้าง</p>
+            </div>
+            <div class="p-4">
+              <div class="overflow-hidden rounded-2xl border border-[#e1e9e2]">
+                <div
+                  class="hidden grid-cols-[100px_minmax(260px,1fr)_140px_180px_180px] bg-[#f7f3df] px-4 py-3 text-xs font-black uppercase tracking-wide text-slate-600 xl:grid xl:px-5 xl:py-4"
+                >
+                  <div>ลำดับ</div>
+                  <div>รายการ</div>
+                  <div class="text-right">จำนวน</div>
+                  <div class="text-right">หน่วยละ</div>
+                  <div class="text-right">รวมเงิน</div>
+                </div>
+                @for (item of detail()!.hire_details; track item.hire_detail_id) {
+                  <div
+                    class="grid gap-2 border-t border-[#edf2ed] px-4 py-4 first:border-t-0 xl:grid-cols-[100px_minmax(260px,1fr)_140px_180px_180px] xl:items-center xl:px-5 xl:py-5"
+                  >
+                    <div class="text-sm font-bold text-slate-700">{{ item.item_no }}</div>
+                    <div>
+                      <p class="text-sm font-bold text-slate-700">{{ item.hire_name }}</p>
+                      <p class="mt-1 text-xs text-slate-500">
+                        {{ item.operation_reason || item.remark || '-' }}
+                      </p>
+                    </div>
+                    <div class="text-sm font-bold text-slate-700 md:text-right">
+                      {{ item.quantity | number: '1.0-2' }}
+                    </div>
+                    <div class="text-sm font-bold text-slate-700 md:text-right">
+                      {{ item.unit_price | number: '1.2-2' }}
+                    </div>
+                    <div class="text-sm font-bold text-slate-700 md:text-right">
+                      {{ item.total_amount | number: '1.2-2' }}
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </section>
+    }
+  </div>
+</div>

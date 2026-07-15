@@ -7,67 +7,99 @@ export interface PublicPortalProject {
   project_code: string;
   project_name: string;
   project_budget_amount: number;
-  fiscal_year_id: number;
-  staff_id?: number | null;
-  staff_name?: string | null;
   procurement_count: number;
+  withdrawer_count: number;
 }
 
-export interface PublicPortalProcurement {
+export interface PublicPortalStaffLookup {
+  staff_id: number;
+  full_name: string;
+  department_name?: string | null;
+  project_count: number;
+  material_withdrawal_count: number;
+  asset_withdrawal_count: number;
+}
+
+export interface PublicPortalStaffProject {
+  project_id: number;
+  project_code: string;
+  project_name: string;
+  project_budget_amount: number;
+  procurement_count: number;
+  material_withdrawal_count: number;
+  asset_withdrawal_count: number;
+}
+
+export interface PublicPortalWithdrawer {
+  staff_id: number;
+  full_name: string;
+  department_name?: string | null;
+  material_withdrawal_count: number;
+  asset_withdrawal_count: number;
+}
+
+export interface PublicPortalProcurementSummary {
   procurement_record_id: number;
   document_no: string;
   document_date?: string | null;
-  total_amount: number;
   status: string;
-  reference_no?: string | null;
-  remark?: string | null;
-  project_id: number;
-  project_name?: string | null;
-  staff_id?: number | null;
-  staff_name?: string | null;
-  department_id: number;
+  total_amount: number;
   department_name?: string | null;
-  fiscal_year_id: number;
+  expense_type_name: string;
+  category: string;
+  material_issue_count: number;
+  asset_item_count: number;
+  asset_sub_item_count: number;
+  hire_detail_count: number;
 }
 
-export interface PublicPortalStaff {
-  staff_id: number;
-  full_name: string;
-  email?: string | null;
-  phone?: string | null;
-  department_id: number;
-  department_name?: string | null;
-  position_name?: string | null;
-}
-
-export interface PublicPortalMaterialHistory {
-  issue_detail_id: number;
+export interface PublicPortalMaterialReceiveDetail {
+  receive_detail_id: number;
+  item_no: number;
+  procurement_record_id: number;
   material_item_id: number;
   material_name: string;
-  issue_date?: string | null;
   quantity: number;
   unit_price: number;
   total_amount?: number | null;
-  procurement_record_id?: number | null;
-  document_no?: string | null;
+  operation_reason?: string | null;
 }
 
 export interface PublicPortalAssetHistory {
   procurement_withdrawal_id: number;
-  procurement_record_id: number;
   withdrawal_document_no: string;
   withdrawal_date: string;
   asset_name: string;
   sub_item_name: string;
-  quantity: number;
-  document_no?: string | null;
+  quantity?: number | null;
+  unit_price?: number | null;
+  total_price?: number | null;
+  storage_location?: string | null;
+  purpose?: string | null;
 }
 
-export interface PublicPortalStaffOverview {
-  staff: PublicPortalStaff;
-  procurements: PublicPortalProcurement[];
-  material_histories: PublicPortalMaterialHistory[];
+export interface PublicPortalHireDetail {
+  hire_detail_id: number;
+  item_no: number;
+  hire_name: string;
+  quantity: number;
+  unit_price: number;
+  total_amount: number;
+  operation_reason?: string | null;
+  remark?: string | null;
+}
+
+export interface PublicPortalProcurementDetail {
+  procurement_record_id: number;
+  document_no: string;
+  document_date?: string | null;
+  status: string;
+  total_amount: number;
+  expense_type_name: string;
+  category: string;
+  material_receive_details: PublicPortalMaterialReceiveDetail[];
   asset_histories: PublicPortalAssetHistory[];
+  hire_details: PublicPortalHireDetail[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -75,29 +107,35 @@ export class PublicPortalService {
   private http = inject(HttpClient);
   private baseUrl = environment.baseUrl + 'PublicPortal/';
 
-  getProjects(search?: string, staffName?: string) {
+  getStaffs(search?: string) {
     let params = new HttpParams();
     if (search?.trim()) params = params.set('search', search.trim());
-    if (staffName?.trim()) params = params.set('staff_name', staffName.trim());
+    return this.http.get<PublicPortalStaffLookup[]>(this.baseUrl + 'staffs', { params });
+  }
+
+  getProjectsByStaff(staffId: number) {
+    return this.http.get<PublicPortalStaffProject[]>(this.baseUrl + `staffs/${staffId}/projects`);
+  }
+
+  getProjects(search?: string) {
+    let params = new HttpParams();
+    if (search?.trim()) params = params.set('search', search.trim());
     return this.http.get<PublicPortalProject[]>(this.baseUrl + 'projects', { params });
   }
 
-  getProjectProcurements(projectId: number, staffName?: string) {
-    let params = new HttpParams();
-    if (staffName?.trim()) params = params.set('staff_name', staffName.trim());
-    return this.http.get<PublicPortalProcurement[]>(
-      this.baseUrl + `projects/${projectId}/procurements`,
-      { params },
+  getProjectWithdrawers(projectId: number) {
+    return this.http.get<PublicPortalWithdrawer[]>(this.baseUrl + `projects/${projectId}/withdrawers`);
+  }
+
+  getStaffProcurementsInProject(projectId: number, staffId: number) {
+    return this.http.get<PublicPortalProcurementSummary[]>(
+      this.baseUrl + `projects/${projectId}/staffs/${staffId}/procurements`,
     );
   }
 
-  searchStaffs(name?: string) {
-    let params = new HttpParams();
-    if (name?.trim()) params = params.set('name', name.trim());
-    return this.http.get<PublicPortalStaff[]>(this.baseUrl + 'staffs/search', { params });
-  }
-
-  getStaffOverview(staffId: number) {
-    return this.http.get<PublicPortalStaffOverview>(this.baseUrl + `staffs/${staffId}/overview`);
+  getProcurementDetail(projectId: number, staffId: number, procurementId: number) {
+    return this.http.get<PublicPortalProcurementDetail>(
+      this.baseUrl + `projects/${projectId}/staffs/${staffId}/procurements/${procurementId}`,
+    );
   }
 }

@@ -1,0 +1,103 @@
+<div class="min-h-screen bg-[#f4f7f4] px-4 py-8 sm:px-6 xl:px-10 2xl:px-12">
+  <div class="mx-auto max-w-[1920px] space-y-6">
+    <a
+      [routerLink]="['/portal/staffs', staffId, 'projects']"
+      [state]="{ staff }"
+      class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 transition hover:text-[#2c7a4b]"
+    >
+      ← กลับหน้าโครงการ
+    </a>
+
+    <header class="rounded-3xl border border-[#d8e4da] bg-white shadow-sm">
+      <div class="border-b border-[#e3ebe4] px-6 py-4">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#2c7a4b]">Step 3</p>
+        <h1 class="mt-1 text-2xl font-black text-slate-900">เอกสารจัดซื้อจัดจ้างในโครงการ</h1>
+        <p class="mt-2 text-sm text-slate-500">
+          {{ staff?.full_name || 'บุคลากร #' + staffId }} •
+          {{ project?.project_name || 'โครงการ #' + projectId }}
+        </p>
+      </div>
+    </header>
+
+    <section class="rounded-3xl border border-[#d8e4da] bg-white shadow-sm">
+      <div class="flex items-center justify-between border-b border-[#e3ebe4] px-6 py-4">
+        <h2 class="text-lg font-black text-slate-900">รายการเอกสาร</h2>
+        <span class="rounded-full bg-[#eef5ef] px-3 py-1 text-xs font-bold text-slate-600">
+          {{ procurements().length }} เอกสาร
+        </span>
+      </div>
+
+      <div class="p-4 sm:p-6 xl:p-8">
+        @if (loading()) {
+          <div
+            class="rounded-2xl border border-[#dbe8de] bg-[#f6fbf7] p-8 text-center text-sm font-bold text-[#2c7a4b]"
+          >
+            กำลังโหลดเอกสาร...
+          </div>
+        } @else if (procurements().length === 0) {
+          <div
+            class="rounded-2xl border border-dashed border-[#cfd8d1] bg-[#fafcfa] p-10 text-center text-sm font-bold text-slate-400"
+          >
+            ไม่พบเอกสารของผู้เบิกคนนี้
+          </div>
+        } @else {
+          <div class="overflow-hidden rounded-2xl border border-[#dde7de]">
+            <div
+              class="hidden grid-cols-[140px_220px_minmax(0,1fr)_180px] bg-[#eff5f0] px-5 py-3 text-xs font-black uppercase tracking-wide text-slate-600 xl:grid xl:px-6 xl:py-4"
+            >
+              <div>ประเภท</div>
+              <div>เลขเอกสาร</div>
+              <div>หน่วยงาน / วันที่</div>
+              <div class="text-right">มูลค่า</div>
+            </div>
+
+            @for (procurement of procurements(); track procurement.procurement_record_id) {
+              <button
+                type="button"
+                (click)="openDetail(procurement)"
+                class="grid w-full gap-3 border-t border-[#edf2ed] bg-white px-5 py-4 text-left transition first:border-t-0 hover:bg-[#f7fbf8] xl:grid-cols-[140px_220px_minmax(0,1fr)_180px] xl:items-center xl:px-6 xl:py-5"
+              >
+                <div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span
+                      [class]="
+                        procurement.category === 'วัสดุ'
+                          ? 'inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-black text-emerald-800'
+                          : procurement.category === 'ครุภัณฑ์'
+                            ? 'inline-flex rounded-full bg-sky-100 px-2.5 py-1 text-xs font-black text-sky-800'
+                            : 'inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-xs font-black text-amber-800'
+                      "
+                    >
+                      {{ procurement.category }}
+                    </span>
+                    <span
+                      class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-700"
+                    >
+                      {{ procurement.status || '-' }}
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-base font-black text-slate-900">{{ procurement.document_no }}</p>
+                  <p class="mt-1 text-xs text-slate-500 xl:hidden">
+                    {{ procurement.expense_type_name }}
+                  </p>
+                </div>
+                <div class="text-sm text-slate-600">
+                  <p>{{ procurement.department_name || '-' }}</p>
+                  <p class="mt-1 text-xs text-slate-500">
+                    {{ procurement.document_date | date: 'dd/MM/yyyy' }} •
+                    {{ procurement.expense_type_name }}
+                  </p>
+                </div>
+                <div class="text-left text-sm font-bold text-slate-700 xl:text-right">
+                  {{ procurement.total_amount | number: '1.2-2' }}
+                </div>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>

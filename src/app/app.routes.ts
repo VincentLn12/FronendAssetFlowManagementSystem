@@ -20,8 +20,29 @@ export const routes: Routes = [
       {
         path: 'portal',
         loadComponent: () =>
-          import('./features/public-portal/public-portal.component').then(
-            (m) => m.PublicPortalComponent,
+          import('./features/public-portal/portal-staffs.component').then(
+            (m) => m.PortalStaffsComponent,
+          ),
+      },
+      {
+        path: 'portal/staffs/:staffId/projects',
+        loadComponent: () =>
+          import('./features/public-portal/portal-staff-projects.component').then(
+            (m) => m.PortalStaffProjectsComponent,
+          ),
+      },
+      {
+        path: 'portal/staffs/:staffId/projects/:projectId/procurements',
+        loadComponent: () =>
+          import('./features/public-portal/portal-procurements.component').then(
+            (m) => m.PortalProcurementsComponent,
+          ),
+      },
+      {
+        path: 'portal/staffs/:staffId/projects/:projectId/procurements/:procurementId',
+        loadComponent: () =>
+          import('./features/public-portal/portal-procurement-detail.component').then(
+            (m) => m.PortalProcurementDetailComponent,
           ),
       },
       { path: 'test-error', component: TestErrorComponent },

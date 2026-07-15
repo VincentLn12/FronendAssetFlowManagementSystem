@@ -1,0 +1,79 @@
+<div class="min-h-screen bg-[#f4f7f4] px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-5xl space-y-6">
+    <a
+      routerLink="/portal"
+      class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 transition hover:text-[#2c7a4b]"
+    >
+      ← กลับหน้าโครงการ
+    </a>
+
+    <header class="rounded-3xl border border-[#d8e4da] bg-white shadow-sm">
+      <div class="border-b border-[#e3ebe4] px-6 py-4">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#2c7a4b]">Step 2</p>
+        <h1 class="mt-1 text-2xl font-black text-slate-900">รายชื่อผู้เบิกในโครงการ</h1>
+        <p class="mt-2 text-sm text-slate-500">
+          {{ project?.project_code || 'โครงการ #' + projectId }} {{ project?.project_name || '' }}
+        </p>
+      </div>
+    </header>
+
+    <section class="rounded-3xl border border-[#d8e4da] bg-white shadow-sm">
+      <div class="flex items-center justify-between border-b border-[#e3ebe4] px-6 py-4">
+        <h2 class="text-lg font-black text-slate-900">ผู้เบิกจริงของโครงการ</h2>
+        <span class="rounded-full bg-[#eef5ef] px-3 py-1 text-xs font-bold text-slate-600">
+          {{ withdrawers().length }} คน
+        </span>
+      </div>
+
+      <div class="p-4 sm:p-6">
+        @if (loading()) {
+          <div
+            class="rounded-2xl border border-[#dbe8de] bg-[#f6fbf7] p-8 text-center text-sm font-bold text-[#2c7a4b]"
+          >
+            กำลังโหลดผู้เบิก...
+          </div>
+        } @else if (withdrawers().length === 0) {
+          <div
+            class="rounded-2xl border border-dashed border-[#cfd8d1] bg-[#fafcfa] p-10 text-center text-sm font-bold text-slate-400"
+          >
+            โครงการนี้ยังไม่มีผู้เบิก
+          </div>
+        } @else {
+          <div class="overflow-hidden rounded-2xl border border-[#dde7de]">
+            <div
+              class="hidden grid-cols-[1.4fr_1fr_120px_120px] bg-[#eff5f0] px-5 py-3 text-xs font-black uppercase tracking-wide text-slate-600 md:grid"
+            >
+              <div>ชื่อผู้เบิก</div>
+              <div>หน่วยงาน</div>
+              <div class="text-center">พัสดุ</div>
+              <div class="text-center">ครุภัณฑ์</div>
+            </div>
+
+            @for (withdrawer of withdrawers(); track withdrawer.staff_id) {
+              <button
+                type="button"
+                (click)="openWithdrawer(withdrawer)"
+                class="grid w-full gap-3 border-t border-[#edf2ed] bg-white px-5 py-4 text-left transition first:border-t-0 hover:bg-[#f7fbf8] md:grid-cols-[1.4fr_1fr_120px_120px] md:items-center"
+              >
+                <div>
+                  <p class="text-base font-black text-slate-900">{{ withdrawer.full_name }}</p>
+                  <p class="mt-1 text-xs text-slate-500 md:hidden">
+                    พัสดุ {{ withdrawer.material_withdrawal_count }} • ครุภัณฑ์
+                    {{ withdrawer.asset_withdrawal_count }}
+                  </p>
+                </div>
+                <div class="text-sm text-slate-600">{{ withdrawer.department_name || '-' }}</div>
+                <div class="hidden text-center text-sm font-bold text-[#2c7a4b] md:block">
+                  {{ withdrawer.material_withdrawal_count }}
+                </div>
+                <div class="hidden text-center text-sm font-bold text-sky-700 md:block">
+                  {{ withdrawer.asset_withdrawal_count }}
+                </div>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>

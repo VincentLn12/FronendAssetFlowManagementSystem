@@ -1,0 +1,81 @@
+<div class="min-h-screen bg-[#f4f7f4] px-4 py-8 sm:px-6 xl:px-10 2xl:px-12">
+  <div class="mx-auto max-w-[1920px] space-y-6">
+    <a
+      routerLink="/portal"
+      class="inline-flex items-center gap-2 text-sm font-bold text-slate-500 transition hover:text-[#2c7a4b]"
+    >
+      ← กลับหน้าบุคลากร
+    </a>
+
+    <header class="rounded-3xl border border-[#d8e4da] bg-white shadow-sm">
+      <div class="border-b border-[#e3ebe4] px-6 py-4">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#2c7a4b]">Step 2</p>
+        <h1 class="mt-1 text-2xl font-black text-slate-900">โครงการที่เกี่ยวข้องกับบุคลากร</h1>
+        <p class="mt-2 text-sm text-slate-500">
+          {{ staff?.full_name || 'บุคลากร #' + staffId }} • {{ staff?.department_name || '-' }}
+        </p>
+      </div>
+    </header>
+
+    <section class="rounded-3xl border border-[#d8e4da] bg-white shadow-sm">
+      <div class="flex items-center justify-between border-b border-[#e3ebe4] px-6 py-4">
+        <h2 class="text-lg font-black text-slate-900">รายการโครงการ</h2>
+        <span class="rounded-full bg-[#eef5ef] px-3 py-1 text-xs font-bold text-slate-600">
+          {{ projects().length }} โครงการ
+        </span>
+      </div>
+      <div class="p-4 sm:p-6 xl:p-8">
+        @if (loading()) {
+          <div
+            class="rounded-2xl border border-[#dbe8de] bg-[#f6fbf7] p-8 text-center text-sm font-bold text-[#2c7a4b]"
+          >
+            กำลังโหลดโครงการ...
+          </div>
+        } @else if (projects().length === 0) {
+          <div
+            class="rounded-2xl border border-dashed border-[#cfd8d1] bg-[#fafcfa] p-10 text-center text-sm font-bold text-slate-400"
+          >
+            บุคลากรคนนี้ยังไม่มีโครงการที่เกี่ยวข้อง
+          </div>
+        } @else {
+          <div class="overflow-hidden rounded-2xl border border-[#dde7de]">
+            <div
+              class="hidden grid-cols-[180px_minmax(0,1fr)_180px_140px_140px] bg-[#eff5f0] px-5 py-3 text-xs font-black uppercase tracking-wide text-slate-600 xl:grid xl:px-6 xl:py-4"
+            >
+              <div>รหัสโครงการ</div>
+              <div>ชื่อโครงการ</div>
+              <div class="text-right">งบประมาณ</div>
+              <div class="text-center">พัสดุ</div>
+              <div class="text-center">ครุภัณฑ์</div>
+            </div>
+            @for (project of projects(); track project.project_id) {
+              <button
+                type="button"
+                (click)="openProject(project)"
+                class="grid w-full gap-3 border-t border-[#edf2ed] bg-white px-5 py-4 text-left transition first:border-t-0 hover:bg-[#f7fbf8] xl:grid-cols-[180px_minmax(0,1fr)_180px_140px_140px] xl:items-center xl:px-6 xl:py-5"
+              >
+                <div class="text-sm font-black text-[#2c7a4b]">{{ project.project_code }}</div>
+                <div>
+                  <p class="text-base font-black text-slate-900">{{ project.project_name }}</p>
+                  <p class="mt-1 text-xs text-slate-500 xl:hidden">
+                    พัสดุ {{ project.material_withdrawal_count }} • ครุภัณฑ์
+                    {{ project.asset_withdrawal_count }}
+                  </p>
+                </div>
+                <div class="text-left text-sm font-bold text-slate-700 xl:text-right">
+                  {{ project.project_budget_amount | number: '1.2-2' }}
+                </div>
+                <div class="hidden text-center text-sm font-bold text-[#2c7a4b] xl:block">
+                  {{ project.material_withdrawal_count }}
+                </div>
+                <div class="hidden text-center text-sm font-bold text-sky-700 xl:block">
+                  {{ project.asset_withdrawal_count }}
+                </div>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>
