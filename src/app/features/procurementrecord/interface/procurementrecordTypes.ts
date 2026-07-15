@@ -54,6 +54,24 @@ export interface procurementrecordCreateTypes {
   staff_id?: number;
   attachment_file_path: string;
 }
+
+export interface updateProcurementRecordStatusTypes {
+  to_status: string;
+  changed_by_staff_id?: number | null;
+  remark?: string | null;
+}
+
+export interface procurementRecordStatusHistoryTypes {
+  status_history_id: number;
+  procurement_record_id: number;
+  from_status: string;
+  to_status: string;
+  changed_at: string;
+  changed_by_staff_id?: number | null;
+  changed_by_staff_name?: string | null;
+  remark?: string | null;
+}
+
 export interface assetSubItemCreateTypes {
   asset_sub_item_id?: number | null;
   asset_id?: number | null;

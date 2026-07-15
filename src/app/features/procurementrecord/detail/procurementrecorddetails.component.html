@@ -56,7 +56,7 @@
           <div class="border-b-2 border-blue-900 bg-blue-900 px-6 py-3">
             <h2 class="text-lg font-semibold text-white">ข้อมูลเอกสาร</h2>
             <p class="mt-0.5 text-base text-blue-200">
-              แสดงรายละเอียดจากข้อมูลที่ส่งมาจากหน้ารายการ
+              แสดงรายละเอียดเอกสารและประวัติการเปลี่ยนสถานะ
             </p>
           </div>
 
@@ -234,6 +234,7 @@
                 </div>
               </div>
             </section>
+
           </div>
 
           <!-- Footer -->
@@ -250,27 +251,49 @@
             >
               i
             </span>
-            สรุปเอกสาร
+            ประวัติสถานะ
           </h3>
 
-          <div class="mt-4 space-y-3 text-base">
-            <div class="rounded-xl bg-blue-50 px-4 py-3 text-blue-800 ring-1 ring-blue-200">
-              <p class="text-sm font-semibold">เลขที่เอกสาร</p>
-              <p class="mt-1 font-bold">{{ item.document_no || '-' }}</p>
-            </div>
+          <p class="mt-2 text-sm leading-relaxed text-slate-500">
+            แสดงลำดับการเปลี่ยนสถานะของเอกสารฉบับนี้
+          </p>
 
-            <div class="rounded-xl bg-amber-50 px-4 py-3 text-amber-800 ring-1 ring-amber-200">
-              <p class="text-sm font-semibold">จำนวนเงิน</p>
-              <p class="mt-1 font-bold">
-                {{ item.total_amount || '0' }}
-              </p>
-            </div>
+          @if (statusHistories().length) {
+            <div class="mt-4 space-y-4">
+              @for (history of statusHistories(); track history.status_history_id) {
+                <div class="relative pl-5">
+                  <div class="absolute left-[5px] top-2 h-full w-px bg-slate-200"></div>
+                  <div class="absolute left-0 top-1.5 h-3 w-3 rounded-full bg-blue-700 ring-4 ring-blue-50"></div>
 
-            <div class="rounded-xl bg-slate-50 px-4 py-3 text-slate-700 ring-1 ring-slate-200">
-              <p class="text-sm font-semibold">สถานะ</p>
-              <p class="mt-1 font-bold">{{ item.status || '-' }}</p>
+                  <div class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-3">
+                    <p class="text-sm font-bold text-slate-800">
+                      {{ history.from_status || '-' }} → {{ history.to_status || '-' }}
+                    </p>
+
+                    <p class="mt-1 text-xs text-slate-500">
+                      {{ history.changed_at | thaiDate: true }}
+                    </p>
+
+                    @if (history.changed_by_staff_name) {
+                      <p class="mt-1 text-xs text-slate-500">
+                        {{ history.changed_by_staff_name }}
+                      </p>
+                    }
+
+                    @if (history.remark) {
+                      <div class="mt-2 rounded-lg bg-white px-2.5 py-2 text-xs text-slate-600 ring-1 ring-slate-200">
+                        {{ history.remark }}
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
             </div>
-          </div>
+          } @else {
+            <div class="mt-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center text-sm text-slate-500">
+              ยังไม่มีประวัติการเปลี่ยนสถานะ
+            </div>
+          }
         </aside>
       </div>
     } @else {

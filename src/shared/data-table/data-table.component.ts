@@ -3,7 +3,14 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThaiDatePipe } from '../../app/shared/pipes/thai-date-pipe';
 
-export type TableActionType = 'detail' | 'pathTo' | 'repair' | 'withdraw' | 'history' | 'copy';
+export type TableActionType =
+  | 'detail'
+  | 'pathTo'
+  | 'repair'
+  | 'withdraw'
+  | 'history'
+  | 'copy'
+  | 'status';
 
 export interface TableAction {
   type: TableActionType;
@@ -33,6 +40,8 @@ export class DataTableComponent {
 
   @Input() data: any[] = [];
   @Input() columns: TableColumn[] = [];
+  @Input() clickableColumns: string[] = [];
+  @Input() clickableBadgeColumns: string[] = [];
 
   @Input() isAdmin = false;
   @Input() enableSearch = true;
@@ -180,5 +189,13 @@ export class DataTableComponent {
     }
 
     return value;
+  }
+
+  isClickableColumn(col: TableColumn): boolean {
+    return this.clickableColumns.includes(col.key);
+  }
+
+  isClickableBadgeColumn(col: TableColumn): boolean {
+    return this.clickableBadgeColumns.includes(col.key);
   }
 }

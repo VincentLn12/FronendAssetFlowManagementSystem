@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, finalize, forkJoin } from 'rxjs';
+import { Observable, finalize, forkJoin, switchMap } from 'rxjs';
 
 import { InputComponent } from '../../../../shared/input/input.component';
 import { SelectComponent } from '../../../../shared';
@@ -13,6 +13,7 @@ import { toThaiBahtText } from '../../../shared/thai-baht-text';
 
 import {
   procurementrecordCreateTypes,
+  updateProcurementRecordStatusTypes,
   procurementWithAssetsCreateTypes,
 } from '../interface/procurementrecordTypes';
 
@@ -101,6 +102,7 @@ export class ProcurementsAddUpdateComponent implements OnInit {
   // State
   // =========================
   procurement_record_id = signal<number | null>(null);
+  originalProcurementRecord = signal<procurementrecordCreateTypes | null>(null);
   projectstate = history.state?.projects?.projects ?? history.state?.projects ?? null;
 
   isLoading = signal(false);
@@ -386,6 +388,10 @@ export class ProcurementsAddUpdateComponent implements OnInit {
   // Patch Form
   // =========================
   private patchForm(exp: procurementrecordCreateTypes) {
+    this.originalProcurementRecord.set({
+      ...exp,
+    });
+
     this.form.patchValue({
       procurement_record_id: exp.procurement_record_id,
       document_no: exp.document_no,
@@ -618,9 +624,36 @@ export class ProcurementsAddUpdateComponent implements OnInit {
 
   private getSaveRequest(procurementPayload: procurementrecordCreateTypes): Observable<any> | null {
     if (this.isEditMode()) {
-      return this.procurementrecordService.updateProcurementrecord(
-        this.procurement_record_id()!,
-        procurementPayload,
+      const originalRecord = this.originalProcurementRecord();
+      const recordId = this.procurement_record_id()!;
+      const hasStatusChanged =
+        !!originalRecord && originalRecord.status !== procurementPayload.status;
+
+      const updatePayload = hasStatusChanged && originalRecord
+        ? {
+            ...procurementPayload,
+            status: originalRecord.status,
+          }
+        : procurementPayload;
+
+      const updateRequest$ = this.procurementrecordService.updateProcurementrecord(
+        recordId,
+        updatePayload,
+      );
+
+      if (!hasStatusChanged) {
+        return updateRequest$;
+      }
+
+      const statusPayload: updateProcurementRecordStatusTypes = {
+        to_status: procurementPayload.status,
+        remark: procurementPayload.remark ?? null,
+      };
+
+      return updateRequest$.pipe(
+        switchMap(() =>
+          this.procurementrecordService.updateProcurementrecordStatus(recordId, statusPayload),
+        ),
       );
     }
 

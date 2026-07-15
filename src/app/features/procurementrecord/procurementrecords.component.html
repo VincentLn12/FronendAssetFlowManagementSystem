@@ -3,6 +3,8 @@
   subtitle="จัดการข้อมูลเอกสารการจัดซื้อจัดจ้าง"
   [data]="procurementrecords()"
   [columns]="columns"
+  [clickableColumns]="['document_no']"
+  [clickableBadgeColumns]="['status']"
   [idKey]="'procurement_record_id'"
   [isAdmin]="true"
   [sortOptions]="sortOptions"

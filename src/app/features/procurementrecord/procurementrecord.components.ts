@@ -159,7 +159,51 @@ export class ProcurementrecordComponent implements OnInit {
           state: { procurementrecord },
         });
         break;
+
+      case 'status':
+        this.openStatusPicker(procurementrecord);
+        break;
     }
+  }
+
+  private openStatusPicker(procurementrecord: procurementrecordTypes) {
+    const statusOptions = {
+      ร่าง: 'ร่าง',
+      รออนุมัติ: 'รออนุมัติ',
+      อนุมัติแล้ว: 'อนุมัติแล้ว',
+      รอเบิกจ่าย: 'รอเบิกจ่าย',
+      เบิกจ่ายแล้ว: 'เบิกจ่ายแล้ว',
+      ขึ้นทะเบียนแล้ว: 'ขึ้นทะเบียนแล้ว',
+      เสร็จสิ้น: 'เสร็จสิ้น',
+      ยกเลิก: 'ยกเลิก',
+    };
+
+    this.alertService
+      .select(
+        'เปลี่ยนสถานะเอกสาร',
+        `เลขที่เอกสาร ${procurementrecord.document_no}`,
+        statusOptions,
+        procurementrecord.status,
+      )
+      .then((result) => {
+        if (!result.isConfirmed || !result.value || result.value === procurementrecord.status) {
+          return;
+        }
+
+        this.procurementrecordService
+          .updateProcurementrecordStatus(procurementrecord.procurement_record_id, {
+            to_status: result.value,
+          })
+          .subscribe({
+            next: () => {
+              this.alertService.successNo('เปลี่ยนสถานะเรียบร้อยแล้ว');
+              this.getProcurementrecord();
+            },
+            error: () => {
+              this.alertService.error('เปลี่ยนสถานะไม่สำเร็จ', 'กรุณาลองใหม่อีกครั้ง');
+            },
+          });
+      });
   }
 
   onFilterChange(event: { key: string; value: any }) {

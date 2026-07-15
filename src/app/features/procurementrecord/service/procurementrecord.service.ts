@@ -6,8 +6,10 @@ import { Params } from '../../../shared/models/allType';
 import {
   procurementrecordTypes,
   procurementrecordCreateTypes,
+  procurementRecordStatusHistoryTypes,
   procurementWithAssetsCreateTypes,
   procurementWithMaterialsCreateTypes,
+  updateProcurementRecordStatusTypes,
 } from '../interface/procurementrecordTypes';
 
 @Injectable({
@@ -63,6 +65,16 @@ export class ProcurementrecordService {
 
   updateProcurementrecord(id: number, payload: Partial<procurementrecordCreateTypes>) {
     return this.http.put<void>(this.baseUrl + 'Procurement_records/' + id, payload);
+  }
+
+  updateProcurementrecordStatus(id: number, payload: updateProcurementRecordStatusTypes) {
+    return this.http.put<void>(this.baseUrl + 'Procurement_records/' + id + '/status', payload);
+  }
+
+  getProcurementrecordStatusHistory(id: number) {
+    return this.http.get<procurementRecordStatusHistoryTypes[]>(
+      this.baseUrl + 'Procurement_records/' + id + '/status-history',
+    );
   }
 
   deleteProcurementrecord(id: number) {

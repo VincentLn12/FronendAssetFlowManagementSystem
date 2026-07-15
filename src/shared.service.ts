@@ -36,6 +36,25 @@ export class AlertService {
     });
   }
 
+  select(
+    title: string,
+    text: string,
+    inputOptions: Record<string, string>,
+    inputValue?: string,
+  ) {
+    return Swal.fire({
+      title,
+      text,
+      input: 'select',
+      inputOptions,
+      inputValue,
+      showCancelButton: true,
+      confirmButtonText: 'บันทึก',
+      cancelButtonText: 'ยกเลิก',
+      inputPlaceholder: 'เลือกสถานะ',
+    });
+  }
+
   successNo(title: string) {
     return Swal.fire({
       icon: 'success',
