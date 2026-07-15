@@ -30,6 +30,17 @@ export interface PublicPortalStaffProject {
   asset_withdrawal_count: number;
 }
 
+export interface PublicPortalStaffSummary {
+  staff_id: number;
+  full_name: string;
+  department_name?: string | null;
+  procurement_count: number;
+  project_count: number;
+  material_withdrawal_count: number;
+  asset_withdrawal_count: number;
+  asset_holding_count: number;
+}
+
 export interface PublicPortalWithdrawer {
   staff_id: number;
   full_name: string;
@@ -40,6 +51,9 @@ export interface PublicPortalWithdrawer {
 
 export interface PublicPortalProcurementSummary {
   procurement_record_id: number;
+  project_id: number;
+  project_code: string;
+  project_name: string;
   document_no: string;
   document_date?: string | null;
   status: string;
@@ -51,6 +65,25 @@ export interface PublicPortalProcurementSummary {
   asset_item_count: number;
   asset_sub_item_count: number;
   hire_detail_count: number;
+}
+
+export interface PublicPortalStaffAssetHolding {
+  procurement_record_id: number;
+  project_id: number;
+  project_code: string;
+  project_name: string;
+  document_no: string;
+  document_date?: string | null;
+  department_name?: string | null;
+  withdrawal_document_no: string;
+  withdrawal_date: string;
+  asset_name: string;
+  sub_item_name: string;
+  quantity?: number | null;
+  unit_price?: number | null;
+  total_price?: number | null;
+  storage_location?: string | null;
+  purpose?: string | null;
 }
 
 export interface PublicPortalMaterialReceiveDetail {
@@ -117,6 +150,10 @@ export class PublicPortalService {
     return this.http.get<PublicPortalStaffProject[]>(this.baseUrl + `staffs/${staffId}/projects`);
   }
 
+  getStaffSummary(staffId: number) {
+    return this.http.get<PublicPortalStaffSummary>(this.baseUrl + `staffs/${staffId}/summary`);
+  }
+
   getProjects(search?: string) {
     let params = new HttpParams();
     if (search?.trim()) params = params.set('search', search.trim());
@@ -133,9 +170,19 @@ export class PublicPortalService {
     );
   }
 
-  getProcurementDetail(projectId: number, staffId: number, procurementId: number) {
+  getStaffProcurements(staffId: number) {
+    return this.http.get<PublicPortalProcurementSummary[]>(
+      this.baseUrl + `staffs/${staffId}/procurements`,
+    );
+  }
+
+  getStaffAssets(staffId: number) {
+    return this.http.get<PublicPortalStaffAssetHolding[]>(this.baseUrl + `staffs/${staffId}/assets`);
+  }
+
+  getProcurementDetail(staffId: number, procurementId: number) {
     return this.http.get<PublicPortalProcurementDetail>(
-      this.baseUrl + `projects/${projectId}/staffs/${staffId}/procurements/${procurementId}`,
+      this.baseUrl + `staffs/${staffId}/procurements/${procurementId}`,
     );
   }
 }

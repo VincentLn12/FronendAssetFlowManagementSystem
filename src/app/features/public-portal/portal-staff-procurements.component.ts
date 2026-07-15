@@ -5,23 +5,20 @@ import {
   PublicPortalProcurementSummary,
   PublicPortalService,
   PublicPortalStaffLookup,
-  PublicPortalStaffProject,
 } from './public-portal.service';
 
 @Component({
-  selector: 'app-portal-procurements',
+  selector: 'app-portal-staff-procurements',
   standalone: true,
   imports: [CommonModule, DatePipe, DecimalPipe, RouterLink],
-  templateUrl: './portal-procurements.component.html',
+  templateUrl: './portal-staff-procurements.component.html',
 })
-export class PortalProcurementsComponent {
+export class PortalStaffProcurementsComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private service = inject(PublicPortalService);
 
-  projectId = Number(this.route.snapshot.paramMap.get('projectId'));
   staffId = Number(this.route.snapshot.paramMap.get('staffId'));
-  project = history.state?.project as PublicPortalStaffProject | undefined;
   staff = history.state?.staff as PublicPortalStaffLookup | undefined;
   loading = signal(false);
   procurements = signal<PublicPortalProcurementSummary[]>([]);
@@ -32,7 +29,7 @@ export class PortalProcurementsComponent {
 
   loadProcurements() {
     this.loading.set(true);
-    this.service.getStaffProcurementsInProject(this.projectId, this.staffId).subscribe({
+    this.service.getStaffProcurements(this.staffId).subscribe({
       next: (data) => this.procurements.set(data),
       error: (error) => console.error(error),
       complete: () => this.loading.set(false),
@@ -41,8 +38,8 @@ export class PortalProcurementsComponent {
 
   openDetail(procurement: PublicPortalProcurementSummary) {
     this.router.navigate(
-      ['/portal/staffs', this.staffId, 'projects', this.projectId, 'procurements', procurement.procurement_record_id],
-      { state: { project: this.project, staff: this.staff, procurement } },
+      ['/portal/staffs', this.staffId, 'procurements', procurement.procurement_record_id],
+      { state: { project: procurement, staff: this.staff, procurement } },
     );
   }
 }

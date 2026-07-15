@@ -32,7 +32,7 @@ export class PortalStaffsComponent {
   }
 
   openStaff(staff: PublicPortalStaffLookup) {
-    this.router.navigate(['/portal/staffs', staff.staff_id, 'projects'], {
+    this.router.navigate(['/portal/staffs', staff.staff_id, 'dashboard'], {
       state: { staff },
     });
   }

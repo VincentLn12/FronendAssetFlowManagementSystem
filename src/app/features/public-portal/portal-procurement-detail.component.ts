@@ -19,7 +19,6 @@ export class PortalProcurementDetailComponent {
   private route = inject(ActivatedRoute);
   private service = inject(PublicPortalService);
 
-  projectId = Number(this.route.snapshot.paramMap.get('projectId'));
   staffId = Number(this.route.snapshot.paramMap.get('staffId'));
   procurementId = Number(this.route.snapshot.paramMap.get('procurementId'));
   project = history.state?.project as PublicPortalStaffProject | undefined;
@@ -110,7 +109,7 @@ export class PortalProcurementDetailComponent {
 
   loadDetail() {
     this.loading.set(true);
-    this.service.getProcurementDetail(this.projectId, this.staffId, this.procurementId).subscribe({
+    this.service.getProcurementDetail(this.staffId, this.procurementId).subscribe({
       next: (data) => this.detail.set(data),
       error: (error) => console.error(error),
       complete: () => this.loading.set(false),
