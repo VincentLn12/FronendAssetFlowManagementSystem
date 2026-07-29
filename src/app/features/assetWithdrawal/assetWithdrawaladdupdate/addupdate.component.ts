@@ -55,7 +55,15 @@ export class AssetWithdrawalAddUpdateComponent implements OnInit {
     purpose: [''],
     remark: [''],
     withdrawal_date: [new Date().toISOString().split('T')[0], [Validators.required]],
+    end_date: [null as string | null],
+    end_reason: [null as string | null],
   });
+
+  endReasonOptions = [
+    { label: 'ย้ายผู้ดูแล', value: 'ย้ายผู้ดูแล' },
+    { label: 'จำหน่ายแล้ว', value: 'จำหน่ายแล้ว' },
+    { label: 'ส่งคืนแล้ว', value: 'ส่งคืนแล้ว' },
+  ];
 
   ngOnInit(): void {
     this.loadDropdowns();
@@ -128,6 +136,8 @@ export class AssetWithdrawalAddUpdateComponent implements OnInit {
       purpose: item.purpose ?? '',
       remark: item.remark ?? '',
       withdrawal_date: item.withdrawal_date ?? new Date().toISOString().split('T')[0],
+      end_date: item.end_date ?? null,
+      end_reason: item.end_reason ?? null,
     });
   }
 
@@ -145,6 +155,8 @@ export class AssetWithdrawalAddUpdateComponent implements OnInit {
       purpose: this.form.controls.purpose.value,
       remark: this.form.controls.remark.value,
       withdrawal_date: this.form.controls.withdrawal_date.value,
+      end_date: this.form.controls.end_date.value,
+      end_reason: this.form.controls.end_reason.value,
     };
     console.log(payload);
     this.isSubmitting.set(true);

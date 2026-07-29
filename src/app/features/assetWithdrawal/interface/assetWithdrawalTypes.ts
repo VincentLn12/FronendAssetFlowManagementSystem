@@ -8,6 +8,8 @@ export interface assetWithdrawalTypes {
   purpose: string;
   remark: string;
   withdrawal_date: string | null;
+  end_date: string | null;
+  end_reason: string | null;
 }
 
 export interface assetWithdrawalCreateTypes {
@@ -18,4 +20,6 @@ export interface assetWithdrawalCreateTypes {
   purpose: string | null;
   remark: string | null;
   withdrawal_date: string | null;
+  end_date: string | null;
+  end_reason: string | null;
 }

@@ -1,0 +1,89 @@
+<div class="min-h-screen bg-slate-50/50 px-4 py-8 sm:px-6 lg:px-8" style="font-family: 'Sarabun', sans-serif;">
+  <div class="mx-auto max-w-5xl space-y-6">
+    <a
+      routerLink="/portal"
+      class="inline-flex items-center gap-2 text-base font-bold text-slate-500 hover:text-blue-900 transition-colors duration-200"
+    >
+      <i class="material-icons text-lg">arrow_back</i> กลับทะเบียนรายชื่อบุคลากร
+    </a>
+
+    <header class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-md shadow-slate-100">
+      <div class="h-1.5 w-full bg-gradient-to-r from-blue-900 via-red-600 to-blue-900"></div>
+      <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 px-6 py-7 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+        <div class="relative z-10 flex items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center">
+            <i class="material-icons text-4xl">account_circle</i>
+          </div>
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/30 text-xs font-bold text-blue-300 mb-1">
+              เลือกปีงบประมาณ
+            </div>
+            <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">
+              {{ staff?.full_name || 'บุคลากรหมายเลข ' + staffId }}
+            </h1>
+            <p class="mt-1.5 text-sm text-slate-300 flex items-center gap-1.5">
+              <i class="material-icons text-base">business</i>
+              <span>{{ staff?.department_name || 'ไม่ระบุหน่วยงาน' }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="rounded-2xl border border-slate-200/80 bg-white shadow-md shadow-slate-100 overflow-hidden">
+      <div class="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4">
+        <div class="flex items-center gap-2.5">
+          <div class="p-2 rounded-lg bg-blue-50 text-blue-900">
+            <i class="material-icons text-lg">event</i>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">ปีงบประมาณที่มีข้อมูล</h2>
+            <p class="text-sm text-slate-500">เลือกปีเพื่อดู dashboard ของบุคลากร</p>
+          </div>
+        </div>
+        <span class="rounded-full bg-blue-50 border border-blue-100 px-3.5 py-1.5 text-sm font-bold text-blue-900">
+          {{ fiscalYears().length }} ปี
+        </span>
+      </div>
+
+      <div class="p-6">
+        @if (loading()) {
+          <div class="flex flex-col items-center justify-center py-12 text-slate-500">
+            <div class="border-4 border-slate-200 border-t-blue-900 rounded-full w-8 height-8 animate-spin mb-3"></div>
+            <p class="text-base font-bold">กำลังโหลดปีงบประมาณ...</p>
+          </div>
+        } @else if (fiscalYears().length === 0) {
+          <div class="flex flex-col items-center justify-center py-16 text-slate-400 border border-dashed border-slate-200 rounded-xl bg-slate-50/30">
+            <i class="material-icons text-5xl mb-3 text-slate-300">event_busy</i>
+            <p class="text-base font-bold text-slate-500">ไม่พบปีงบประมาณที่มีข้อมูล</p>
+            <p class="text-sm text-slate-400 mt-1">บุคลากรนี้ยังไม่มีรายการพัสดุหรือครุภัณฑ์ในระบบ</p>
+          </div>
+        } @else {
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            @for (year of fiscalYears(); track year.fiscal_year_id) {
+              <button
+                type="button"
+                (click)="openDashboard(year)"
+                class="group rounded-xl border border-slate-200 bg-white p-5 text-left shadow-sm transition-all duration-300 hover:border-blue-300 hover:shadow-md hover:shadow-blue-50 cursor-pointer"
+              >
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <p class="text-sm font-semibold text-slate-500">ปีงบประมาณ</p>
+                    <p class="mt-1 text-3xl font-extrabold text-slate-900 group-hover:text-blue-900">
+                      {{ year.fiscal_year }}
+                    </p>
+                    <p class="mt-1 text-sm text-slate-500">{{ year.year_name || 'ข้อมูลประจำปีงบประมาณ' }}</p>
+                  </div>
+                  <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-900 flex items-center justify-center group-hover:bg-blue-900 group-hover:text-white transition-colors">
+                    <i class="material-icons">chevron_right</i>
+                  </div>
+                </div>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>

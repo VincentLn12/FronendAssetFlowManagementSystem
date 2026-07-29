@@ -76,6 +76,20 @@ export class StaffsComponent implements OnInit {
     });
   }
 
+  handleTableAction(event: { type: string; item: staffsType }) {
+    if (event.type !== 'pathTo') return;
+
+    this.router.navigate(['/portal/staffs', event.item.staff_id, 'dashboard'], {
+      state: {
+        staff: {
+          staff_id: event.item.staff_id,
+          full_name: event.item.full_name,
+          department_name: event.item.department_name,
+        },
+      },
+    });
+  }
+
   sortOptions = [
     { label: 'ชื่อ ก-ฮ', value: 'nameAsc' },
     { label: 'ชื่อ ฮ-ก', value: 'nameDesc' },

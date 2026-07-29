@@ -61,6 +61,21 @@
                 placeholder="กรอกสถานที่จัดเก็บ"
               />
             </div>
+            <div class="grid grid-cols-3 gap-6 px-6 pb-6">
+              <app-date-picker
+                label="วันที่สิ้นสุดการดูแล"
+                [control]="form.controls.end_date"
+                placeholder="เว้นว่างถ้ายังใช้งานอยู่"
+              />
+              <app-select
+                label="เหตุผลสิ้นสุดการดูแล"
+                [control]="form.controls.end_reason"
+                [options]="endReasonOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="-- ยังใช้งานอยู่ --"
+              />
+            </div>
             <div class="gap-6 p-6 -mt-10">
               <app-textarea
                 label="หมายเหตุ"

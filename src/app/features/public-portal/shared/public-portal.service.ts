@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 export interface PublicPortalProject {
   project_id: number;
@@ -18,6 +18,12 @@ export interface PublicPortalStaffLookup {
   project_count: number;
   material_withdrawal_count: number;
   asset_withdrawal_count: number;
+}
+
+export interface PublicPortalFiscalYear {
+  fiscal_year_id: number;
+  fiscal_year: number;
+  year_name?: string | null;
 }
 
 export interface PublicPortalStaffProject {
@@ -67,7 +73,9 @@ export interface PublicPortalProcurementSummary {
   hire_detail_count: number;
 }
 
-export interface PublicPortalStaffAssetHolding {
+export interface PublicPortalStaffAssetItem {
+  asset_id: number;
+  procurement_withdrawal_id: number;
   procurement_record_id: number;
   project_id: number;
   project_code: string;
@@ -77,13 +85,98 @@ export interface PublicPortalStaffAssetHolding {
   department_name?: string | null;
   withdrawal_document_no: string;
   withdrawal_date: string;
+  end_date?: string | null;
+  end_reason?: string | null;
   asset_name: string;
+  receive_date: string;
+  storage_location?: string | null;
+  purpose?: string | null;
+  running_start_no?: number | null;
+  running_end_no?: number | null;
+  fiscal_asset_year?: number | null;
+  sub_item_count: number;
+  history_count: number;
+  repair_count: number;
+}
+
+export interface PublicPortalMaterialWithdrawalHistory {
+  issue_detail_id: number;
+  material_withdrawal_id?: number | null;
+  procurement_record_id: number;
+  material_item_id: number;
+  project_id: number;
+  project_code: string;
+  project_name: string;
+  document_no: string;
+  document_date?: string | null;
+  withdrawal_document_no: string;
+  issue_date?: string | null;
+  material_code: string;
+  material_name: string;
+  unit_name?: string | null;
+  quantity: number;
+  unit_price: number;
+  total_amount?: number | null;
+  remark?: string | null;
+}
+
+export interface PublicPortalAssetSubItem {
+  asset_sub_item_id: number;
   sub_item_name: string;
+  running_start_no: number;
+  running_end_no: number;
+  fiscal_asset_year: number;
   quantity?: number | null;
   unit_price?: number | null;
   total_price?: number | null;
+}
+
+export interface PublicPortalAssetUsageHistory {
+  sub_item_history_id: number;
+  history_date: string;
+  history_type: string;
+  usage_type_name?: string | null;
+  detail?: string | null;
+  full_name?: string | null;
+}
+
+export interface PublicPortalAssetRepair {
+  asset_repair_id: number;
+  repair_document_no: string;
+  repair_date: string;
+  status: string;
+  problem_description?: string | null;
+  repair_description?: string | null;
+  repair_shop_name?: string | null;
+  repair_cost?: number | null;
+  decree_document_no?: string | null;
+  full_name?: string | null;
+}
+
+export interface PublicPortalStaffAssetDetail {
+  asset_id: number;
+  procurement_withdrawal_id: number;
+  procurement_record_id: number;
+  project_id: number;
+  project_code: string;
+  project_name: string;
+  document_no: string;
+  document_date?: string | null;
+  department_name?: string | null;
+  withdrawal_document_no: string;
+  withdrawal_date: string;
+  end_date?: string | null;
+  end_reason?: string | null;
+  asset_name: string;
+  receive_date: string;
   storage_location?: string | null;
   purpose?: string | null;
+  running_start_no?: number | null;
+  running_end_no?: number | null;
+  fiscal_asset_year?: number | null;
+  sub_items: PublicPortalAssetSubItem[];
+  histories: PublicPortalAssetUsageHistory[];
+  repairs: PublicPortalAssetRepair[];
 }
 
 export interface PublicPortalMaterialReceiveDetail {
@@ -102,6 +195,8 @@ export interface PublicPortalAssetHistory {
   procurement_withdrawal_id: number;
   withdrawal_document_no: string;
   withdrawal_date: string;
+  end_date?: string | null;
+  end_reason?: string | null;
   asset_name: string;
   sub_item_name: string;
   quantity?: number | null;
@@ -146,12 +241,18 @@ export class PublicPortalService {
     return this.http.get<PublicPortalStaffLookup[]>(this.baseUrl + 'staffs', { params });
   }
 
+  getStaffFiscalYears(staffId: number) {
+    return this.http.get<PublicPortalFiscalYear[]>(this.baseUrl + `staffs/${staffId}/fiscal-years`);
+  }
+
   getProjectsByStaff(staffId: number) {
     return this.http.get<PublicPortalStaffProject[]>(this.baseUrl + `staffs/${staffId}/projects`);
   }
 
-  getStaffSummary(staffId: number) {
-    return this.http.get<PublicPortalStaffSummary>(this.baseUrl + `staffs/${staffId}/summary`);
+  getStaffSummary(staffId: number, fiscalYearId?: number | null) {
+    return this.http.get<PublicPortalStaffSummary>(this.baseUrl + `staffs/${staffId}/summary`, {
+      params: this.createFiscalYearParams(fiscalYearId),
+    });
   }
 
   getProjects(search?: string) {
@@ -170,19 +271,43 @@ export class PublicPortalService {
     );
   }
 
-  getStaffProcurements(staffId: number) {
+  getStaffProcurements(staffId: number, fiscalYearId?: number | null) {
     return this.http.get<PublicPortalProcurementSummary[]>(
       this.baseUrl + `staffs/${staffId}/procurements`,
+      { params: this.createFiscalYearParams(fiscalYearId) },
     );
   }
 
-  getStaffAssets(staffId: number) {
-    return this.http.get<PublicPortalStaffAssetHolding[]>(this.baseUrl + `staffs/${staffId}/assets`);
+  getStaffAssets(staffId: number, fiscalYearId?: number | null) {
+    return this.http.get<PublicPortalStaffAssetItem[]>(this.baseUrl + `staffs/${staffId}/assets`, {
+      params: this.createFiscalYearParams(fiscalYearId),
+    });
+  }
+
+  getStaffMaterialWithdrawals(staffId: number, fiscalYearId?: number | null) {
+    return this.http.get<PublicPortalMaterialWithdrawalHistory[]>(
+      this.baseUrl + `staffs/${staffId}/material-withdrawals`,
+      { params: this.createFiscalYearParams(fiscalYearId) },
+    );
+  }
+
+  getStaffAssetDetail(staffId: number, assetId: number, withdrawalId: number) {
+    return this.http.get<PublicPortalStaffAssetDetail>(
+      this.baseUrl + `staffs/${staffId}/assets/${assetId}/withdrawals/${withdrawalId}`,
+    );
   }
 
   getProcurementDetail(staffId: number, procurementId: number) {
     return this.http.get<PublicPortalProcurementDetail>(
       this.baseUrl + `staffs/${staffId}/procurements/${procurementId}`,
     );
+  }
+
+  private createFiscalYearParams(fiscalYearId?: number | null) {
+    let params = new HttpParams();
+    if (fiscalYearId && fiscalYearId > 0) {
+      params = params.set('fiscalYearId', fiscalYearId);
+    }
+    return params;
   }
 }

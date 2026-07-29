@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PublicPortalService, PublicPortalStaffLookup } from './public-portal.service';
+import { PublicPortalService, PublicPortalStaffLookup } from '../shared/public-portal.service';
 
 @Component({
   selector: 'app-portal-staffs',

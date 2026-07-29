@@ -20,42 +20,56 @@ export const routes: Routes = [
       {
         path: 'portal',
         loadComponent: () =>
-          import('./features/public-portal/portal-staffs.component').then(
+          import('./features/public-portal/staffs/portal-staffs.component').then(
             (m) => m.PortalStaffsComponent,
+          ),
+      },
+      {
+        path: 'portal/staffs/:staffId/years',
+        loadComponent: () =>
+          import('./features/public-portal/years/portal-staff-years.component').then(
+            (m) => m.PortalStaffYearsComponent,
           ),
       },
       {
         path: 'portal/staffs/:staffId/dashboard',
         loadComponent: () =>
-          import('./features/public-portal/portal-staff-dashboard.component').then(
+          import('./features/public-portal/dashboard/portal-staff-dashboard.component').then(
             (m) => m.PortalStaffDashboardComponent,
           ),
       },
       {
         path: 'portal/staffs/:staffId/procurements',
         loadComponent: () =>
-          import('./features/public-portal/portal-staff-procurements.component').then(
+          import('./features/public-portal/procurements/portal-staff-procurements.component').then(
             (m) => m.PortalStaffProcurementsComponent,
           ),
       },
       {
         path: 'portal/staffs/:staffId/assets',
         loadComponent: () =>
-          import('./features/public-portal/portal-staff-assets.component').then(
+          import('./features/public-portal/assets/portal-staff-assets.component').then(
             (m) => m.PortalStaffAssetsComponent,
+          ),
+      },
+      {
+        path: 'portal/staffs/:staffId/assets/:assetId/withdrawals/:withdrawalId',
+        loadComponent: () =>
+          import('./features/public-portal/assets/portal-staff-asset-detail.component').then(
+            (m) => m.PortalStaffAssetDetailComponent,
           ),
       },
       {
         path: 'portal/staffs/:staffId/procurements/:procurementId',
         loadComponent: () =>
-          import('./features/public-portal/portal-procurement-detail.component').then(
+          import('./features/public-portal/procurements/portal-procurement-detail.component').then(
             (m) => m.PortalProcurementDetailComponent,
           ),
       },
       {
         path: 'portal/staffs/:staffId/projects/:projectId/procurements/:procurementId',
         loadComponent: () =>
-          import('./features/public-portal/portal-procurement-detail.component').then(
+          import('./features/public-portal/procurements/portal-procurement-detail.component').then(
             (m) => m.PortalProcurementDetailComponent,
           ),
       },

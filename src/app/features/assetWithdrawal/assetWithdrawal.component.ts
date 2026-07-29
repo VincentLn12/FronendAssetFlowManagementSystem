@@ -163,6 +163,8 @@ export class AssetWithdrawalComponent implements OnInit {
     [
       { label: 'ครั้งที่', key: 'withdrawal_document_no' },
       { label: 'วันที่เบิก', key: 'withdrawal_date', pipe: 'thaiDate' },
+      { label: 'สิ้นสุดดูแล', key: 'end_date', pipe: 'thaiDate' },
+      { label: 'สถานะ', key: 'end_reason' },
       { label: 'ผู้เบิก', key: 'staff_name' },
       { label: 'สถานที่เก็บ', key: 'storage_location' },
       { label: 'รายระเอียด', key: 'remark' },

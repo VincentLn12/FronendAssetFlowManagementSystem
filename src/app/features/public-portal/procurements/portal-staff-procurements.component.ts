@@ -5,7 +5,7 @@ import {
   PublicPortalProcurementSummary,
   PublicPortalService,
   PublicPortalStaffLookup,
-} from './public-portal.service';
+} from '../shared/public-portal.service';
 
 @Component({
   selector: 'app-portal-staff-procurements',

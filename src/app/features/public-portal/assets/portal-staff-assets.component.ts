@@ -1,11 +1,11 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   PublicPortalService,
-  PublicPortalStaffAssetHolding,
+  PublicPortalStaffAssetItem,
   PublicPortalStaffLookup,
-} from './public-portal.service';
+} from '../shared/public-portal.service';
 
 @Component({
   selector: 'app-portal-staff-assets',
@@ -15,12 +15,13 @@ import {
 })
 export class PortalStaffAssetsComponent {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private service = inject(PublicPortalService);
 
   staffId = Number(this.route.snapshot.paramMap.get('staffId'));
   staff = history.state?.staff as PublicPortalStaffLookup | undefined;
   loading = signal(false);
-  assets = signal<PublicPortalStaffAssetHolding[]>([]);
+  assets = signal<PublicPortalStaffAssetItem[]>([]);
 
   constructor() {
     this.loadAssets();
@@ -33,5 +34,12 @@ export class PortalStaffAssetsComponent {
       error: (error) => console.error(error),
       complete: () => this.loading.set(false),
     });
+  }
+
+  openAsset(asset: PublicPortalStaffAssetItem) {
+    this.router.navigate(
+      ['/portal/staffs', this.staffId, 'assets', asset.asset_id, 'withdrawals', asset.procurement_withdrawal_id],
+      { state: { staff: this.staff, asset } },
+    );
   }
 }

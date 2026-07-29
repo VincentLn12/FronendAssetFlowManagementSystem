@@ -5,6 +5,8 @@
   [columns]="columns"
   [idKey]="'staff_id'"
   [isAdmin]="true"
+  [showPathTo]="true"
+  [Namepath]="'ดูข้อมูลพัสดุ'"
   [sortOptions]="sortOptions"
   [totalItems]="staff?.count ?? 0"
   [pageSize]="Params.pageSize"
@@ -15,5 +17,6 @@
   (add)="goToCreate()"
   (edit)="goToEdit($event)"
   (delete)="deletePrefixes($event)"
+  (action)="handleTableAction($event)"
 >
 </app-data-table>
