@@ -17,6 +17,7 @@ export interface assetSubItemTypes {
   total_price: number | null;
   useful_life_year: number | null;
   quantity_with_unit: string;
+  status: string | null;
 }
 
 export interface assetSubItemCreateTypes {
@@ -33,4 +34,17 @@ export interface assetSubItemCreateTypes {
   unit_price: number | null;
   total_price: number | null;
   useful_life_year: number | null;
+  status: string | null;
+}
+
+export interface assetSubItemDisposalTypes {
+  sub_item_disposal_id?: number;
+  asset_sub_item_id?: number;
+  disposal_date: string;
+  disposal_method: string;
+  disposal_reason?: string;
+  document_no?: string;
+  approved_by?: string;
+  quantity_disposed?: number;
+  notes?: string;
 }

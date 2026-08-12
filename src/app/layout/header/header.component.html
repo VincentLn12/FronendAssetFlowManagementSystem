@@ -19,7 +19,7 @@
           class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-200"
         >
           <img
-            src="/institute-Logo.png"
+            [src]="settingsService.getLogoUrl()"
             alt="Institute Logo"
             class="h-full w-full object-contain p-1"
           />
@@ -27,10 +27,11 @@
 
         @if (sidebarOpen) {
           <div>
-            <h1 class="text-base font-bold text-slate-800">ระบบบริหารพัสดุ</h1>
+            <h1 class="text-base font-bold text-slate-800">{{ settingsService.projectName() }}</h1>
             <p class="text-xs text-slate-500">สำหรับเจ้าหน้าที่มหาวิทยาลัย</p>
           </div>
         }
+
       </div>
 
       <nav class="flex-1 min-h-0 space-y-1 overflow-y-auto px-3 py-4">
@@ -309,8 +310,22 @@
             <span class="text-sm">สิทธิ์ผู้ใช้งาน</span>
           }
         </a>
+
+        <a
+          routerLink="/admin/settings"
+          routerLinkActive="!bg-slate-100 !text-slate-900 font-semibold ring-1 ring-slate-200"
+          class="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+          [ngClass]="{ 'justify-center': !sidebarOpen }"
+        >
+          <mat-icon>settings</mat-icon>
+          @if (sidebarOpen) {
+            <span class="text-sm">ตั้งค่าระบบ</span>
+          }
+        </a>
       </nav>
     </aside>
+
+
   }
 
   <div class="flex min-w-0 flex-1 flex-col overflow-hidden">

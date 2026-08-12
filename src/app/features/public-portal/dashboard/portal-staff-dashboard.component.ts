@@ -82,6 +82,11 @@ export class PortalStaffDashboardComponent {
   });
 
   constructor() {
+    const sectionParam = this.route.snapshot.queryParamMap.get('section');
+    if (sectionParam === 'procurements' || sectionParam === 'materials' || sectionParam === 'assets') {
+      this.selectedSection.set(sectionParam);
+    }
+
     if (this.fiscalYearId) {
       this.loadData();
     } else {
@@ -109,6 +114,7 @@ export class PortalStaffDashboardComponent {
 
     this.router.navigate(['/portal/staffs', this.staffId, 'dashboard'], {
       queryParams: { fiscal_year_id: year.fiscal_year_id },
+      queryParamsHandling: 'merge',
       state: { staff: this.staff, fiscalYear: year },
     });
 
@@ -145,11 +151,21 @@ export class PortalStaffDashboardComponent {
   selectSection(section: 'procurements' | 'materials' | 'assets') {
     this.selectedSection.set(section);
     this.searchQuery.set('');
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { section: section },
+      queryParamsHandling: 'merge'
+    });
   }
 
   clearSection() {
     this.selectedSection.set(null);
     this.searchQuery.set('');
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { section: null },
+      queryParamsHandling: 'merge'
+    });
   }
 
   openProcurementDetail(procurement: PublicPortalProcurementSummary) {

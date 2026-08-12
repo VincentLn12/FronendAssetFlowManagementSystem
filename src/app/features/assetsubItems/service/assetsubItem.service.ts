@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Pagination } from '../../../shared/models/pagination';
 import { Params } from '../../../shared/models/allType';
-import { assetSubItemTypes, assetSubItemCreateTypes } from '../interface/assetsubItemsTypes';
+import { assetSubItemTypes, assetSubItemCreateTypes, assetSubItemDisposalTypes } from '../interface/assetsubItemsTypes';
 
 @Injectable({
   providedIn: 'root',
@@ -65,5 +65,18 @@ export class AssetSubItemsService {
 
   deleteAssetSubItems(id: number) {
     return this.http.delete<void>(this.baseUrl + 'AssetsubItem/' + id);
+  }
+
+  disposeAssetSubItem(id: number, payload: assetSubItemDisposalTypes) {
+    return this.http.post<{ message: string }>(
+      this.baseUrl + 'AssetsubItem/' + id + '/dispose',
+      payload
+    );
+  }
+
+  getAssetSubItemDisposal(id: number) {
+    return this.http.get<assetSubItemDisposalTypes>(
+      this.baseUrl + 'AssetsubItem/' + id + '/disposal'
+    );
   }
 }

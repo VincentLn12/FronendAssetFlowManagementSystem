@@ -10,7 +10,9 @@ export type TableActionType =
   | 'withdraw'
   | 'history'
   | 'copy'
-  | 'status';
+  | 'status'
+  | 'dispose'
+  | 'disposalDetail';
 
 export interface TableAction {
   type: TableActionType;
@@ -74,6 +76,7 @@ export class DataTableComponent {
   @Input() showWithdraw = false;
   @Input() showHistory = false;
   @Input() showCopy = false;
+  @Input() showDispose = false;
 
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<any>();

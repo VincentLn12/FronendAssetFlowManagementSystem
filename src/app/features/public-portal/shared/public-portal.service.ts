@@ -129,6 +129,8 @@ export interface PublicPortalAssetSubItem {
   quantity?: number | null;
   unit_price?: number | null;
   total_price?: number | null;
+  status?: string | null;
+  asset_code_end?: string | null;
 }
 
 export interface PublicPortalAssetUsageHistory {

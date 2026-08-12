@@ -6,6 +6,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { BusyService } from '../../core/services/busy.service';
 import { AccountService } from '../../core/services/account.service';
 import { CommonModule } from '@angular/common';
+import { SystemSettingsService } from '../../core/services/system-settings.service';
 
 @Component({
   selector: 'app-header',
@@ -24,12 +25,22 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent {
   busyService = inject(BusyService);
   accountService = inject(AccountService);
+  settingsService = inject(SystemSettingsService);
   private router = inject(Router);
-  sidebarOpen = true;
   dropdownOpen = false;
 
+  get sidebarOpen() {
+    return this.settingsService.navbarVisible();
+  }
+
+  set sidebarOpen(value: boolean) {
+    if (this.settingsService.navbarVisible() !== value) {
+      this.settingsService.toggleNavbar();
+    }
+  }
+
   toggleSidebar() {
-    this.sidebarOpen = !this.sidebarOpen;
+    this.settingsService.toggleNavbar();
   }
 
   toggleDropdown() {
@@ -44,3 +55,4 @@ export class HeaderComponent {
     });
   }
 }
+

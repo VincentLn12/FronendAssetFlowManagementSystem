@@ -1,0 +1,168 @@
+<div class="container mx-auto max-w-4xl px-4 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold tracking-tight text-slate-800 dark:text-white">ตั้งค่าระบบ (Settings)</h1>
+    <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+      จัดการความชอบการแสดงผลและข้อมูลระบบทั่วไปสำหรับระบบบริหารพัสดุและครุภัณฑ์
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+    <!-- Left Navigation/Info -->
+    <div class="md:col-span-1">
+      <div class="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <h3 class="font-bold text-slate-700 dark:text-slate-200">ประเภทการตั้งค่า</h3>
+        <p class="mt-1 text-xs text-slate-400 dark:text-slate-500">
+          สิทธิ์การเข้าถึงของคุณ: <span class="font-semibold text-slate-600 dark:text-slate-300">{{ accountService.isAdmin() ? 'ผู้ดูแลระบบ (Admin)' : 'เจ้าหน้าที่ทั่วไป (Staff)' }}</span>
+        </p>
+
+        <nav class="mt-6 space-y-2">
+          <div class="flex items-center gap-3 rounded-lg bg-slate-50 px-4 py-3 text-sm font-medium text-slate-800 dark:bg-slate-800 dark:text-white">
+            <mat-icon class="text-slate-500 dark:text-slate-400">tune</mat-icon>
+            <span>ตั้งค่าทั่วไป</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Right Settings Panel -->
+    <div class="space-y-8 md:col-span-2">
+      <!-- 1. Personal Settings Card -->
+      <div class="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 transition hover:shadow-md">
+        <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+          <mat-icon class="text-slate-600 dark:text-slate-400">person</mat-icon>
+          การตั้งค่าส่วนบุคคล (Personal Preferences)
+        </h2>
+        <p class="mt-1 text-xs text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-4">
+          การตั้งค่าเหล่านี้จะมีผลเฉพาะบนเบราว์เซอร์เครื่องของคุณเท่านั้น
+        </p>
+
+        <div class="mt-6 space-y-6">
+          <!-- Toggle Navbar -->
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300">แสดงแถบนำทาง (Navbar / Sidebar)</h4>
+              <p class="text-xs text-slate-400 dark:text-slate-500">เปิดหรือซ่อนเมนูนำทางด้านซ้ายมือ</p>
+            </div>
+            <button
+              (click)="toggleNavbar()"
+              class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-offset-2"
+              [ngClass]="settingsService.navbarVisible() ? 'bg-slate-800 dark:bg-slate-600' : 'bg-slate-200 dark:bg-slate-700'"
+            >
+              <span
+                class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                [ngClass]="settingsService.navbarVisible() ? 'translate-x-5' : 'translate-x-0'"
+              ></span>
+            </button>
+          </div>
+
+          <!-- Toggle Dark Mode -->
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300">โหมดกลางคืน (Dark Mode)</h4>
+              <p class="text-xs text-slate-400 dark:text-slate-500">สลับการแสดงผลหน้าจอมืด/สว่าง เพื่อถนอมสายตา</p>
+            </div>
+            <button
+              (click)="toggleDarkMode()"
+              class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-offset-2"
+              [ngClass]="settingsService.darkMode() ? 'bg-slate-800 dark:bg-slate-600' : 'bg-slate-200 dark:bg-slate-700'"
+            >
+              <span
+                class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                [ngClass]="settingsService.darkMode() ? 'translate-x-5' : 'translate-x-0'"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. System settings Card (Only Admin) -->
+      @if (accountService.isAdmin()) {
+        <div class="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 transition hover:shadow-md">
+          <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+            <mat-icon class="text-slate-600 dark:text-slate-400">settings</mat-icon>
+            การตั้งค่าระบบหลัก (Global System Settings)
+          </h2>
+          <p class="mt-1 text-xs text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-4">
+            การปรับเปลี่ยนที่นี่จะมีผลต่อผู้ใช้ทุกคนในระบบ
+          </p>
+
+          <div class="mt-6 space-y-6">
+            <!-- Project Name -->
+            <div>
+              <label for="projectName" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">ชื่อระบบงาน / ชื่อโครงการ</label>
+              <div class="mt-2">
+                <input
+                  type="text"
+                  id="projectName"
+                  [(ngModel)]="projectNameInput"
+                  class="block w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-slate-500 focus:bg-white dark:border-slate-800 dark:bg-slate-800 dark:text-white dark:focus:border-slate-600"
+                  placeholder="กรุณาระบุชื่อระบบงาน"
+                />
+              </div>
+            </div>
+
+            <!-- Logo Upload -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">สัญลักษณ์ / โลโก้โครงการ (LOGO)</label>
+              <div class="mt-4 flex flex-col sm:flex-row items-center gap-6">
+                <!-- Current/Preview Logo -->
+                <div class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl bg-slate-50 p-2 shadow-inner ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-slate-700">
+                  <img
+                    [src]="previewUrl || settingsService.getLogoUrl()"
+                    alt="Logo Preview"
+                    class="h-full w-full object-contain"
+                  />
+                </div>
+
+                <!-- Upload trigger area -->
+                <div class="flex-1 w-full">
+                  <div class="relative flex h-24 w-full cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50/30 px-4 transition hover:border-slate-500 dark:border-slate-800 dark:bg-slate-800/20">
+                    <input
+                      type="file"
+                      (change)="onFileSelected($event)"
+                      accept="image/*"
+                      class="absolute inset-0 cursor-pointer opacity-0"
+                    />
+                    <mat-icon class="text-slate-400 dark:text-slate-500 mb-1">cloud_upload</mat-icon>
+                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">คลิกเพื่อเปลี่ยนรูปภาพ</span>
+                    <span class="mt-1 text-[10px] text-slate-400 dark:text-slate-500">รองรับ PNG, JPG, SVG (ขนาดไม่เกิน 2MB)</span>
+                  </div>
+                  @if (selectedFile) {
+                    <p class="mt-2 text-xs font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                      <mat-icon class="text-sm">check_circle</mat-icon>
+                      เลือกไฟล์แล้ว: {{ selectedFile.name }}
+                    </p>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <button
+                type="button"
+                (click)="resetSettings()"
+                [disabled]="isSaving"
+                class="inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50/50 px-5 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50 hover:text-red-700 disabled:opacity-50 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-400"
+              >
+                <mat-icon>restart_alt</mat-icon>
+                <span>คืนค่าเริ่มต้น</span>
+              </button>
+
+              <button
+                type="button"
+                (click)="saveSettings()"
+                [disabled]="isSaving"
+                class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-800 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-900 disabled:opacity-50 dark:bg-slate-600 dark:hover:bg-slate-700"
+              >
+                <mat-icon>{{ isSaving ? 'sync' : 'save' }}</mat-icon>
+                <span>{{ isSaving ? 'กำลังบันทึก...' : 'บันทึกการตั้งค่า' }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

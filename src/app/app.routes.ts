@@ -82,6 +82,14 @@ export const routes: Routes = [
         data: { role: 'admin' },
         children: [
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+          {
+            path: 'settings',
+            loadComponent: () =>
+              import('./features/settings/settings.component').then(
+                (m) => m.SettingsComponent
+              ),
+          },
+
           // แผนก
           {
             path: 'departments',

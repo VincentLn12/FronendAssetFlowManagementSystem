@@ -17,8 +17,113 @@
   (delete)="deleteAssetSubItems($event)"
   (back)="cancel()"
   [showBack]="true"
+  [showDispose]="true"
+  (action)="handleAction($event)"
   [butttonColor]="butttonColor"
   [headerColor]="headerColor"
   [headerBorderColor]="headerBorderColor"
 >
 </app-data-table>
+
+<!-- Disposal Form Modal -->
+<div *ngIf="showDisposalFormModal()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity">
+  <div class="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl border border-slate-100 transform transition-all">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-red-600 to-amber-600 px-6 py-4 flex items-center justify-between text-white">
+      <h3 class="text-lg font-bold tracking-tight">ทำรายการจำหน่ายครุภัณฑ์ย่อย</h3>
+      <button (click)="closeDisposalForm()" class="text-white hover:text-red-100 font-bold text-xl leading-none">&times;</button>
+    </div>
+    
+    <!-- Body -->
+    <form (ngSubmit)="submitDisposal()" #disposalFormElement="ngForm" class="p-6 space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">ครุภัณฑ์ย่อย</label>
+        <div class="text-base font-bold text-slate-800">{{ selectedSubItemName() }}</div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">วันที่จำหน่าย <span class="text-red-500">*</span></label>
+          <input type="date" [(ngModel)]="disposalForm.disposal_date" name="disposal_date" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">วิธีการจำหน่าย <span class="text-red-500">*</span></label>
+          <select [(ngModel)]="disposalForm.disposal_method" name="disposal_method" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none">
+            <option value="ขายทอดตลาด">ขายทอดตลาด</option>
+            <option value="บริจาค">บริจาค</option>
+            <option value="โอน">โอน</option>
+            <option value="ทำลาย">ทำลาย</option>
+            <option value="ชำรุด/สูญหาย">ชำรุด/สูญหาย</option>
+          </select>
+        </div>
+      </div>
+
+
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">สาเหตุ/เหตุผลการจำหน่าย</label>
+        <textarea [(ngModel)]="disposalForm.disposal_reason" name="disposal_reason" rows="2" placeholder="เช่น ชำรุดแตกหักไม่สามารถใช้งานได้" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">หมายเหตุเพิ่มเติม</label>
+        <input type="text" [(ngModel)]="disposalForm.notes" name="notes" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none" />
+      </div>
+
+      <!-- Footer Action -->
+      <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+        <button type="button" (click)="closeDisposalForm()" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors">ยกเลิก</button>
+        <button type="submit" [disabled]="!disposalFormElement.valid" class="px-5 py-2 rounded-lg bg-gradient-to-r from-red-600 to-amber-600 text-white font-semibold text-sm hover:from-red-700 hover:to-amber-700 transition-colors disabled:opacity-50">ยืนยันการจำหน่าย</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Disposal Details Modal (Read-only) -->
+<div *ngIf="showDisposalInfoModal() && disposalInfo()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-opacity">
+  <div class="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl border border-slate-100 transform transition-all">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-slate-700 to-slate-800 px-6 py-4 flex items-center justify-between text-white">
+      <h3 class="text-lg font-bold tracking-tight">ประวัติการจำหน่ายครุภัณฑ์ย่อย</h3>
+      <button (click)="closeDisposalInfo()" class="text-white hover:text-slate-100 font-bold text-xl leading-none">&times;</button>
+    </div>
+    
+    <!-- Body -->
+    <div class="p-6 space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 uppercase mb-0.5">ครุภัณฑ์ย่อย</label>
+        <div class="text-base font-bold text-slate-800">{{ selectedSubItemName() }}</div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 uppercase mb-0.5">วันที่จำหน่าย</label>
+          <div class="text-sm font-medium text-slate-800">{{ disposalInfo().disposal_date | date: 'dd/MM/yyyy' }}</div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 uppercase mb-0.5">วิธีการจำหน่าย</label>
+          <div class="text-sm font-semibold text-red-600 bg-red-50 inline-block px-2.5 py-0.5 rounded-full">{{ disposalInfo().disposal_method }}</div>
+        </div>
+      </div>
+
+
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 uppercase mb-0.5">สาเหตุการจำหน่าย</label>
+        <div class="text-sm text-slate-700 bg-slate-50 rounded-lg p-3 border border-slate-100 leading-relaxed">{{ disposalInfo().disposal_reason || '-' }}</div>
+      </div>
+
+      <div *ngIf="disposalInfo().notes">
+        <label class="block text-xs font-semibold text-slate-400 uppercase mb-0.5">หมายเหตุ</label>
+        <div class="text-sm text-slate-600">{{ disposalInfo().notes }}</div>
+      </div>
+
+      <!-- Footer Action -->
+      <div class="flex items-center justify-end pt-4 border-t border-slate-100">
+        <button type="button" (click)="closeDisposalInfo()" class="px-5 py-2 rounded-lg bg-slate-700 text-white font-semibold text-sm hover:bg-slate-800 transition-colors">ปิด</button>
+      </div>
+    </div>
+  </div>
+</div>

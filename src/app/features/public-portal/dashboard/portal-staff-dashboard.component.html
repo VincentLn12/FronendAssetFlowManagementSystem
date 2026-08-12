@@ -541,18 +541,6 @@
                         <i class="material-icons text-sm text-slate-400">calendar_today</i>
                         {{ asset.withdrawal_date | date: 'dd/MM/yyyy' }}
                       </span>
-                      <span
-                        class="rounded-full px-3 py-0.5 text-xs font-bold"
-                        [class.bg-emerald-50]="!asset.end_date"
-                        [class.text-emerald-700]="!asset.end_date"
-                        [class.bg-rose-50]="asset.end_date"
-                        [class.text-rose-700]="asset.end_date"
-                      >
-                        {{ asset.end_date ? asset.end_reason || 'สิ้นสุดการดูแล' : 'ใช้งานอยู่' }}
-                        @if (asset.end_date) {
-                          {{ asset.end_date | date: 'dd/MM/yyyy' }}
-                        }
-                      </span>
                     </div>
 
                     <h3 class="mt-3 text-base font-bold text-slate-900">{{ asset.asset_name }}</h3>

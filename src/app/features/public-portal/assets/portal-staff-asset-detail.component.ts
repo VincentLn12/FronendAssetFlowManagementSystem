@@ -21,6 +21,7 @@ export class PortalStaffAssetDetailComponent {
   staffId = Number(this.route.snapshot.paramMap.get('staffId'));
   assetId = Number(this.route.snapshot.paramMap.get('assetId'));
   withdrawalId = Number(this.route.snapshot.paramMap.get('withdrawalId'));
+  fiscalYearId = this.route.snapshot.queryParamMap.get('fiscal_year_id');
   staff = history.state?.staff as PublicPortalStaffLookup | undefined;
   asset = history.state?.asset as PublicPortalStaffAssetItem | undefined;
   loading = signal(false);
