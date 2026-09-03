@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, inject, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -11,11 +11,12 @@ import {
   PublicPortalFiscalYear,
   PublicPortalMaterialWithdrawalHistory,
 } from '../shared/public-portal.service';
+import { ThaiDatePipe } from '../shared/thai-date.pipe';
 
 @Component({
   selector: 'app-portal-staff-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, DatePipe, DecimalPipe],
+  imports: [CommonModule, RouterLink, FormsModule, DecimalPipe, ThaiDatePipe],
   templateUrl: './portal-staff-dashboard.component.html',
 })
 export class PortalStaffDashboardComponent {

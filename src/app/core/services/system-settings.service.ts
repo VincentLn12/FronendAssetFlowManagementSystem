@@ -79,7 +79,6 @@ export class SystemSettingsService {
     return logo;
   }
 
-
   toggleNavbar() {
     const nextState = !this.navbarVisible();
     this.navbarVisible.set(nextState);

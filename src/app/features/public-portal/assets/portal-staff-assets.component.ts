@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -6,11 +6,12 @@ import {
   PublicPortalStaffAssetItem,
   PublicPortalStaffLookup,
 } from '../shared/public-portal.service';
+import { ThaiDatePipe } from '../shared/thai-date.pipe';
 
 @Component({
   selector: 'app-portal-staff-assets',
   standalone: true,
-  imports: [CommonModule, DatePipe, RouterLink],
+  imports: [CommonModule, RouterLink, ThaiDatePipe],
   templateUrl: './portal-staff-assets.component.html',
 })
 export class PortalStaffAssetsComponent {

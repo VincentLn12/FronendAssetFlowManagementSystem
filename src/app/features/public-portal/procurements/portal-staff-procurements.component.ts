@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -6,11 +6,12 @@ import {
   PublicPortalService,
   PublicPortalStaffLookup,
 } from '../shared/public-portal.service';
+import { ThaiDatePipe } from '../shared/thai-date.pipe';
 
 @Component({
   selector: 'app-portal-staff-procurements',
   standalone: true,
-  imports: [CommonModule, DatePipe, DecimalPipe, RouterLink],
+  imports: [CommonModule, DecimalPipe, RouterLink, ThaiDatePipe],
   templateUrl: './portal-staff-procurements.component.html',
 })
 export class PortalStaffProcurementsComponent {

@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import {
@@ -8,11 +8,12 @@ import {
   PublicPortalStaffLookup,
   PublicPortalStaffProject,
 } from '../shared/public-portal.service';
+import { ThaiDatePipe } from '../shared/thai-date.pipe';
 
 @Component({
   selector: 'app-portal-procurement-detail',
   standalone: true,
-  imports: [CommonModule, DatePipe, DecimalPipe, RouterLink],
+  imports: [CommonModule, DecimalPipe, RouterLink, ThaiDatePipe],
   templateUrl: './portal-procurement-detail.component.html',
 })
 export class PortalProcurementDetailComponent {
@@ -21,6 +22,7 @@ export class PortalProcurementDetailComponent {
 
   staffId = Number(this.route.snapshot.paramMap.get('staffId'));
   procurementId = Number(this.route.snapshot.paramMap.get('procurementId'));
+  fiscalYearId = this.route.snapshot.queryParamMap.get('fiscal_year_id');
   project = history.state?.project as PublicPortalStaffProject | undefined;
   staff = history.state?.staff as PublicPortalStaffLookup | undefined;
   procurement = history.state?.procurement as PublicPortalProcurementSummary | undefined;

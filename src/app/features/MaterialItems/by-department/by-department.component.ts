@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { materialItemsTypes } from '../interface/materialItemsTypes';
 import { Pagination } from '../../../shared/models/pagination';
 import { TableState } from '../../../../shared/TableState';
@@ -18,7 +18,7 @@ import { DepartmentType } from '../../departments/interface/departmentType';
   imports: [DecimalPipe, FormsModule],
   templateUrl: './by-department.component.html',
 })
-export class MaterialItemsByDepartmentComponent {
+export class MaterialItemsByDepartmentComponent implements OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private table = new TableState();
@@ -36,6 +36,8 @@ export class MaterialItemsByDepartmentComponent {
   fiscalYears = signal<any[]>([]);
   fiscalYearId = signal<number | null>(null);
   searchValue = '';
+  loading = signal(false);
+  private searchTimer?: ReturnType<typeof setTimeout>;
 
   Params = new Params();
 
@@ -92,16 +94,25 @@ export class MaterialItemsByDepartmentComponent {
     const departmentId = this.departmentId();
     if (!departmentId) return;
 
+    this.loading.set(true);
     this.materialItemsService
       .getMaterialItemsByDepartment(departmentId, this.fiscalYearId(), this.searchValue)
       .subscribe({
         next: (res) => this.materialItems.set(res ?? []),
         error: (err) => console.error(err),
+        complete: () => this.loading.set(false),
       });
   }
 
   onSearch(value: string) {
     this.searchValue = value;
+    if (this.searchTimer) clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => this.getMaterialItems(), 300);
+  }
+
+  clearSearch() {
+    if (this.searchTimer) clearTimeout(this.searchTimer);
+    this.searchValue = '';
     this.getMaterialItems();
   }
 
@@ -122,8 +133,13 @@ export class MaterialItemsByDepartmentComponent {
 
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: fiscalYearId && fiscalYearId > 0 ? { fiscal_year_id: fiscalYearId } : {},
+      queryParams: { fiscalYearId: null, fiscal_year_id: fiscalYearId && fiscalYearId > 0 ? fiscalYearId : null },
+      queryParamsHandling: 'merge',
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.searchTimer) clearTimeout(this.searchTimer);
   }
 
   deleteMaterialItems(id: number) {

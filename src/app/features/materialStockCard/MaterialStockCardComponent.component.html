@@ -1,23 +1,31 @@
-<div
-  class="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_100%)] px-4 py-6 sm:px-6 lg:px-8"
->
-  <div class="mx-auto max-w-8xl space-y-6">
-    <!-- Header Section -->
+<div class="min-h-screen bg-[#FAF8F3] px-4 py-6 font-['Sarabun'] sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-[1680px] space-y-5 2xl:px-2">
+    <!-- ============ Header ============ -->
     <section
-      class="relative overflow-hidden rounded-3xl border border-emerald-100 bg-gradient-to-br from-emerald-800 to-emerald-950 p-6 shadow-xl text-white sm:p-8"
+      class="relative overflow-hidden rounded-3xl border border-[#12503A]/30 bg-gradient-to-br from-[#0B2E22] via-[#0F3D2E] to-[#12503A] p-6 text-white shadow-xl sm:p-8"
     >
+      <!-- ambient glow -->
+      <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#B8863B]/10 blur-3xl"></div>
       <div
-        class="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-emerald-700/20 blur-3xl"
-      ></div>
-      <div
-        class="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-emerald-600/10 blur-3xl"
+        class="absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-[#1F7A52]/20 blur-3xl"
       ></div>
 
-      <div class="relative mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <!-- signature: punch-card tab strip, echoes a physical วัสดุ index card -->
+      <div
+        class="pointer-events-none absolute inset-y-0 left-0 hidden w-6 flex-col items-center justify-center gap-2.5 sm:flex"
+      >
+        @for (dot of [1, 2, 3, 4, 5]; track dot) {
+          <span class="h-1.5 w-1.5 rounded-full bg-white/15"></span>
+        }
+      </div>
+
+      <div
+        class="relative mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:pl-4"
+      >
         <button
           type="button"
           (click)="cancel()"
-          class="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-xs font-bold text-white backdrop-blur-sm transition-all hover:bg-white/20 active:scale-[0.98]"
+          class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-xs font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B8863B] active:scale-[0.98]"
         >
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
@@ -31,45 +39,43 @@
         </button>
 
         <div
-          class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-medium backdrop-blur-md text-emerald-200"
+          class="inline-flex w-fit items-center gap-2 rounded-full border border-[#B8863B]/30 bg-[#B8863B]/10 px-3.5 py-1 text-xs font-medium text-[#E8CE9C]"
         >
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+          <span class="h-1.5 w-1.5 rounded-full bg-[#D9AE5F]"></span>
           มหาวิทยาลัยราชภัฏกาญจนบุรี
         </div>
       </div>
 
-      <div class="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div class="flex items-center gap-4">
-          <div
-            class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/95 text-md font-black text-emerald-950 shadow-md"
+      <div class="relative flex flex-col gap-6 sm:pl-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <span
+            class="inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.15em] text-[#8FCBAA]"
           >
-            KRU
-          </div>
-
-          <div>
-            <span
-              class="inline-flex items-center gap-1 text-xs font-semibold tracking-wider text-emerald-300"
-            >
-              ระบบบริหารงานพัสดุ
-            </span>
-            <h1 class="text-2xl font-black tracking-tight text-white sm:text-3xl">
-              ทะเบียนคุมวัสดุ (Stock Card)
-            </h1>
-            <p class="mt-1 text-xs text-emerald-100/70">Material Inventory Control Ledger</p>
-          </div>
+            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"
+              />
+            </svg>
+            ระบบบริหารงานพัสดุ
+          </span>
+          <h1 class="mt-1 font-['Kanit'] text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            ทะเบียนคุมวัสดุ (Stock Card)
+          </h1>
         </div>
 
         <div class="grid grid-cols-2 gap-3 lg:min-w-[360px]">
-          <div class="rounded-2xl border border-white/10 bg-white/5 p-3.5 backdrop-blur-sm">
-            <p class="text-2xs font-bold uppercase tracking-wider text-emerald-300/80">รหัสวัสดุ</p>
-            <p class="mt-1 text-base font-extrabold text-white">
+          <div class="rounded-2xl border border-white/10 bg-white/[0.06] p-3.5 backdrop-blur-sm">
+            <p class="text-[10px] font-bold uppercase tracking-wider text-[#8FCBAA]">รหัสวัสดุ</p>
+            <p class="mt-1 font-['Kanit'] text-base font-semibold text-white">
               {{ materialItems?.material_code || '-' }}
             </p>
           </div>
-
-          <div class="rounded-2xl border border-white/10 bg-white/5 p-3.5 backdrop-blur-sm">
-            <p class="text-2xs font-bold uppercase tracking-wider text-emerald-300/80">หน่วยนับ</p>
-            <p class="mt-1 text-base font-extrabold text-white">
+          <div class="rounded-2xl border border-white/10 bg-white/[0.06] p-3.5 backdrop-blur-sm">
+            <p class="text-[10px] font-bold uppercase tracking-wider text-[#8FCBAA]">หน่วยนับ</p>
+            <p class="mt-1 font-['Kanit'] text-base font-semibold text-white">
               {{ materialItems?.unit_name || '-' }}
             </p>
           </div>
@@ -77,107 +83,142 @@
       </div>
     </section>
 
-    <!-- Material Details & Summary Grid -->
+    <!-- ============ Material details + summary ============ -->
     <div class="grid gap-4 lg:grid-cols-4">
       <div class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm lg:col-span-2">
-        <span class="text-2xs font-bold uppercase tracking-wider text-emerald-700"
+        <span class="text-[10px] font-bold uppercase tracking-wider text-[#12503A]"
           >ชื่อรายการพัสดุ</span
         >
-        <h2 class="mt-1.5 text-lg font-black leading-relaxed text-slate-800">
+        <h2 class="mt-1.5 font-['Kanit'] text-lg font-semibold leading-relaxed text-slate-800">
           {{ materialItems?.material_name || '-' }}
         </h2>
       </div>
 
-      <div class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-        <span class="text-2xs font-bold uppercase tracking-wider text-slate-400"
+      <div
+        class="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm"
+      >
+        <div class="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-[#12503A]/[0.04]"></div>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400"
           >ยอดคงเหลือสะสม</span
         >
-        <p class="mt-1.5 text-2xl font-black text-emerald-700 tracking-tight">
+        <p class="mt-1.5 font-['Kanit'] text-2xl font-bold tracking-tight text-[#12503A]">
           {{ getBalance() | number: '1.0-2' }}
-          <span class="text-xs font-semibold text-slate-500">{{
+          <span class="text-xs font-medium text-slate-500">{{
             materialItems?.unit_name || 'หน่วย'
           }}</span>
         </p>
       </div>
 
-      <div class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-        <span class="text-2xs font-bold uppercase tracking-wider text-slate-400"
+      <div
+        class="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm"
+      >
+        <div class="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-[#0A6E94]/[0.05]"></div>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400"
           >มูลค่าคงเหลือสุทธิ</span
         >
-        <p class="mt-1.5 text-2xl font-black text-sky-700 tracking-tight">
+        <p class="mt-1.5 font-['Kanit'] text-2xl font-bold tracking-tight text-[#0A6E94]">
           {{ getTotalAmount() | number: '1.2-2' }}
-          <span class="text-xs font-semibold text-slate-500">บาท</span>
+          <span class="text-xs font-medium text-slate-500">บาท</span>
         </p>
       </div>
     </div>
 
-    <!-- Ledger Table Section -->
-    <section class="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm">
-      <div class="border-b border-slate-100 bg-slate-50/50 px-6 py-4.5">
-        <h3 class="text-base font-extrabold text-slate-900">บันทึกรายการ เคลื่อนไหวเข้า-ออก</h3>
-        <p class="text-xs text-slate-400">
-          ประวัติการตรวจรับจ่าย การเบิกพัสดุ และการปรับสมดุลตามปีงบประมาณ
-        </p>
+    <!-- ============ Ledger ============ -->
+    <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div
+        class="flex flex-col gap-1 border-b border-[#12503A]/15 bg-[#F3F7F4] px-6 py-4.5 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div>
+          <h3 class="font-['Kanit'] text-base font-semibold text-slate-900">
+            บันทึกรายการเคลื่อนไหวเข้า–ออก
+          </h3>
+          <p class="text-xs text-slate-400">
+            ประวัติการตรวจรับ จ่ายพัสดุ และการปรับยอดตามปีงบประมาณ
+          </p>
+        </div>
+        <div class="flex items-center gap-4 text-xs font-medium text-slate-500">
+          <span class="inline-flex items-center gap-1.5"
+            ><span class="h-2 w-2 rounded-full bg-[#1F7A52]"></span>รับเข้า</span
+          >
+          <span class="inline-flex items-center gap-1.5"
+            ><span class="h-2 w-2 rounded-full bg-rose-500"></span>จ่ายออก</span
+          >
+        </div>
       </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full min-w-[1000px] border-collapse text-left">
-          <thead>
-            <!-- Primary Headers -->
+      <!-- ---- Desktop / tablet table (md and up) ---- -->
+      <div class="hidden overflow-x-auto md:block">
+        <table class="w-full min-w-[1100px] border-collapse text-left 2xl:min-w-0">
+          <thead class="sticky top-0 z-10">
             <tr
-              class="border-b border-slate-200 bg-slate-50 text-2xs font-bold uppercase tracking-wider text-slate-500"
+              class="border-b border-[#0B2E22] bg-[#0F3D2E] text-[10px] font-bold tracking-wider text-white"
             >
-              <th rowspan="2" class="border-r border-slate-200 px-4 py-3.5 text-center w-[120px]">
+              <th
+                scope="col"
+                rowspan="2"
+                class="w-[120px] border-r border-white/10 px-4 py-3.5 text-center"
+              >
                 วัน เดือน ปี
               </th>
-              <th rowspan="2" class="border-r border-slate-200 px-5 py-3.5">รายการ / แหล่งที่มา</th>
-              <th rowspan="2" class="border-r border-slate-200 px-4 py-3.5 text-right w-[130px]">
+              <th scope="col" rowspan="2" class="border-r border-white/10 px-5 py-3.5">
+                รายการ / แหล่งที่มา
+              </th>
+              <th
+                scope="col"
+                rowspan="2"
+                class="w-[130px] border-r border-white/10 px-4 py-3.5 text-right"
+              >
                 ราคาต่อหน่วย
               </th>
               <th
+                scope="colgroup"
                 colspan="3"
-                class="border-r border-slate-200 px-4 py-2 text-center bg-slate-100/50"
+                class="border-r border-white/10 bg-black/10 px-4 py-2 text-center"
               >
                 ปริมาณวัสดุ
               </th>
-              <th rowspan="2" class="px-5 py-3.5 text-right w-[150px]">รวมเงิน (บาท)</th>
+              <th scope="col" rowspan="2" class="w-[150px] px-5 py-3.5 text-right">
+                รวมเงิน (บาท)
+              </th>
             </tr>
-            <!-- Sub Headers for Balances -->
             <tr
-              class="border-b border-slate-200 bg-slate-50 text-2xs font-bold uppercase tracking-wider text-slate-500"
+              class="border-b border-[#12503A] bg-[#12503A] text-[10px] font-bold tracking-wider text-white"
             >
               <th
-                class="border-r border-slate-200 px-3 py-2 text-center w-[90px] bg-emerald-50/30 text-emerald-800"
+                scope="col"
+                class="w-[90px] border-r border-white/10 bg-[#1F7A52]/30 px-3 py-2 text-center"
               >
                 รับเข้า
               </th>
               <th
-                class="border-r border-slate-200 px-3 py-2 text-center w-[90px] bg-rose-50/30 text-rose-800"
+                scope="col"
+                class="w-[90px] border-r border-white/10 bg-rose-900/20 px-3 py-2 text-center"
               >
                 จ่ายออก
               </th>
               <th
-                class="border-r border-slate-200 px-3 py-2 text-center w-[95px] bg-sky-50/30 text-sky-800"
+                scope="col"
+                class="w-[95px] border-r border-white/10 bg-[#0A6E94]/25 px-3 py-2 text-center"
               >
                 คงเหลือ
               </th>
             </tr>
           </thead>
 
-          <tbody class="divide-y divide-slate-100 bg-white">
-            <!-- Opening Balance Row -->
-            <tr class="bg-amber-50/30 hover:bg-amber-50/50 transition-colors">
+          <tbody class="divide-y divide-[#12503A]/10 bg-white">
+            <!-- Opening balance -->
+            <tr class="bg-[#FBF3E3]/60 transition-colors hover:bg-[#FBF3E3]">
               <td
                 class="border-r border-slate-100 px-4 py-3.5 text-center text-xs font-semibold text-slate-400"
               >
-                -
+                –
               </td>
               <td class="border-r border-slate-100 px-5 py-3.5">
                 <span
-                  class="inline-flex items-center gap-1.5 rounded-lg bg-amber-50 border border-amber-200 px-2.5 py-1 text-xs font-bold text-amber-700"
+                  class="inline-flex items-center gap-1.5 rounded-lg border border-[#B8863B]/40 bg-[#B8863B]/10 px-2.5 py-1 text-xs font-bold text-[#8A6423]"
                 >
-                  <span class="h-1.5 w-1.5 rounded-full bg-amber-400"></span>
-                  ยоดยกมาสะสม
+                  <span class="h-1.5 w-1.5 rounded-full bg-[#B8863B]"></span>
+                  ยอดยกมาสะสม
                 </span>
               </td>
               <td
@@ -186,17 +227,17 @@
                 {{ getOpeningRow()?.unit_price || 0 | number: '1.2-2' }}
               </td>
               <td
-                class="border-r border-slate-100 px-3 py-3.5 text-right text-sm font-bold text-emerald-600 bg-emerald-50/10"
+                class="border-r border-slate-100 bg-[#1F7A52]/5 px-3 py-3.5 text-right text-sm font-bold text-[#1F7A52]"
               >
                 {{ getOpeningRow()?.quantity_in || 0 | number: '1.0-2' }}
               </td>
               <td
-                class="border-r border-slate-100 px-3 py-3.5 text-right text-sm font-bold text-rose-500 bg-rose-50/10"
+                class="border-r border-slate-100 bg-rose-50/50 px-3 py-3.5 text-right text-sm font-bold text-rose-500"
               >
                 {{ getOpeningRow()?.quantity_out || 0 | number: '1.0-2' }}
               </td>
               <td
-                class="border-r border-slate-100 px-3 py-3.5 text-right text-sm font-black text-slate-800 bg-slate-50/40"
+                class="border-r border-slate-100 bg-slate-50/60 px-3 py-3.5 text-right text-sm font-black text-slate-800"
               >
                 {{ getOpeningRow()?.balance_qty || 0 | number: '1.0-2' }}
               </td>
@@ -205,22 +246,22 @@
               </td>
             </tr>
 
-            <!-- Ledger Transactions -->
+            <!-- Transactions -->
             @for (item of getDisplayRows().rows; track item.stock_card_id) {
-              <tr class="group hover:bg-slate-50/60 transition-colors">
-                <!-- Date -->
+              <tr
+                class="group odd:bg-white even:bg-[#F3F7F4]/70 transition-colors hover:bg-[#EAF3ED]"
+              >
                 <td
                   class="border-r border-slate-100 px-4 py-3.5 text-center text-xs font-semibold text-slate-500"
                 >
                   {{ item.transaction_date | thaiDate }}
                 </td>
 
-                <!-- Details & Actions -->
                 <td class="border-r border-slate-100 px-5 py-3.5">
-                  <div class="flex flex-col gap-1.5 items-start">
+                  <div class="flex flex-col items-start gap-1.5">
                     @if (item.transaction_type === 'IN') {
                       <span
-                        class="inline-flex items-center gap-1 rounded-md bg-emerald-50 border border-emerald-100 px-2 py-0.5 text-2xs font-bold text-emerald-700"
+                        class="inline-flex items-center gap-1 rounded-md border border-[#1F7A52]/25 bg-[#1F7A52]/10 px-2 py-0.5 text-[11px] font-bold text-[#1F7A52]"
                       >
                         <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path
@@ -234,7 +275,7 @@
                       </span>
                     } @else if (item.transaction_type === 'OUT') {
                       <span
-                        class="inline-flex items-center gap-1 rounded-md bg-rose-50 border border-rose-100 px-2 py-0.5 text-2xs font-bold text-rose-600"
+                        class="inline-flex items-center gap-1 rounded-md border border-rose-200 bg-rose-50 px-2 py-0.5 text-[11px] font-bold text-rose-600"
                       >
                         <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path
@@ -248,61 +289,54 @@
                       </span>
                     } @else {
                       <span
-                        class="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-2xs font-bold text-slate-700"
+                        class="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-bold text-slate-700"
                       >
                         {{ getTransactionLabel(item.transaction_type) }}
                       </span>
                     }
 
                     @if (item.transaction_type === 'IN' && item.procurement_record_id) {
-                      <div class="text-xs text-slate-500 flex items-center gap-1">
+                      <div class="flex items-center gap-1 text-xs text-slate-500">
                         <span>เอกสารอ้างอิง:</span>
                         <button
                           type="button"
                           (click)="gotoMaterialReceiveDetails(item)"
-                          class="font-semibold text-emerald-700 underline decoration-emerald-300 underline-offset-2 hover:text-emerald-800 transition"
+                          class="rounded font-semibold text-[#12503A] underline decoration-[#1F7A52]/40 underline-offset-2 transition hover:text-[#0B2E22] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B8863B]"
                         >
                           {{ getTransactionDetail(item) }}
                         </button>
                       </div>
                     } @else {
-                      <span class="text-xs text-slate-600 font-medium">
-                        {{ getTransactionDetail(item) }}
-                      </span>
+                      <span class="text-xs font-medium text-slate-600">{{
+                        getTransactionDetail(item)
+                      }}</span>
                     }
                   </div>
                 </td>
 
-                <!-- Price per Unit -->
                 <td
                   class="border-r border-slate-100 px-4 py-3.5 text-right text-sm font-semibold text-slate-500"
                 >
                   {{ item.unit_price | number: '1.2-2' }}
                 </td>
-
-                <!-- Quantity IN -->
                 <td
-                  class="border-r border-slate-100 px-3 py-3.5 text-right text-sm font-bold text-emerald-600 bg-emerald-50/5"
+                  class="border-r border-[#12503A]/10 bg-[#1F7A52]/[0.06] px-3 py-3.5 text-right text-sm font-bold text-[#1F7A52]"
                 >
-                  {{ item.quantity_in ? (item.quantity_in | number: '1.0-2') : '-' }}
+                  {{ item.quantity_in ? (item.quantity_in | number: '1.0-2') : '–' }}
                 </td>
-
-                <!-- Quantity OUT -->
                 <td
-                  class="border-r border-slate-100 px-3 py-3.5 text-right text-sm font-bold text-rose-500 bg-rose-50/5"
+                  class="border-r border-[#12503A]/10 bg-rose-50/40 px-3 py-3.5 text-right text-sm font-bold text-rose-600"
                 >
-                  {{ item.quantity_out ? (item.quantity_out | number: '1.0-2') : '-' }}
+                  {{ item.quantity_out ? (item.quantity_out | number: '1.0-2') : '–' }}
                 </td>
-
-                <!-- Balance Qty -->
                 <td
-                  class="border-r border-slate-100 px-3 py-3.5 text-right text-sm font-black text-slate-800 bg-slate-50/20"
+                  class="border-r border-[#12503A]/10 bg-[#12503A]/[0.05] px-3 py-3.5 text-right text-sm font-black text-[#0B2E22]"
                 >
                   {{ item.balance_qty | number: '1.0-2' }}
                 </td>
-
-                <!-- Total Amount -->
-                <td class="px-5 py-3.5 text-right text-sm font-bold text-slate-850">
+                <td
+                  class="bg-[#12503A]/[0.04] px-5 py-3.5 text-right text-sm font-bold text-slate-900 group-hover:bg-[#12503A]/[0.08]"
+                >
                   {{ item.total_amount | number: '1.2-2' }}
                 </td>
               </tr>
@@ -325,7 +359,7 @@
                     </svg>
                     <p class="mt-3 text-sm font-bold text-slate-700">ไม่พบประวัติการเคลื่อนไหว</p>
                     <p class="mt-1 text-xs text-slate-400">
-                      ไม่มีการทำรายการรับหรือจ่ายของพัสดุชิ้นนี้ในระบบ
+                      ยังไม่มีการรับหรือจ่ายพัสดุชิ้นนี้ในระบบ
                     </p>
                   </div>
                 </td>
@@ -333,8 +367,7 @@
             }
           </tbody>
 
-          <!-- Table Summary Footer -->
-          <tfoot class="border-t-2 border-slate-200 bg-slate-50 font-bold text-slate-700">
+          <tfoot class="border-t-2 border-[#12503A]/20 bg-[#F3F7F4] font-bold text-slate-700">
             <tr>
               <td
                 colspan="3"
@@ -343,32 +376,197 @@
                 รวมสรุปความเคลื่อนไหว
               </td>
               <td
-                class="border-r border-slate-200 px-3 py-4 text-right text-sm font-extrabold text-emerald-700 bg-emerald-50/20"
+                class="border-r border-slate-200 px-3 py-4 text-right text-sm font-extrabold text-[#1F7A52]"
               >
                 {{ getTotalIn() | number: '1.0-2' }}
               </td>
               <td
-                class="border-r border-slate-200 px-3 py-4 text-right text-sm font-extrabold text-rose-600 bg-rose-50/20"
+                class="border-r border-slate-200 px-3 py-4 text-right text-sm font-extrabold text-rose-600"
               >
                 {{ getTotalOut() | number: '1.0-2' }}
               </td>
               <td
-                class="border-r border-slate-200 px-3 py-4 text-right text-sm font-black text-slate-800 bg-slate-100/30"
+                class="border-r border-slate-200 px-3 py-4 text-right text-sm font-black text-slate-800"
               >
                 {{ getBalance() | number: '1.0-2' }}
               </td>
-              <td class="px-5 py-4 text-right text-base font-black text-sky-700">
+              <td class="px-5 py-4 text-right font-['Kanit'] text-base font-bold text-[#0A6E94]">
                 {{ getTotalAmount() | number: '1.2-2' }}
               </td>
             </tr>
           </tfoot>
         </table>
       </div>
+
+      <!-- ---- Mobile card list (below md) — avoids forced horizontal scroll on phones ---- -->
+      <div class="divide-y divide-slate-100 md:hidden">
+        <!-- Opening balance card -->
+        <div class="bg-[#FBF3E3]/50 px-4 py-4">
+          <div class="mb-2 flex items-center justify-between">
+            <span
+              class="inline-flex items-center gap-1.5 rounded-lg border border-[#B8863B]/40 bg-[#B8863B]/10 px-2.5 py-1 text-xs font-bold text-[#8A6423]"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-[#B8863B]"></span>
+              ยอดยกมาสะสม
+            </span>
+            <span class="text-xs font-semibold text-slate-400">–</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2 text-center text-xs">
+            <div class="rounded-lg bg-[#1F7A52]/10 py-2">
+              <p class="text-[10px] font-semibold text-[#1F7A52]">รับเข้า</p>
+              <p class="font-bold text-[#1F7A52]">
+                {{ getOpeningRow()?.quantity_in || 0 | number: '1.0-2' }}
+              </p>
+            </div>
+            <div class="rounded-lg bg-rose-50 py-2">
+              <p class="text-[10px] font-semibold text-rose-500">จ่ายออก</p>
+              <p class="font-bold text-rose-600">
+                {{ getOpeningRow()?.quantity_out || 0 | number: '1.0-2' }}
+              </p>
+            </div>
+            <div class="rounded-lg bg-slate-100 py-2">
+              <p class="text-[10px] font-semibold text-slate-500">คงเหลือ</p>
+              <p class="font-black text-slate-800">
+                {{ getOpeningRow()?.balance_qty || 0 | number: '1.0-2' }}
+              </p>
+            </div>
+          </div>
+          <div class="mt-2 flex justify-between text-xs text-slate-500">
+            <span>ราคาต่อหน่วย {{ getOpeningRow()?.unit_price || 0 | number: '1.2-2' }}</span>
+            <span class="font-bold text-slate-700"
+              >รวม {{ getOpeningRow()?.total_amount || 0 | number: '1.2-2' }} บาท</span
+            >
+          </div>
+        </div>
+
+        @for (item of getDisplayRows().rows; track item.stock_card_id) {
+          <div class="px-4 py-4">
+            <div class="mb-2 flex items-start justify-between gap-2">
+              @if (item.transaction_type === 'IN') {
+                <span
+                  class="inline-flex items-center gap-1 rounded-md border border-[#1F7A52]/25 bg-[#1F7A52]/10 px-2 py-0.5 text-[11px] font-bold text-[#1F7A52]"
+                >
+                  <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2.5"
+                      d="M19 13l-7 7-7-7m14-6l-7 7-7-7"
+                    />
+                  </svg>
+                  รับเข้าพัสดุ
+                </span>
+              } @else if (item.transaction_type === 'OUT') {
+                <span
+                  class="inline-flex items-center gap-1 rounded-md border border-rose-200 bg-rose-50 px-2 py-0.5 text-[11px] font-bold text-rose-600"
+                >
+                  <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2.5"
+                      d="M5 11l7-7 7 7M5 19l7-7 7 7"
+                    />
+                  </svg>
+                  จ่ายพัสดุออก
+                </span>
+              } @else {
+                <span
+                  class="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-bold text-slate-700"
+                >
+                  {{ getTransactionLabel(item.transaction_type) }}
+                </span>
+              }
+              <span class="shrink-0 text-xs font-semibold text-slate-500">{{
+                item.transaction_date | thaiDate
+              }}</span>
+            </div>
+
+            @if (item.transaction_type === 'IN' && item.procurement_record_id) {
+              <button
+                type="button"
+                (click)="gotoMaterialReceiveDetails(item)"
+                class="mb-2 block text-left text-xs font-semibold text-[#12503A] underline decoration-[#1F7A52]/40 underline-offset-2"
+              >
+                เอกสารอ้างอิง: {{ getTransactionDetail(item) }}
+              </button>
+            } @else {
+              <p class="mb-2 text-xs font-medium text-slate-600">
+                {{ getTransactionDetail(item) }}
+              </p>
+            }
+
+            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+              <div class="rounded-lg bg-[#1F7A52]/10 py-2">
+                <p class="text-[10px] font-semibold text-[#1F7A52]">รับเข้า</p>
+                <p class="font-bold text-[#1F7A52]">
+                  {{ item.quantity_in ? (item.quantity_in | number: '1.0-2') : '–' }}
+                </p>
+              </div>
+              <div class="rounded-lg bg-rose-50 py-2">
+                <p class="text-[10px] font-semibold text-rose-500">จ่ายออก</p>
+                <p class="font-bold text-rose-600">
+                  {{ item.quantity_out ? (item.quantity_out | number: '1.0-2') : '–' }}
+                </p>
+              </div>
+              <div class="rounded-lg bg-slate-100 py-2">
+                <p class="text-[10px] font-semibold text-slate-500">คงเหลือ</p>
+                <p class="font-black text-slate-800">{{ item.balance_qty | number: '1.0-2' }}</p>
+              </div>
+            </div>
+            <div class="mt-2 flex justify-between text-xs text-slate-500">
+              <span>ราคาต่อหน่วย {{ item.unit_price | number: '1.2-2' }}</span>
+              <span class="font-bold text-slate-700"
+                >รวม {{ item.total_amount | number: '1.2-2' }} บาท</span
+              >
+            </div>
+          </div>
+        } @empty {
+          <div class="px-6 py-16 text-center text-slate-400">
+            <svg
+              class="mx-auto h-12 w-12 text-slate-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            <p class="mt-3 text-sm font-bold text-slate-700">ไม่พบประวัติการเคลื่อนไหว</p>
+            <p class="mt-1 text-xs text-slate-400">ยังไม่มีการรับหรือจ่ายพัสดุชิ้นนี้ในระบบ</p>
+          </div>
+        }
+
+        <!-- Mobile summary -->
+        <div class="bg-[#F3F7F4] px-4 py-4">
+          <p class="mb-2 text-xs font-extrabold text-slate-600">รวมสรุปความเคลื่อนไหว</p>
+          <div class="grid grid-cols-3 gap-2 text-center text-xs">
+            <div class="rounded-lg bg-[#1F7A52]/15 py-2">
+              <p class="text-[10px] font-semibold text-[#1F7A52]">รวมรับเข้า</p>
+              <p class="font-extrabold text-[#1F7A52]">{{ getTotalIn() | number: '1.0-2' }}</p>
+            </div>
+            <div class="rounded-lg bg-rose-100 py-2">
+              <p class="text-[10px] font-semibold text-rose-600">รวมจ่ายออก</p>
+              <p class="font-extrabold text-rose-600">{{ getTotalOut() | number: '1.0-2' }}</p>
+            </div>
+            <div class="rounded-lg bg-slate-200/70 py-2">
+              <p class="text-[10px] font-semibold text-slate-600">คงเหลือ</p>
+              <p class="font-black text-slate-800">{{ getBalance() | number: '1.0-2' }}</p>
+            </div>
+          </div>
+          <p class="mt-2 text-right font-['Kanit'] text-base font-bold text-[#0A6E94]">
+            รวมมูลค่า {{ getTotalAmount() | number: '1.2-2' }} บาท
+          </p>
+        </div>
+      </div>
     </section>
   </div>
 
-  <!-- Footer Brand -->
-  <div class="mt-8 text-center text-xs font-semibold text-slate-400 uppercase tracking-wider">
+  <div class="mt-8 text-center text-[11px] font-semibold uppercase tracking-wider text-slate-400">
     งานพัสดุและครุภัณฑ์ • กองคลัง • มหาวิทยาลัยราชภัฏกาญจนบุรี
   </div>
 </div>

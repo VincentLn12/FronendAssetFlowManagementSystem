@@ -1,195 +1,397 @@
-<div class="min-h-screen bg-[#f3f4f6] px-4 py-6 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-[1920px] space-y-5">
-    <a
-      [routerLink]="['/portal/staffs', staffId, 'dashboard']"
-      [queryParams]="{ fiscal_year_id: fiscalYearId }"
-      [state]="{ staff }"
-      class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-[#173a5e]"
-    >
-      ← กลับหน้าเมนู
-    </a>
+<div
+  class="public-portal min-h-screen bg-slate-50 px-3 py-4 sm:px-6 lg:px-8 font-sans text-slate-800"
+  style="font-family: 'Sarabun', sans-serif"
+>
+  <div class="mx-auto max-w-7xl space-y-4 sm:space-y-5">
+    <!-- Back Navigation -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <a
+        [routerLink]="['/portal/staffs', staffId, 'dashboard']"
+        [queryParams]="fiscalYearId ? { fiscal_year_id: fiscalYearId } : {}"
+        [queryParams]="{ fiscal_year_id: fiscalYearId }"
+        [state]="{ staff }"
+        class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-xs transition hover:border-blue-900 hover:text-blue-900 w-fit"
+      >
+        <i class="material-icons text-base text-blue-900">arrow_back</i>
+        <span>กลับสู่แดชบอร์ดบุคลากร</span>
+      </a>
+    </div>
 
-    <header class="rounded-2xl border border-slate-300 bg-white shadow-sm">
-      <div class="border-b border-slate-300 bg-slate-50 px-6 py-4">
-        <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[#173a5e]">รายละเอียดครุภัณฑ์</p>
-        <h1 class="mt-1 text-2xl font-bold text-[#173a5e]">
-          {{ detail()?.asset_name || asset?.asset_name || 'ครุภัณฑ์' }}
-        </h1>
-        <p class="mt-2 text-sm text-slate-500">
-          {{ staff?.full_name || 'บุคลากร #' + staffId }} •
-          {{ detail()?.document_no || asset?.document_no || '-' }}
-        </p>
+    <!-- Official Asset Header Card -->
+    <header class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div class="h-1.5 w-full bg-blue-900"></div>
+
+      <!-- Main Title Banner -->
+      <div
+        class="bg-slate-800 p-4 sm:p-7 text-white flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-slate-700"
+      >
+        <div class="space-y-1">
+          <div
+            class="inline-flex items-center gap-1.5 rounded-md bg-white/10 px-2.5 py-0.5 text-[11px] sm:text-xs font-bold text-amber-300"
+          >
+            <i class="material-icons text-xs text-amber-400">inventory_2</i>
+            <span>ทะเบียนข้อมูลครุภัณฑ์ราชการ</span>
+          </div>
+
+          <h1 class="text-lg sm:text-2xl font-bold text-white leading-snug">
+            {{ detail()?.asset_name || asset?.asset_name || 'รายการครุภัณฑ์' }}
+          </h1>
+
+          <p class="text-xs text-slate-300 flex flex-wrap items-center gap-2 pt-0.5">
+            <span
+              >ผู้ครอบครอง:
+              <strong class="text-white">{{
+                staff?.full_name || 'บุคลากร #' + staffId
+              }}</strong></span
+            >
+            <span>•</span>
+            <span
+              >สังกัด: <strong class="text-white">{{ staff?.department_name || '-' }}</strong></span
+            >
+          </p>
+        </div>
       </div>
-
-      @if (detail()) {
-        <div class="grid gap-3 px-6 py-5 md:grid-cols-2 xl:grid-cols-5">
-          <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
-            <p class="text-xs font-semibold text-slate-500">เลขรันครุภัณฑ์</p>
-            <p class="mt-2 text-sm font-bold text-slate-900">
-              {{
-                detail()!.running_start_no && detail()!.running_end_no
-                  ? detail()!.running_start_no + '-' + detail()!.running_end_no + '/' + (detail()!.fiscal_asset_year ?? '-')
-                  : '-'
-              }}
-            </p>
-          </div>
-          <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
-            <p class="text-xs font-semibold text-slate-500">โครงการ</p>
-            <p class="mt-2 text-sm font-bold text-slate-900">{{ detail()!.project_name || '-' }}</p>
-          </div>
-          <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
-            <p class="text-xs font-semibold text-slate-500">เลขเอกสาร</p>
-            <p class="mt-2 text-sm font-bold text-slate-900">{{ detail()!.document_no }}</p>
-          </div>
-          <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
-            <p class="text-xs font-semibold text-slate-500">ใบเบิก</p>
-            <p class="mt-2 text-sm font-bold text-slate-900">{{ detail()!.withdrawal_document_no }}</p>
-          </div>
-          <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
-            <p class="text-xs font-semibold text-slate-500">วันที่เบิก</p>
-            <p class="mt-2 text-sm font-bold text-slate-900">{{ detail()!.withdrawal_date | date: 'dd/MM/yyyy' }}</p>
-          </div>
-        </div>
-        <div class="px-6 pb-5">
-          <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
-            <p class="text-xs font-semibold text-slate-500">สถานที่จัดเก็บ</p>
-            <p class="mt-2 text-sm font-bold text-slate-900">{{ detail()!.storage_location || '-' }}</p>
-          </div>
-        </div>
-      }
     </header>
 
+    <!-- Content Details Card with Tab Navigation -->
     @if (loading()) {
-      <div class="rounded-xl border border-slate-200 bg-slate-50 p-8 text-center text-sm font-semibold text-[#173a5e]">
-        กำลังโหลดรายละเอียดครุภัณฑ์...
+      <div
+        class="rounded-2xl border border-slate-200 bg-white p-8 sm:p-12 text-center shadow-xs flex flex-col items-center justify-center text-slate-500"
+      >
+        <div
+          class="h-8 w-8 animate-spin rounded-full border-3 border-slate-200 border-t-blue-900 mb-3"
+        ></div>
+        <p class="text-xs sm:text-sm font-bold text-slate-800">กำลังโหลดรายละเอียดครุภัณฑ์...</p>
       </div>
     } @else if (detail()) {
-      <section class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <div class="space-y-5">
-          <section class="rounded-2xl border border-slate-300 bg-white shadow-sm">
-            <div class="border-b border-slate-300 px-6 py-4">
-              <h2 class="text-lg font-bold text-[#173a5e]">ครุภัณฑ์ย่อย</h2>
-            </div>
-            <div class="p-4 sm:p-6">
-              @if (detail()!.sub_items.length === 0) {
-                <div class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm font-semibold text-slate-500">
-                  ไม่พบรายการครุภัณฑ์ย่อย
-                </div>
-              } @else {
-                <div class="overflow-hidden rounded-xl border border-slate-300">
-                  <div class="grid grid-cols-[minmax(200px,1fr)_140px_80px_100px_100px_120px] bg-[#173a5e] px-4 py-3 text-xs font-semibold uppercase tracking-wide text-white">
-                    <div>รายการย่อย</div>
-                    <div class="text-center">รหัสสิ้นสุด</div>
-                    <div class="text-right">จำนวน</div>
-                    <div class="text-right">หน่วยละ</div>
-                    <div class="text-right">ราคารวม</div>
-                    <div class="text-center">สถานะ</div>
-                  </div>
-                  @for (subItem of detail()!.sub_items; track subItem.asset_sub_item_id) {
-                    <div class="grid grid-cols-[minmax(200px,1fr)_140px_80px_100px_100px_120px] gap-2 border-t border-slate-200 px-4 py-4 first:border-t-0 items-center">
-                      <div class="text-sm font-semibold text-slate-800">{{ subItem.sub_item_name }}</div>
-                      <div class="text-sm font-semibold text-slate-800 text-center">
-                        {{ subItem.asset_code_end || '-' }}
-                      </div>
-                      <div class="text-sm font-semibold text-slate-800 text-right">{{ subItem.quantity ?? 0 | number: '1.0-2' }}</div>
-                      <div class="text-sm font-semibold text-slate-800 text-right">{{ subItem.unit_price ?? 0 | number: '1.2-2' }}</div>
-                      <div class="text-sm font-semibold text-slate-800 text-right">{{ subItem.total_price ?? 0 | number: '1.2-2' }}</div>
-                      <div class="text-sm font-semibold text-center">
-                        <span [class]="subItem.status === 'จำหน่ายแล้ว' ? 'inline-flex rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-semibold text-rose-800 ring-1 ring-rose-300' : 'inline-flex rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 ring-1 ring-emerald-300'">
-                          {{ subItem.status || 'ปกติ' }}
-                        </span>
-                      </div>
-                    </div>
-                  }
-                </div>
-              }
-            </div>
-          </section>
+      <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <!-- 3 Main Tabs Header - Touch Scrollable for Mobile -->
+        <div
+          class="flex border-b border-slate-200 bg-slate-100/80 p-2 gap-2 overflow-x-auto scrollbar-none"
+        >
+          <!-- Tab 1: Sub-items -->
+          <button
+            type="button"
+            (click)="selectTab('sub_items')"
+            class="flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2.5 sm:px-5 sm:py-3 text-xs font-bold transition-all cursor-pointer shadow-xs whitespace-nowrap"
+            [class.bg-blue-900]="activeTab() === 'sub_items'"
+            [class.text-white]="activeTab() === 'sub_items'"
+            [class.bg-white]="activeTab() !== 'sub_items'"
+            [class.text-slate-700]="activeTab() !== 'sub_items'"
+            [class.border]="activeTab() !== 'sub_items'"
+            [class.border-slate-200]="activeTab() !== 'sub_items'"
+          >
+            <i class="material-icons text-base" [class.text-amber-300]="activeTab() === 'sub_items'"
+              >inventory_2</i
+            >
+            <span>รายการครุภัณฑ์ย่อย</span>
+            <span
+              class="rounded-full px-2 py-0.5 text-[10px] sm:text-[11px] font-extrabold"
+              [class.bg-amber-400]="activeTab() === 'sub_items'"
+              [class.text-slate-950]="activeTab() === 'sub_items'"
+              [class.bg-slate-100]="activeTab() !== 'sub_items'"
+              [class.text-slate-600]="activeTab() !== 'sub_items'"
+            >
+              {{ detail()!.sub_items.length }}
+            </span>
+          </button>
 
-          <section class="rounded-2xl border border-slate-300 bg-white shadow-sm">
-            <div class="border-b border-slate-300 px-6 py-4">
-              <h2 class="text-lg font-bold text-[#173a5e]">ประวัติการใช้งานครุภัณฑ์</h2>
-            </div>
-            <div class="p-4 sm:p-6">
-              @if (detail()!.histories.length === 0) {
-                <div class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm font-semibold text-slate-500">
-                  ไม่พบประวัติการใช้งาน
-                </div>
-              } @else {
-                <div class="space-y-3">
-                  @for (history of detail()!.histories; track history.sub_item_history_id) {
-                    <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                      <div class="flex flex-wrap items-center gap-2">
-                        <span class="rounded-full bg-[#173a5e] px-3 py-1 text-xs font-semibold text-white">
-                          {{ history.history_date | date: 'dd/MM/yyyy' }}
-                        </span>
-                        <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                          {{ history.history_type || '-' }}
-                        </span>
-                        <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                          {{ history.usage_type_name || '-' }}
-                        </span>
-                      </div>
-                      <p class="mt-3 text-sm font-semibold text-slate-800">{{ history.detail || '-' }}</p>
-                      <p class="mt-2 text-xs text-slate-500">{{ history.full_name || '-' }}</p>
-                    </article>
-                  }
-                </div>
-              }
-            </div>
-          </section>
+          <!-- Tab 2: Maintenance & Repairs -->
+          <button
+            type="button"
+            (click)="selectTab('repairs')"
+            class="flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2.5 sm:px-5 sm:py-3 text-xs font-bold transition-all cursor-pointer shadow-xs whitespace-nowrap"
+            [class.bg-blue-900]="activeTab() === 'repairs'"
+            [class.text-white]="activeTab() === 'repairs'"
+            [class.bg-white]="activeTab() !== 'repairs'"
+            [class.text-slate-700]="activeTab() !== 'repairs'"
+            [class.border]="activeTab() !== 'repairs'"
+            [class.border-slate-200]="activeTab() !== 'repairs'"
+          >
+            <i class="material-icons text-base" [class.text-amber-300]="activeTab() === 'repairs'"
+              >build</i
+            >
+            <span>ประวัติการซ่อมบำรุงครุภัณฑ์</span>
+            <span
+              class="rounded-full px-2 py-0.5 text-[10px] sm:text-[11px] font-extrabold"
+              [class.bg-amber-400]="activeTab() === 'repairs'"
+              [class.text-slate-950]="activeTab() === 'repairs'"
+              [class.bg-slate-100]="activeTab() !== 'repairs'"
+              [class.text-slate-600]="activeTab() !== 'repairs'"
+            >
+              {{ detail()!.repairs.length }}
+            </span>
+          </button>
+
+          <!-- Tab 3: Usage History -->
+          <button
+            type="button"
+            (click)="selectTab('histories')"
+            class="flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2.5 sm:px-5 sm:py-3 text-xs font-bold transition-all cursor-pointer shadow-xs whitespace-nowrap"
+            [class.bg-blue-900]="activeTab() === 'histories'"
+            [class.text-white]="activeTab() === 'histories'"
+            [class.bg-white]="activeTab() !== 'histories'"
+            [class.text-slate-700]="activeTab() !== 'histories'"
+            [class.border]="activeTab() !== 'histories'"
+            [class.border-slate-200]="activeTab() !== 'histories'"
+          >
+            <i class="material-icons text-base" [class.text-amber-300]="activeTab() === 'histories'"
+              >history</i
+            >
+            <span>ประวัติการใช้งานครุภัณฑ์</span>
+            <span
+              class="rounded-full px-2 py-0.5 text-[10px] sm:text-[11px] font-extrabold"
+              [class.bg-amber-400]="activeTab() === 'histories'"
+              [class.text-slate-950]="activeTab() === 'histories'"
+              [class.bg-slate-100]="activeTab() !== 'histories'"
+              [class.text-slate-600]="activeTab() !== 'histories'"
+            >
+              {{ detail()!.histories.length }}
+            </span>
+          </button>
         </div>
 
-        <section class="rounded-2xl border border-slate-300 bg-white shadow-sm">
-          <div class="border-b border-slate-300 px-6 py-4">
-            <h2 class="text-lg font-bold text-[#173a5e]">ประวัติการซ่อมบำรุง</h2>
-          </div>
-          <div class="p-4 sm:p-6">
-            @if (detail()!.repairs.length === 0) {
-              <div class="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm font-semibold text-slate-500">
-                ไม่พบประวัติการซ่อมบำรุง
+        <!-- Tab Body Content -->
+        <div class="p-3 sm:p-6">
+          <!-- TAB 1: SUB-ITEMS -->
+          @if (activeTab() === 'sub_items') {
+            @if (detail()!.sub_items.length === 0) {
+              <div
+                class="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 py-10 sm:py-12 text-slate-400"
+              >
+                <i class="material-icons text-3xl mb-1 text-slate-300">inventory_2</i>
+                <p class="text-xs font-bold text-slate-600">ไม่พบรายการครุภัณฑ์ย่อยในระบบ</p>
               </div>
             } @else {
-              <div class="space-y-3">
+              <!-- Mobile Card List View (Visible on Mobile screens) -->
+              <div class="grid gap-3 sm:hidden text-xs">
+                @for (subItem of detail()!.sub_items; track subItem.asset_sub_item_id) {
+                  <div class="rounded-xl border border-slate-200 bg-white p-4 space-y-2 shadow-xs">
+                    <div
+                      class="flex items-start justify-between gap-2 border-b border-slate-100 pb-2"
+                    >
+                      <div>
+                        <h4 class="font-bold text-slate-900 text-sm">
+                          {{ subItem.sub_item_name }}
+                        </h4>
+                        <p class="font-extrabold text-blue-900 text-xs mt-0.5">
+                          {{ formatSubItemAssetCode(subItem) }}
+                        </p>
+                      </div>
+                      <span
+                        [class]="
+                          subItem.status === 'จำหน่ายแล้ว'
+                            ? 'inline-flex shrink-0 rounded-md bg-rose-50 border border-rose-200 px-2 py-0.5 text-[10px] font-bold text-rose-800'
+                            : 'inline-flex shrink-0 rounded-md bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[10px] font-bold text-emerald-800'
+                        "
+                      >
+                        {{ subItem.status || 'ปกติ' }}
+                      </span>
+                    </div>
+
+                    <div
+                      class="grid grid-cols-3 gap-2 bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center"
+                    >
+                      <div>
+                        <span class="text-[10px] text-slate-400 block font-semibold">จำนวน</span>
+                        <strong class="text-slate-800 text-xs font-bold">{{
+                          subItem.quantity ?? 0 | number: '1.0-2'
+                        }}</strong>
+                      </div>
+                      <div>
+                        <span class="text-[10px] text-slate-400 block font-semibold">หน่วยละ</span>
+                        <strong class="text-slate-800 text-xs font-bold">{{
+                          subItem.unit_price ?? 0 | number: '1.2-2'
+                        }}</strong>
+                      </div>
+                      <div>
+                        <span class="text-[10px] text-slate-400 block font-semibold">ราคารวม</span>
+                        <strong class="text-blue-900 text-xs font-bold">{{
+                          subItem.total_price ?? 0 | number: '1.2-2'
+                        }}</strong>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <!-- Desktop / Tablet Table View (Visible on Tablet/Desktop screens) -->
+              <div class="hidden sm:block overflow-x-auto rounded-xl border border-slate-200">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                      <th class="p-3.5">รายการย่อย</th>
+                      <th class="p-3.5 text-center">เลขครุภัณฑ์</th>
+                      <th class="p-3.5 text-right">จำนวน</th>
+                      <th class="p-3.5 text-right">หน่วยละ</th>
+                      <th class="p-3.5 text-right">ราคารวม</th>
+                      <th class="p-3.5 text-center">สถานะ</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 bg-white">
+                    @for (subItem of detail()!.sub_items; track subItem.asset_sub_item_id) {
+                      <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-3.5 font-bold text-slate-900 text-sm">
+                          {{ subItem.sub_item_name }}
+                        </td>
+                        <td class="p-3.5 font-extrabold text-blue-900 text-center text-sm">
+                          {{ formatSubItemAssetCode(subItem) }}
+                        </td>
+                        <td class="p-3.5 text-right font-semibold text-slate-800">
+                          {{ subItem.quantity ?? 0 | number: '1.0-2' }}
+                        </td>
+                        <td class="p-3.5 text-right font-semibold text-slate-800">
+                          {{ subItem.unit_price ?? 0 | number: '1.2-2' }}
+                        </td>
+                        <td class="p-3.5 text-right font-bold text-slate-900 text-sm">
+                          {{ subItem.total_price ?? 0 | number: '1.2-2' }}
+                        </td>
+                        <td class="p-3.5 text-center">
+                          <span
+                            [class]="
+                              subItem.status === 'จำหน่ายแล้ว'
+                                ? 'inline-flex rounded-md bg-rose-50 border border-rose-200 px-2.5 py-1 text-xs font-bold text-rose-800'
+                                : 'inline-flex rounded-md bg-emerald-50 border border-emerald-200 px-2.5 py-1 text-xs font-bold text-emerald-800'
+                            "
+                          >
+                            {{ subItem.status || 'ปกติ' }}
+                          </span>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          }
+
+          <!-- TAB 2: REPAIRS -->
+          @if (activeTab() === 'repairs') {
+            @if (detail()!.repairs.length === 0) {
+              <div
+                class="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 py-10 sm:py-12 text-slate-400"
+              >
+                <i class="material-icons text-3xl mb-1 text-slate-300">build</i>
+                <p class="text-xs font-bold text-slate-600">ไม่พบประวัติการซ่อมบำรุงในระบบ</p>
+              </div>
+            } @else {
+              <div class="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
                 @for (repair of detail()!.repairs; track repair.asset_repair_id) {
-                  <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <div class="flex flex-wrap items-center gap-2">
-                      <span class="rounded-full bg-[#173a5e] px-3 py-1 text-xs font-semibold text-white">
-                        {{ repair.repair_date | date: 'dd/MM/yyyy' }}
-                      </span>
-                      <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                        {{ repair.status || '-' }}
+                  <div
+                    class="rounded-xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5 space-y-3 text-xs shadow-xs"
+                  >
+                    <div
+                      class="flex items-center justify-between gap-2 border-b border-slate-200 pb-2.5"
+                    >
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="rounded-md bg-blue-900 px-2.5 py-1 text-[11px] sm:text-xs font-bold text-white shrink-0"
+                        >
+                          {{ toThaiDate(repair.repair_date, 'short') }}
+                        </span>
+                        <span class="font-bold text-slate-900 text-xs sm:text-sm truncate">{{
+                          repair.repair_document_no || 'เอกสารซ่อม'
+                        }}</span>
+                      </div>
+                      <span
+                        class="rounded-md bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[11px] font-bold text-emerald-800 shrink-0"
+                      >
+                        {{ repair.status || 'ดำเนินการเรียบร้อย' }}
                       </span>
                     </div>
-                    <h3 class="mt-3 text-base font-bold text-[#173a5e]">
-                      {{ repair.repair_document_no || 'เอกสารซ่อม' }}
-                    </h3>
-                    <div class="mt-3 grid gap-2 sm:grid-cols-2">
+
+                    <div
+                      class="grid grid-cols-2 gap-2 sm:gap-3 bg-white p-3 rounded-lg border border-slate-200"
+                    >
                       <div>
-                        <p class="text-xs font-semibold text-slate-500">ร้านซ่อม</p>
-                        <p class="mt-1 text-sm text-slate-800">{{ repair.repair_shop_name || '-' }}</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">
+                          ร้านค้า/ผู้รับจ้างซ่อม
+                        </p>
+                        <p class="font-bold text-slate-800 text-xs mt-0.5 truncate">
+                          {{ repair.repair_shop_name || '-' }}
+                        </p>
                       </div>
                       <div>
-                        <p class="text-xs font-semibold text-slate-500">ค่าใช้จ่าย</p>
-                        <p class="mt-1 text-sm font-semibold text-slate-800">{{ repair.repair_cost ?? 0 | number: '1.2-2' }} บาท</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">
+                          ค่าใช้จ่ายซ่อมบำรุง
+                        </p>
+                        <p class="font-black text-blue-900 text-xs sm:text-sm mt-0.5">
+                          {{ repair.repair_cost ?? 0 | number: '1.2-2' }} บาท
+                        </p>
                       </div>
                     </div>
-                    <div class="mt-3">
-                      <p class="text-xs font-semibold text-slate-500">อาการ / การซ่อม</p>
-                      <p class="mt-1 text-sm text-slate-800">
+
+                    <div>
+                      <p class="text-[11px] font-bold text-slate-500">
+                        รายละเอียดอาการเสีย/การส่งซ่อม:
+                      </p>
+                      <p class="mt-1 text-slate-800 font-semibold leading-relaxed">
                         {{ repair.problem_description || repair.repair_description || '-' }}
                       </p>
                     </div>
+
                     @if (repair.decree_document_no) {
-                      <p class="mt-2 text-xs text-slate-500">เลขคำสั่ง {{ repair.decree_document_no }}</p>
+                      <p class="text-[11px] text-slate-500">
+                        เลขคำสั่งอนุมัติ: <strong>{{ repair.decree_document_no }}</strong>
+                      </p>
                     }
-                    <p class="mt-2 text-xs text-slate-500">{{ repair.full_name || '-' }}</p>
-                  </article>
+
+                    <p class="text-[11px] text-slate-400 pt-2 border-t border-slate-200">
+                      ผู้รับผิดชอบรายการ: {{ repair.full_name || '-' }}
+                    </p>
+                  </div>
                 }
               </div>
             }
-          </div>
-        </section>
+          }
+
+          <!-- TAB 3: USAGE HISTORIES -->
+          @if (activeTab() === 'histories') {
+            @if (detail()!.histories.length === 0) {
+              <div
+                class="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 py-10 sm:py-12 text-slate-400"
+              >
+                <i class="material-icons text-3xl mb-1 text-slate-300">history</i>
+                <p class="text-xs font-bold text-slate-600">ไม่พบประวัติการใช้งานครุภัณฑ์</p>
+              </div>
+            } @else {
+              <div class="grid gap-3 grid-cols-1 sm:grid-cols-2">
+                @for (history of detail()!.histories; track history.sub_item_history_id) {
+                  <div
+                    class="rounded-xl border border-slate-200 bg-slate-50/70 p-4 space-y-2 text-xs shadow-xs"
+                  >
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span
+                        class="rounded-md bg-blue-900 px-2.5 py-1 text-[11px] sm:text-xs font-bold text-white"
+                      >
+                        {{ toThaiDate(history.history_date, 'short') }}
+                      </span>
+                      <span
+                        class="rounded-md bg-slate-200 px-2 py-0.5 text-[11px] font-bold text-slate-800"
+                      >
+                        {{ history.history_type || '-' }}
+                      </span>
+                      @if (history.usage_type_name) {
+                        <span
+                          class="rounded-md bg-slate-200 px-2 py-0.5 text-[11px] font-bold text-slate-800"
+                        >
+                          {{ history.usage_type_name }}
+                        </span>
+                      }
+                    </div>
+
+                    <p class="font-bold text-slate-900 text-xs sm:text-sm mt-2">
+                      {{ history.detail || '-' }}
+                    </p>
+                    <p class="text-slate-500 text-[11px]">
+                      ผู้ใช้งาน: {{ history.full_name || '-' }}
+                    </p>
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
       </section>
     }
   </div>

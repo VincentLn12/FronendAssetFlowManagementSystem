@@ -948,6 +948,57 @@ ng-select.custom-select {
   pointer-events: auto !important;
 }
 
+/* ===================================================================
+   Public portal — shared government information design system
+   A restrained palette keeps public records readable and predictable.
+   =================================================================== */
+.public-portal {
+  background: #f1f5f9 !important;
+
+  :focus-visible {
+    outline: 3px solid #fbbf24 !important;
+    outline-offset: 2px;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:not([disabled]),
+  a {
+    &:focus-visible { border-radius: .5rem; }
+  }
+
+  /* A small, consistent motion cue is enough for interactive public records. */
+  button:not([disabled]) {
+    transition: border-color .16s ease, background-color .16s ease, box-shadow .16s ease,
+      transform .16s ease !important;
+
+    &:active { transform: translateY(1px); }
+  }
+
+  input {
+    min-height: 2.75rem;
+    font-size: .875rem;
+  }
+
+  table {
+    font-size: .875rem;
+
+    th {
+      color: #334155;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+  }
+
+  /* Long identifiers remain readable and never force the whole page wide. */
+  .break-words,
+  td,
+  th { overflow-wrap: anywhere; }
+}
+
 ::ng-deep .custom-select-readonly .ng-select-container {
   background-color: transparent !important;
   border: none !important;

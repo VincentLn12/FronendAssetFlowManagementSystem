@@ -1,12 +1,13 @@
-<div class="min-h-screen bg-slate-50/70 px-2 py-4 sm:px-6 lg:px-8 font-sans" style="font-family: 'Sarabun', sans-serif;">
-  <div class="mx-auto max-w-8xl space-y-4 sm:space-y-6">
+<div class="public-portal min-h-screen bg-slate-100 px-4 py-5 sm:px-6 lg:px-8 font-sans text-slate-800" style="font-family: 'Sarabun', sans-serif;">
+  <div class="mx-auto max-w-7xl space-y-4 sm:space-y-5">
     
     <!-- Top Action Bar -->
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between bg-white px-4 py-3 sm:px-6 sm:py-4 rounded-xl border border-slate-200/80 shadow-sm gap-3 print:hidden">
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between bg-white px-4 py-3 sm:px-6 sm:py-4 rounded-xl border border-slate-300 shadow-sm gap-3 print:hidden">
       <a
         [routerLink]="['/portal/staffs', staffId, 'dashboard']"
+        [queryParams]="fiscalYearId ? { fiscal_year_id: fiscalYearId } : {}"
         [state]="{ staff }"
-        class="inline-flex items-center justify-center sm:justify-start gap-2.5 text-base font-bold text-slate-600 hover:text-blue-900 transition-colors duration-200 py-1.5 sm:py-0"
+        class="inline-flex items-center justify-center sm:justify-start gap-2 text-sm font-bold text-slate-700 hover:text-blue-900 transition-colors duration-200 py-1.5 sm:py-0"
       >
         <i class="material-icons text-xl">arrow_back</i> 
         <span>กลับหน้าระเบียนบุคลากร</span>
@@ -23,66 +24,67 @@
     </div>
 
     <!-- Official Document Wrapper -->
-    <div class="overflow-hidden rounded-2xl border border-slate-255 bg-white shadow-lg shadow-slate-100 print:shadow-none print:border-none">
+    <div class="overflow-hidden rounded-2xl border border-slate-300 bg-white shadow-sm print:shadow-none print:border-none">
       
-      <!-- Royal Flag Accent Line -->
-      <div class="h-2 w-full bg-gradient-to-r from-blue-900 via-red-600 to-blue-900 print:hidden"></div>
+      <!-- Royal University Accent Line -->
+      <div class="h-1.5 w-full bg-amber-400 print:hidden"></div>
 
       <!-- Document Header Section -->
-      <header class="border-b border-slate-200 bg-gradient-to-br from-blue-50/65 via-slate-50/40 to-white px-4 py-6 sm:px-8 sm:py-8">
+      <header class="border-b border-slate-700 bg-slate-900 px-6 py-6 sm:px-8 sm:py-7 text-white print:bg-white print:text-black">
+
         <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
           <div class="space-y-3">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600/10 border border-blue-600/25 text-xs font-bold text-blue-900">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-white/10 border border-white/20 text-xs font-bold text-amber-300">
               <i class="material-icons text-xs">verified</i> รายละเอียดเอกสารพัสดุและครุภัณฑ์ภาครัฐ
             </span>
-            <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white leading-tight">
               {{ title() }}
             </h1>
-            <div class="text-sm sm:text-base text-slate-600 space-y-1">
+            <div class="text-sm sm:text-base text-slate-300 space-y-1">
               <p class="flex items-center gap-2">
-                <i class="material-icons text-sm text-blue-900">person</i>
-                <span>ผู้รับผิดชอบหลัก: <strong class="text-slate-900 font-bold">{{ staff?.full_name || 'ไม่ระบุชื่อ' }}</strong></span>
+                <i class="material-icons text-sm text-amber-300">person</i>
+                <span>ผู้รับผิดชอบหลัก: <strong class="text-white font-bold">{{ staff?.full_name || 'ไม่ระบุชื่อ' }}</strong></span>
               </p>
               <p class="flex items-center gap-2">
-                <i class="material-icons text-sm text-blue-900">business</i>
-                <span>หน่วยงานสังกัด: <span class="text-slate-800 font-semibold">{{ staff?.department_name || '-' }}</span></span>
+                <i class="material-icons text-sm text-amber-300">business</i>
+                <span>หน่วยงานสังกัด: <span class="text-white font-semibold">{{ staff?.department_name || '-' }}</span></span>
               </p>
             </div>
           </div>
           <!-- Royal Seal Placeholder / Emblem Grid -->
-          <div class="self-start md:self-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white border border-blue-200 shadow-md shadow-blue-50 flex items-center justify-center text-blue-900 print:hidden">
+          <div class="self-start md:self-center w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-amber-400 flex items-center justify-center text-slate-950 print:hidden">
             <i class="material-icons text-3xl sm:text-4xl">gavel</i>
           </div>
         </div>
 
         <!-- Highlight Metadata Grid (Colorful Box Cards) -->
         @if (detail()) {
-          <div class="mt-6 sm:mt-8 grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-5 border-t border-slate-200/80 pt-5 sm:pt-6">
-            <div class="p-3 sm:p-4 bg-sky-50/80 border border-sky-200/70 rounded-xl shadow-xs">
-              <span class="text-xs font-semibold text-sky-800/80 block uppercase tracking-wider">ประเภทรายการ</span>
-              <span class="mt-1 text-sm sm:text-base font-extrabold text-sky-950 block">{{ detail()!.category }}</span>
+          <div class="mt-6 grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-5 border-t border-white/15 pt-5">
+            <div class="p-3 sm:p-4 bg-white rounded-lg">
+              <span class="text-xs font-bold text-slate-500 block">ประเภทรายการ</span>
+              <span class="mt-1 text-sm sm:text-base font-extrabold text-slate-900 block">{{ detail()!.category }}</span>
             </div>
-            <div class="p-3 sm:p-4 bg-indigo-50/80 border border-indigo-200/70 rounded-xl shadow-xs">
-              <span class="text-xs font-semibold text-indigo-800/80 block uppercase tracking-wider">เลขที่สัญญา / เอกสาร</span>
-              <span class="mt-1 text-sm sm:text-base font-extrabold text-indigo-950 block">{{ detail()!.document_no }}</span>
+            <div class="p-3 sm:p-4 bg-white rounded-lg">
+              <span class="text-xs font-bold text-slate-500 block">เลขที่สัญญา / เอกสาร</span>
+              <span class="mt-1 text-sm sm:text-base font-extrabold text-blue-900 block">{{ detail()!.document_no }}</span>
             </div>
-            <div class="p-3 sm:p-4 bg-purple-50/80 border border-purple-200/70 rounded-xl shadow-xs">
-              <span class="text-xs font-semibold text-purple-800/80 block uppercase tracking-wider">วันที่จัดทำเอกสาร</span>
-              <span class="mt-1 text-sm sm:text-base font-extrabold text-purple-950 block">
-                {{ detail()!.document_date | date: 'dd/MM/yyyy' }}
+            <div class="p-3 sm:p-4 bg-white rounded-lg">
+              <span class="text-xs font-bold text-slate-500 block">วันที่จัดทำเอกสาร</span>
+              <span class="mt-1 text-sm sm:text-base font-extrabold text-slate-900 block">
+                {{ detail()!.document_date | thaiDate }}
               </span>
             </div>
-            <div class="p-3 sm:p-4 bg-emerald-50 border border-emerald-200/80 rounded-xl shadow-xs">
-              <span class="text-xs font-semibold text-emerald-800/80 block uppercase tracking-wider">สถานะดำเนินการ</span>
-              <span class="mt-1.5 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs sm:text-sm font-bold bg-emerald-600 text-white shadow-xs">
-                <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+            <div class="p-3 sm:p-4 bg-white rounded-lg">
+              <span class="text-xs font-bold text-slate-500 block">สถานะดำเนินการ</span>
+              <span class="mt-1.5 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs sm:text-sm font-bold bg-emerald-700 text-white">
+                <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
                 {{ detail()!.status || 'อนุมัติแล้ว' }}
               </span>
             </div>
-            <div class="p-3 sm:p-4 bg-amber-50 border border-amber-200 rounded-xl shadow-xs col-span-1 sm:col-span-2 md:col-span-1">
-              <span class="text-xs font-semibold text-amber-800/80 block uppercase tracking-wider">มูลค่าสัญญารวม</span>
-              <span class="mt-1 text-base sm:text-lg font-black text-amber-950 block">
-                {{ detail()!.total_amount | number: '1.2-2' }} <span class="text-xs font-bold text-amber-800/80">บาท</span>
+            <div class="p-3 sm:p-4 bg-amber-400 rounded-lg col-span-1 sm:col-span-2 md:col-span-1">
+              <span class="text-xs font-bold text-slate-700 block">มูลค่าสัญญารวม</span>
+              <span class="mt-1 text-base sm:text-lg font-black text-slate-950 block">
+                {{ detail()!.total_amount | number: '1.2-2' }} <span class="text-xs font-bold text-slate-700">บาท</span>
               </span>
             </div>
           </div>
@@ -90,7 +92,7 @@
       </header>
 
       <!-- Details List Section -->
-      <div class="p-4 sm:p-8 space-y-6 sm:space-y-8 bg-slate-50/30">
+      <div class="p-4 sm:p-6 space-y-6 bg-slate-50">
         @if (loading()) {
           <div class="flex flex-col items-center justify-center py-20 text-slate-500">
             <div class="border-4 border-slate-200 border-t-blue-900 rounded-full w-10 h-10 animate-spin mb-4"></div>
@@ -189,7 +191,7 @@
                             <strong>เลขที่ใบเบิก:</strong> <span class="text-white font-bold ml-1">{{ asset.withdrawal_document_no }}</span>
                           </p>
                           <p class="flex items-center gap-1">
-                            <strong>วันที่ทำสัญญาเบิก:</strong> <span class="text-white font-bold ml-1">{{ asset.withdrawal_date | date: 'dd/MM/yyyy' }}</span>
+                            <strong>วันที่ทำสัญญาเบิก:</strong> <span class="text-white font-bold ml-1">{{ asset.withdrawal_date | thaiDate }}</span>
                           </p>
                           <p class="flex items-center gap-1 sm:col-span-2 md:col-span-1">
                             <strong>สถานที่เก็บรักษา:</strong> <span class="text-white font-bold ml-1">{{ asset.storage_location || '-' }}</span>
